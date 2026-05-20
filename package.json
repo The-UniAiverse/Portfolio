@@ -1,0 +1,39 @@
+{
+  "name": "uniaiverse-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/waghmarepb/uniaiverse-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/waghmarepb/uniaiverse-website/issues"
+  },
+  "homepage": "https://github.com/waghmarepb/uniaiverse-website#readme",
+  "dependencies": {
+    "@types/node": "^24.9.2",
+    "@types/react": "^19.2.2",
+    "framer-motion": "^12.30.0",
+    "lucide-react": "^0.563.0",
+    "mysql2": "^3.18.2",
+    "next": "16.0.10",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.18"
+  }
+}

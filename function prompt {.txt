@@ -1,0 +1,6 @@
+function prompt {
+    if (-not $?) {
+        [System.Media.SystemSounds]::Hand.Play()
+    }
+    "PS $($executionContext.SessionState.Path.CurrentLocation)$('>' * ($nestedPromptLevel + 1)) "
+}

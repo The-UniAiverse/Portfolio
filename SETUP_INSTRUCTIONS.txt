@@ -1,0 +1,275 @@
+================================================================================
+                    UNIAIVERSE WEBSITE - SETUP INSTRUCTIONS
+================================================================================
+
+PROJECT: Next.js Website for uniAiverse AI Consulting
+TECH STACK: Next.js 16 + React 19 + TypeScript + Tailwind CSS
+COLOR THEME: Dark Blue (#0F172A), Primary Blue (#1E40AF), Light Blue (#3B82F6), White
+
+================================================================================
+                          QUICK START (3 STEPS)
+================================================================================
+
+STEP 1: Open Terminal/Command Prompt
+   Navigate to the project folder:
+   
+   cd uniaiverse-website
+
+STEP 2: Install Dependencies
+   
+   npm install
+   
+   This will install all required packages (Next.js, React, TypeScript, etc.)
+   Wait 1-2 minutes for installation to complete.
+
+STEP 3: Start Development Server
+   
+   npm run dev
+   
+   Open your browser and go to: http://localhost:3000
+
+================================================================================
+                          WHAT YOU'LL SEE
+================================================================================
+
+✓ HEADER (Navigation Bar)
+  - Logo: uniAiverse
+  - Menu: Home, About, Services, Case Studies, Contact
+  - Get Started button
+  - Mobile responsive hamburger menu
+
+✓ HERO SECTION (Landing Area)
+  - Full-screen welcome section
+  - Animated blue gradient background
+  - Main tagline and mission statement
+  - Two CTA buttons: "Discover Services" and "Contact Us"
+  - Statistics: ROI Gains, Projects, Clients, Support
+
+✓ ABOUT SECTION
+  - Company purpose and values
+  - Vision, Mission, Drive cards
+  - "We are uniAiverse" branding
+  - What sets us apart (4 differentiators)
+  - 6 key achievements
+
+✓ SERVICES SECTION (8 Services)
+  1. Generative AI Development 🎨
+  2. Artificial Intelligence & Machine Learning 🤖
+  3. Agentic AI & Context-Aware Systems 🧠
+  4. Natural Language Processing 💬
+  5. MLOps & Deployment 🚀
+  6. Data Science 📊
+  7. Computer Vision 👁️
+  8. Training and Workshops 📚
+
+✓ AI JOURNEY SECTION (4 Phases)
+  Phase 1: Strategy - Define goals and roadmap
+  Phase 2: Build - Design & develop AI/ML models
+  Phase 3: Deploy - Scalable MLOps & deployments
+  Phase 4: Upskill - Empower teams with training
+
+✓ TECH STACK SECTION
+  - Interactive filter tabs (All, Languages, Frameworks, Cloud, AI Models)
+  - 8 categories with 50+ technologies
+  - Includes: Python, TensorFlow, OpenAI, Azure, and more
+
+✓ TESTIMONIALS SECTION
+  - 3 client testimonial cards with 5-star ratings
+  - Maria Chen (CTO), David Alvarez (Head of Innovation), Sarah Johnson (VP)
+  - Statistics showcase
+
+✓ CONTACT SECTION
+  - Full contact form (Name, Email, Phone, Company, Service, Message)
+  - Contact information cards (Address, Phone, Email, Hours)
+  - "Why Choose Us" benefits list
+  - Social media links (FB, X, IG, YT)
+
+✓ FOOTER
+  - Company information and address
+  - Services list
+  - Company links
+  - Social media
+  - Copyright and legal links
+
+================================================================================
+                          DESIGN FEATURES
+================================================================================
+
+✓ Responsive Design
+  - Mobile (320px+)
+  - Tablet (768px+)
+  - Desktop (1024px+)
+
+✓ Interactive Elements
+  - Smooth scroll navigation
+  - Hover effects on cards and buttons
+  - Animated backgrounds
+  - Mobile menu toggle
+  - Filter tabs for tech stack
+
+✓ Color Scheme
+  - Primary: Blue (#1E40AF)
+  - Dark: Navy Blue (#0F172A)
+  - Light: Sky Blue (#3B82F6)
+  - Secondary: White (#FFFFFF)
+
+✓ Animations
+  - Smooth transitions
+  - Hover effects
+  - Scroll animations
+  - Gradient backgrounds
+  - Pulse effects
+
+================================================================================
+                          FILE STRUCTURE
+================================================================================
+
+uniaiverse-website/
+├── app/
+│   ├── globals.css          ← Global styles
+│   ├── layout.tsx           ← Root layout
+│   └── page.tsx            ← Main homepage
+├── components/
+│   ├── Header.tsx          ← Navigation
+│   ├── Hero.tsx            ← Landing section
+│   ├── About.tsx           ← About section
+│   ├── Services.tsx        ← Services grid
+│   ├── AIJourney.tsx       ← Journey timeline
+│   ├── TechStack.tsx       ← Tech stack
+│   ├── Testimonials.tsx    ← Reviews
+│   ├── Contact.tsx         ← Contact form
+│   └── Footer.tsx          ← Footer
+├── public/                 ← Images (add your own)
+├── tailwind.config.js      ← Color customization
+├── package.json           ← Dependencies
+└── README.md              ← Full documentation
+
+================================================================================
+                          AVAILABLE COMMANDS
+================================================================================
+
+npm run dev      → Start development server (http://localhost:3000)
+npm run build    → Build for production
+npm start        → Start production server
+npm run lint     → Check for code errors
+
+================================================================================
+                          CUSTOMIZATION GUIDE
+================================================================================
+
+CHANGE COLORS:
+  Edit: tailwind.config.js
+  Find the "colors" section and modify hex values
+
+EDIT CONTENT:
+  Navigate to: components/ folder
+  Open any .tsx file and edit text, images, or descriptions
+
+ADD IMAGES:
+  1. Place images in: public/ folder
+  2. Use in components: <Image src="/your-image.jpg" />
+
+CHANGE FONTS:
+  Edit: app/globals.css
+  Modify the font-family in the body section
+
+================================================================================
+                          DEPLOYMENT
+================================================================================
+
+OPTION 1: VERCEL (EASIEST - RECOMMENDED)
+  1. Push code to GitHub
+  2. Go to vercel.com
+  3. Click "Import Project"
+  4. Select your repository
+  5. Click "Deploy"
+  → Done! Live in 2 minutes
+
+OPTION 2: NETLIFY
+  1. Go to netlify.com
+  2. Drag and drop your folder
+  3. Netlify builds and deploys automatically
+
+OPTION 3: MANUAL BUILD
+  1. Run: npm run build
+  2. Upload .next folder to your server
+  3. Run: npm start
+
+================================================================================
+                          TROUBLESHOOTING
+================================================================================
+
+ISSUE: Port 3000 already in use
+SOLUTION:
+  Windows: 
+    netstat -ano | findstr :3000
+    taskkill /PID <PID> /F
+  
+  Mac/Linux:
+    lsof -ti:3000 | xargs kill -9
+
+ISSUE: Module not found errors
+SOLUTION:
+  Delete node_modules and reinstall:
+    rm -rf node_modules package-lock.json
+    npm install
+
+ISSUE: TypeScript errors
+SOLUTION:
+  Run: npm run lint
+  Fix reported errors in component files
+
+ISSUE: Styling not working
+SOLUTION:
+  1. Check if Tailwind is properly configured
+  2. Restart development server: Ctrl+C then npm run dev
+
+================================================================================
+                          NEXT STEPS
+================================================================================
+
+1. ✓ Install dependencies (npm install)
+2. ✓ Start dev server (npm run dev)
+3. ✓ Preview in browser (http://localhost:3000)
+4. □ Customize content in components
+5. □ Add your own images to public/ folder
+6. □ Test on mobile devices
+7. □ Build for production (npm run build)
+8. □ Deploy to Vercel or Netlify
+
+================================================================================
+                          SUPPORT
+================================================================================
+
+Documentation:
+  - README.md (Full documentation)
+  - QUICKSTART.md (Quick setup guide)
+  - PROJECT_SUMMARY.md (Project overview)
+
+Contact:
+  Phone: +91 8956837601
+  Address: F/N. 5, First Floor, F building,
+           Monika Garden View, Near Ropalas Company,
+           Pimpri, Pune, 411018
+
+Website: https://site.uniaiverse.ai/
+
+================================================================================
+                          PROJECT STATUS
+================================================================================
+
+✅ All 9 sections complete
+✅ Fully responsive design
+✅ Blue color theme applied
+✅ All animations working
+✅ Contact form functional
+✅ No errors or warnings
+✅ Ready for production deployment
+
+================================================================================
+
+Thank you for choosing uniAiverse Website Template!
+Built with ❤️ using Next.js, React, TypeScript & Tailwind CSS
+
+================================================================================
+
