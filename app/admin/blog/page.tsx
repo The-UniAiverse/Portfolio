@@ -20,14 +20,24 @@ interface BlogPost {
 
 const categories = ['All', 'AI Trends', 'Technical', 'MLOps', 'Case Study', 'News']
 
-const emptyForm = {
+const emptyForm: {
+  title: string
+  slug: string
+  excerpt: string
+  content: string
+  category: string
+  tags: string
+  status: 'draft' | 'published'
+  date: string
+  read_time: string
+} = {
   title: '',
   slug: '',
   excerpt: '',
   content: '',
   category: 'AI Trends',
   tags: '',
-  status: 'draft' as const,
+  status: 'draft',
   date: new Date().toISOString().split('T')[0],
   read_time: '5 min read',
 }
