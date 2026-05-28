@@ -1,3 +1,4 @@
+
 export interface SocialLink {
   name: string
   href: string
@@ -24,7 +25,7 @@ export const footerCompany = [
 ]
 
 export const footerSocialLinks: SocialLink[] = [
-  { name: 'Facebook', href: '#', icon: 'FB' },
+  { name: 'Facebook', href: '#', icon: "fb" },
   { name: 'X', href: '#', icon: 'X' },
   { name: 'Instagram', href: '#', icon: 'IG' },
   { name: 'YouTube', href: '#', icon: 'YT' },

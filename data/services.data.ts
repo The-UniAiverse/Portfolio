@@ -23,6 +23,20 @@ export interface ServiceCategory {
 // Core Services
 export const coreServices: Service[] = [
     {
+    title: 'Training and Mentorship',
+    description: 'Turn AI from a buzzword into a clear plan. We assess your business processes, data, and opportunities to create a tailor-made, actionable AI roadmap.',
+    icon: '🥇',
+    whatsIncluded: [
+        'AI readiness assessment',
+        'Opportunity discovery workshop',
+        'Tech & tools recommendation',
+        '90-day implementation roadmap',
+        'Cost & timeline estimate'
+    ],
+    idealFor: 'Students, working professionals, founders, CXOs, and teams building AI capability.'
+},
+
+    {
         title: 'AI Strategy & Roadmap Development',
         description: 'Turn AI from a buzzword into a clear plan. We assess your business processes, data, and opportunities to create a tailor-made, actionable AI roadmap.',
         icon: '🎯',

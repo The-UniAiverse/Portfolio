@@ -35,6 +35,6 @@ export const serviceLinks: ServiceLink[] = [
   { icon: '💬', title: 'Natural Language Processing', href: '/services/nlp' },
   { icon: '📊', title: 'Data Science', href: '/services/data-science' },
   { icon: '👁️', title: 'Computer Vision', href: '/services/computer-vision' },
-  { icon: '📚', title: 'Training & Workshops', href: '/services/training' },
+  { icon: '📚', title: 'Training & Mentorship', href: '/services/training' },
 ]
 
