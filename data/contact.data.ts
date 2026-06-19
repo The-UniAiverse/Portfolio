@@ -78,7 +78,7 @@ export const contactPageData = {
     { name: 'Instagram', icon: 'IG', href: '#' },
     { name: 'YouTube', icon: 'YT', href: '#' },
   ],
-  calendlyUrl: "https://calendly.com/tigerkiller007/30min",
+  calendlyUrl: "https://calendly.com/uniaiverse2025/30min",
   calendlyEventTypeUri: "https://api.calendly.com/event_types/PLACEHOLDER",
 }
 
