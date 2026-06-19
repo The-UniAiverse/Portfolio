@@ -26,6 +26,7 @@ export const metadata: Metadata = {
 }
 
 import CalendlyBadge from '@/components/CalendlyBadge'
+import OrbiBot from '@/components/OrbiBot'
 
 export default function RootLayout({
   children,
@@ -37,11 +38,7 @@ export default function RootLayout({
       <body>
         {children}
         <CalendlyBadge />
-        <Script
-          id="hs-script-loader"
-          src="//js.hs-scripts.com/9191806.js"
-          strategy="afterInteractive"
-        />
+        <OrbiBot />
         {/* Tawk.to chat widget - Commented out as HubSpot chat is being used */}
         {/* <Script
           id="tawk-to-init"
