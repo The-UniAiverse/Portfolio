@@ -40,7 +40,7 @@
 <body>
 <header>
   <h1>AI Readiness Audit</h1>
-  <p>Thirty questions, six dimensions, a scored report with a 90-day plan. Answer honestly — the value is in the gaps.</p>
+  <p>The uniAIverse AI Readiness Framework: 10 domains, 51 capabilities, 348 questions. Pick a tier — from a 25-question free snapshot to the full enterprise audit.</p>
 </header>
 <main>
   <form id="f">
@@ -54,7 +54,10 @@
           <option value="large">250–1,000</option><option value="enterprise">1,000+</option>
         </select>
         <input type="text" id="goal" placeholder="What does leadership want from AI? (one sentence)">
+        <select id="tier"></select>
+        <select id="industry_module"><option value="">Industry module (Silver and above)</option></select>
       </div>
+      <p class="hint" id="tierinfo"></p>
     </fieldset>
     <div id="questions"><p class="hint">Loading questions…</p></div>
     <p><button type="submit" id="go">Score my readiness</button> <span class="hint" id="status"></span></p>
@@ -74,49 +77,63 @@
   </section>
 </main>
 <script>
+const $ = id => document.getElementById(id);
 const API = location.origin + '/api/readiness_audit';
-let Q;
-async function load(){
-  Q = await (await fetch(API+'/questionnaire')).json();
-  const el = document.getElementById('questions'); el.innerHTML='';
-  for (const d of Q.dimensions){
-    const fs = document.createElement('fieldset');
-    fs.innerHTML = `<legend>${d.title}</legend>`;
-    for (const q of d.questions){
-      const div = document.createElement('div'); div.className='q';
-      div.innerHTML = `<p>${q.text}</p><div class="scale">` +
-        Object.entries(Q.scale).map(([v,l])=>`<label><input type="radio" name="${q.id}" value="${v}" required><span>${v} · ${l.split(' — ')[0].split(' / ')[0]}</span></label>`).join('') + '</div>';
-      fs.appendChild(div);
-    }
-    el.appendChild(fs);
+let Q, T;
+const tierSel = document.getElementById('tier'), indSel = document.getElementById("industry_module");
+async function init(){
+  T = await (await fetch(API+'/tiers')).json();
+  tierSel.innerHTML = Object.entries(T.tiers).map(([id,t])=>`<option value="${id}">${t.title} — ${t.question_count} questions${t.price_usd?' · $'+t.price_usd.toLocaleString():' · free'}</option>`).join('');
+  tierSel.onchange = indSel.onchange = load; await load();
+}
+function block(title, qs){
+  const fs = document.createElement('fieldset'); fs.innerHTML = `<legend>${title}</legend>`;
+  for (const q of qs){
+    const div = document.createElement('div'); div.className='q';
+    div.innerHTML = `<p>${q.text}${q.evidence?' <span class="hint">(evidence)</span>':''}</p><div class="scale">` +
+      Object.entries(Q.scale).map(([v,l])=>`<label><input type="radio" name="${q.id.replaceAll('.','_')}" data-id="${q.id}" value="${v}" required><span>${v} · ${l.split(' — ')[0]}</span></label>`).join('') + '</div>';
+    fs.appendChild(div);
   }
+  return fs;
+}
+async function load(){
+  Q = await (await fetch(API+`/questionnaire?tier=${tierSel.value}&industries=${indSel.value}`)).json();
+  if (indSel.options.length===1) for (const m of Q.available_industries) indSel.add(new Option(m.title, m.id));
+  document.getElementById('tierinfo').textContent = `${Q.tier_info.target}. ${Q.tier_info.report}`;
+  const el = document.getElementById('questions'); el.innerHTML='';
+  for (const d of Q.domains) for (const c of d.capabilities) el.appendChild(block(`${d.title} › ${c.title}`, c.questions));
+  for (const m of Q.industry_modules) el.appendChild(block(`Industry: ${m.title}`, m.questions));
+  document.getElementById('result').style.display='none';
 }
 document.getElementById('fill').onclick = async e=>{
   e.preventDefault();
-  const s = await (await fetch(API+'/sample')).json();
-  document.getElementById('name').value = s.organisation.name;
-  document.getElementById('industry').value = s.organisation.industry;
-  document.getElementById('size').value = s.organisation.size;
-  document.getElementById('goal').value = s.organisation.top_goal||'';
-  for (const [k,v] of Object.entries(s.answers)) { const r=document.querySelector(`input[name=${k}][value="${v}"]`); if(r) r.checked=true; }
+  const s = await (await fetch(API+`/sample?tier=${tierSel.value}&industries=${indSel.value}`)).json();
+  $('name').value = s.organisation.name;
+  document.getElementById("industry_module").value = s.organisation.industry;
+  $('size').value = s.organisation.size;
+  $('goal').value = s.organisation.top_goal||'';
+  for (const [k,v] of Object.entries(s.answers)) { const r=document.querySelector(`input[data-id="${k}"][value="${v}"]`); if(r) r.checked=true; }
 };
 document.getElementById('f').onsubmit = async e=>{
   e.preventDefault();
-  const answers={}; for (const d of Q.dimensions) for (const q of d.questions){ const r=document.querySelector(`input[name=${q.id}]:checked`); if(r) answers[q.id]=+r.value; }
-  const body={organisation:{name:name.value,industry:industry.value||'General',size:size.value,top_goal:goal.value||null},answers};
+  const answers={}; for (const r of document.querySelectorAll('input[data-id]:checked')) answers[r.dataset.id]=+r.value;
+  const body={tier:tierSel.value, industries: indSel.value?[indSel.value]:[], organisation:{name:$('name').value,industry:$('industry').value||'General',size:$('size').value,top_goal:$('goal').value||null},answers};
   document.getElementById('go').disabled=true; document.getElementById('status').textContent='Scoring and writing your report…';
-  const r = await (await fetch(API+'/run',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})).json();
+  const resp = await fetch(API+'/run',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); const r = await resp.json();
+  if(!resp.ok){ document.getElementById('go').disabled=false; document.getElementById('status').textContent = 'Could not score: ' + JSON.stringify(r.detail); return; }
   document.getElementById('go').disabled=false; document.getElementById('status').textContent='';
   document.getElementById('overall').textContent = r.overall_score + ' / 100';
   document.getElementById('level').innerHTML = `<b>${r.maturity_level}.</b> ${r.maturity_summary}`;
-  document.getElementById('dims').innerHTML = r.dimensions.map(d=>`<div class="dim"><span style="width:220px">${d.title}</span><div class="bar"><i class="${d.score<40?'low':''}" style="width:${d.score}%"></i></div><b>${d.score}</b></div>`).join('');
+  document.getElementById('dims').innerHTML = (r.red_flags.length?`<p><b>Critical controls absent:</b> ${r.red_flags.length}</p>`:'') + (r.benchmark?`<p class="hint">Benchmark for ${r.organisation.size} companies: ${r.benchmark.overall}</p>`:'') +
+    r.dimensions.map(d=>`<div class="dim"><span style="width:220px">${d.title}</span><div class="bar"><i class="${d.score<40?'low':''}" style="width:${d.score}%"></i></div><b>${d.score}</b></div>` +
+      d.capabilities.map(c=>`<div class="dim" style="padding-left:24px;font-size:.85rem"><span style="width:196px">${c.title}</span><div class="bar" style="height:6px"><i class="${c.score<40?'low':''}" style="width:${c.score}%"></i></div><b>${c.score}</b></div>`).join('')).join('');
   document.getElementById('narr').textContent = r.narrative;
-  document.getElementById('recs').innerHTML = r.recommendations.map(x=>`<div class="rec"><b>${x.priority}. ${x.action}</b><br><small>${x.horizon} · ${x.dimension} · ${x.owner_hint}</small><br>${x.why}</div>`).join('');
-  document.getElementById('links').innerHTML = `<a href="${r.report_pdf_url}">Download PDF report</a><a href="${r.report_markdown_url}">Markdown</a>`;
+  document.getElementById('recs').innerHTML = r.recommendations.map(x=>`<div class="rec"><b>${x.priority}. ${x.action}</b><br><small>${x.horizon} · ${x.domain} › ${x.capability}</small></div>`).join('') + (r.upgrade_hint?`<p class="hint">${r.upgrade_hint}</p>`:'');
+  document.getElementById('links').innerHTML = (r.report_pdf_url?`<a href="${r.report_pdf_url}">Download PDF report</a>`:'') + `<a href="${r.report_markdown_url}">Markdown</a>`;
   document.getElementById('result').style.display='block';
   document.getElementById('result').scrollIntoView({behavior:'smooth'});
 };
-load();
+init();
 </script>
 </body>
 </html>

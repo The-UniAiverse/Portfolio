@@ -1,0 +1,775 @@
+# uniAIverse AI Readiness Framework — Question Bank v2.0
+# ─────────────────────────────────────────────────────────────────────────────
+# Structure: domain → capability → questions.
+# Question line format:  "<TIER><flags> <question text>"
+#   TIER   F = Free demo · B = Bronze (small business) · S = Silver (medium) · G = Gold (large) · P = Platinum (enterprise)
+#          Tiers are cumulative: Silver includes all F+B+S questions, etc.
+#   flags  * = evidence required (Gold/Platinum audits ask for a document/screenshot/system reference)
+#          ! = critical control (score ≤1 triggers a red flag in the report)
+# Every question is answered on the 0-4 maturity scale below.
+# Add / remove / edit questions freely — scoring, tiers, reports and tests adapt automatically.
+# Version history: see CHANGELOG.md. Framework review cadence: quarterly (AI moves monthly).
+
+version: "2.0"
+last_reviewed: "2026-09-12"
+
+scale:
+  0: "Absent — not done, not planned"
+  1: "Ad hoc — individual efforts, no ownership"
+  2: "Defined — documented, inconsistently applied"
+  3: "Managed — owned, measured, applied across most teams"
+  4: "Optimised — embedded, continuously improved, evidence available"
+
+maturity_bands:
+  - {min: 0,  max: 20,  level: "Nascent",     summary: "AI is a conversation, not a capability. Foundations are missing."}
+  - {min: 21, max: 40,  level: "Emerging",    summary: "Pockets of experimentation; nothing repeatable, measured or governed yet."}
+  - {min: 41, max: 60,  level: "Developing",  summary: "Real pilots and some data discipline; scaling is blocked by specific capability gaps."}
+  - {min: 61, max: 80,  level: "Established", summary: "AI delivers measurable value in several functions; ready to industrialise."}
+  - {min: 81, max: 100, level: "Leading",     summary: "AI is a core operating capability with governance, MLOps, GenAI platforms and skills at scale."}
+
+# Horizon for remediation by band: low (<40) → 30-60 days, mid (40-70) → 90 days, high (>70) → 6 months (optimise)
+
+domains:
+
+# ═════════════════════════════════════════════════════════════════════════════
+- id: strategy
+  title: Strategy, Leadership & Operating Model
+  weight: 0.12
+  capabilities:
+
+  - id: vision
+    title: AI vision & business alignment
+    low_action: "Run a leadership alignment workshop; agree 3 measurable business outcomes AI must serve and publish a one-page AI ambition statement."
+    mid_action: "Convert the ambition into a 12-month roadmap with quarterly checkpoints, KPIs and named owners; review it at the leadership meeting."
+    questions:
+      - "F! Is there a written AI strategy explicitly linked to business objectives (revenue, cost, risk, customer, speed)?"
+      - "B Does the AI strategy define what the organisation will NOT do with AI (scope boundaries)?"
+      - "B Is the AI strategy reviewed and refreshed at least annually as models and tools change?"
+      - "S Are AI ambitions expressed as measurable targets (e.g. % of processes augmented, cost per transaction) rather than slogans?"
+      - "S Is the AI strategy communicated to all staff in language they understand?"
+      - "G* Is there a documented view of how AI changes the business model (products, pricing, channels) over 3 years?"
+      - "P Does the strategy address AI-driven disruption risk from competitors, new entrants and platform providers?"
+
+  - id: sponsorship
+    title: Executive sponsorship & accountability
+    low_action: "Name a single accountable executive sponsor for AI with a ring-fenced budget line and a quarterly reporting duty."
+    mid_action: "Establish an AI steering group (business, data, IT, risk) that meets monthly with a decision log."
+    questions:
+      - "F! Is there a named executive accountable for AI outcomes with budget authority?"
+      - "B Does leadership discuss AI progress at a regular cadence (monthly or quarterly)?"
+      - "S Is there a cross-functional AI steering group with documented decisions?"
+      - "S Do business unit leaders (not only IT) own AI targets in their objectives?"
+      - "G* Are AI initiatives visible on the board / executive agenda with a standard reporting pack?"
+      - "G Is there a Chief AI Officer, Head of AI, or equivalent role with a clear mandate?"
+      - "P Is AI accountability reflected in executive incentives and performance reviews?"
+
+  - id: operating_model
+    title: AI operating model
+    low_action: "Decide the operating model (central team, hub-and-spoke, or federated) and write down who does what for AI."
+    mid_action: "Formalise the model with a RACI across strategy, data, engineering, risk and business units; publish intake and prioritisation processes."
+    questions:
+      - "B Is it clear which team owns AI delivery (central CoE, hub-and-spoke, federated, or partner-led)?"
+      - "B Is there a defined intake process for new AI ideas?"
+      - "S Is there a RACI covering AI use-case ownership, data ownership, model ownership and risk review?"
+      - "S Are shared AI services (platform, governance, training) funded centrally rather than by each project?"
+      - "G* Does the AI Centre of Excellence (or equivalent) publish standards, templates and reusable assets?"
+      - "G Are business units able to self-serve approved AI capabilities within guardrails?"
+      - "P Is the operating model reviewed against benchmarks (peer organisations, industry frameworks) at least annually?"
+
+  - id: change
+    title: Change management & adoption
+    low_action: "Add a change plan (comms, training, adoption metrics) as a required part of every AI rollout."
+    mid_action: "Appoint change champions per function and track adoption and satisfaction for 90 days after each launch."
+    questions:
+      - "B Is change management (communication, training, support) planned for every AI rollout?"
+      - "B Are employees told how AI will affect their roles before tools are deployed?"
+      - "S Are adoption metrics (active users, tasks completed with AI) tracked after launch?"
+      - "S Is there a feedback channel for staff to report AI issues and suggestions?"
+      - "G* Are workforce impacts (reskilling, role redesign) assessed and planned for each major AI initiative?"
+      - "G Is there a network of AI champions embedded in business functions?"
+      - "P Is employee sentiment about AI measured (survey) and acted on?"
+
+  - id: ecosystem
+    title: Partner, vendor & ecosystem strategy
+    low_action: "List current AI vendors and partners; define a simple build-vs-buy-vs-partner rule for new initiatives."
+    mid_action: "Create a vendor evaluation checklist (security, data use, lock-in, exit) and a preferred-partner list."
+    questions:
+      - "B Is there a defined approach to build vs buy vs partner for AI capabilities?"
+      - "S Are AI vendors evaluated on data usage, security, model transparency and exit terms — not only features?"
+      - "S Is vendor and platform lock-in risk considered when selecting models and tools?"
+      - "G* Are contracts with AI vendors reviewed for IP ownership, liability and regulatory obligations?"
+      - "G Does the organisation participate in industry groups, academia or startup ecosystems for AI?"
+      - "P Is there a multi-model / multi-provider strategy to avoid dependence on a single AI provider?"
+
+# ═════════════════════════════════════════════════════════════════════════════
+- id: value
+  title: Value, Use Cases & Portfolio
+  weight: 0.10
+  capabilities:
+
+  - id: discovery
+    title: Opportunity discovery
+    low_action: "Run a 2-hour opportunity workshop per function; capture 10+ candidate use cases with owner, pain point and data needed."
+    mid_action: "Institutionalise quarterly discovery sessions and a living backlog visible to leadership."
+    questions:
+      - "F Has the organisation identified specific AI use cases tied to real pain points?"
+      - "B Are use cases captured with a problem statement, owner, users affected and data required?"
+      - "B Have front-line teams (not only management) contributed use-case ideas?"
+      - "S Is discovery repeated regularly rather than as a one-off?"
+      - "S Are external sources (competitors, industry cases, vendors) scanned for proven use cases?"
+      - "G* Is process mining or workflow analysis used to find automation opportunities objectively?"
+      - "P Are customer-facing and product-embedded AI opportunities assessed alongside internal efficiency ones?"
+
+  - id: prioritisation
+    title: Prioritisation & portfolio management
+    low_action: "Score the backlog on value × feasibility × risk × effort and pick the top 3 to start."
+    mid_action: "Manage AI as a portfolio: quarterly review, stage gates, retire low-value initiatives, rebalance quick wins vs strategic bets."
+    questions:
+      - "F Are AI use cases prioritised using value, feasibility and risk rather than enthusiasm?"
+      - "B Is there a single ranked backlog of AI initiatives?"
+      - "S Do prioritisation criteria include data availability and regulatory risk?"
+      - "S Is the portfolio balanced between quick wins and strategic bets?"
+      - "G* Is the AI portfolio reviewed quarterly with explicit stop / continue / scale decisions?"
+      - "G Are dependencies between initiatives (shared data, platform, skills) managed at portfolio level?"
+      - "P Is portfolio value tracked against the original business case per initiative?"
+
+  - id: business_case
+    title: Business case & benefits definition
+    low_action: "Use a one-page business case template: baseline, target, measurement owner, cost, risks — for every initiative."
+    mid_action: "Require benefits owners in the business (not IT) and a benefits-realisation review 6 months after go-live."
+    questions:
+      - "B Does every AI initiative have a baseline and a target metric before it starts?"
+      - "B Are costs (build, run, change, licences) estimated over 2-3 years, not just the pilot?"
+      - "S Are non-financial benefits (risk, quality, employee experience) captured explicitly?"
+      - "S Is there a named business owner accountable for benefits realisation?"
+      - "G* Are benefits reviewed post-implementation and reported to leadership?"
+      - "P Are AI business cases challenged independently (finance, risk) before approval?"
+
+  - id: pilots
+    title: Pilots & proof of value
+    low_action: "Scope every pilot to one narrow use case with success criteria, a 4-8 week limit and a decision date."
+    mid_action: "Standardise a pilot playbook (template, eval set, exit criteria) and track pilot-to-production conversion rate."
+    questions:
+      - "F Has the organisation run at least one AI pilot with a measurable outcome?"
+      - "B Do pilots have explicit success criteria and an end date?"
+      - "S Do pilots use real data and real users rather than demo data?"
+      - "S Is the pilot-to-production conversion rate known?"
+      - "G* Is there a standard pilot playbook (scope, evaluation set, exit criteria, cost cap)?"
+      - "G Are failed pilots documented with lessons learned and shared?"
+      - "P Are pilots designed for scale from the start (architecture, data access, governance) rather than as throwaways?"
+
+  - id: customer_value
+    title: Customer & product value
+    low_action: "Identify where AI could improve customer experience or the product itself; validate with customer interviews."
+    mid_action: "Embed AI features in the product roadmap with customer metrics (satisfaction, retention, resolution time)."
+    questions:
+      - "S Are AI opportunities assessed in customer-facing journeys (support, onboarding, personalisation)?"
+      - "S Is customer feedback on AI-powered interactions collected and reviewed?"
+      - "G* Are AI features tracked with customer metrics (CSAT, NPS, resolution time, retention)?"
+      - "G Is the impact of AI on brand trust and transparency considered in product decisions?"
+      - "P Are AI-native products or services (new revenue lines) under active exploration?"
+
+# ═════════════════════════════════════════════════════════════════════════════
+- id: data
+  title: Data Foundations
+  weight: 0.12
+  capabilities:
+
+  - id: availability
+    title: Data availability & access
+    low_action: "Inventory the 10 data sources behind the top 3 use cases: owner, location, format, access method, quality."
+    mid_action: "Provide governed self-service access (warehouse / lakehouse / APIs) so no use case depends on manual extraction."
+    questions:
+      - "F! Is the data needed for your top use cases accessible without manual extraction or spreadsheets?"
+      - "B Do you know where your critical business data lives (systems, owners, formats)?"
+      - "B Can data be extracted from core systems (CRM, ERP, ticketing) through APIs or scheduled exports?"
+      - "S Is there a central data platform (warehouse, lakehouse) where analytical data is consolidated?"
+      - "S Are access requests to data fulfilled within days rather than weeks?"
+      - "G* Is unstructured data (documents, emails, tickets, images) catalogued and accessible for AI use?"
+      - "G Are external and third-party data sources integrated where they add value?"
+      - "P Is real-time / streaming data available where use cases need current state?"
+
+  - id: quality
+    title: Data quality management
+    low_action: "Define 5 quality rules for each critical dataset (completeness, accuracy, freshness, uniqueness, validity) and measure them once."
+    mid_action: "Automate quality checks in pipelines with alerts; publish quality scores; assign data stewards."
+    questions:
+      - "F Is data quality (completeness, accuracy, freshness) measured for critical datasets?"
+      - "B Is there a named owner for the quality of each critical dataset?"
+      - "S Are quality checks automated in data pipelines with alerts on failure?"
+      - "S Are duplicate, outdated and conflicting records actively managed?"
+      - "G* Are data quality scores published and tracked over time?"
+      - "G Is master data (customer, product, supplier) managed consistently across systems?"
+      - "P Is data quality contractually agreed with upstream providers (data contracts, SLAs)?"
+
+  - id: governance_data
+    title: Data governance, catalogue & lineage
+    low_action: "Start a lightweight catalogue: dataset, owner, description, sensitivity, refresh cadence."
+    mid_action: "Deploy a data catalogue tool with lineage; assign stewards; embed classification in onboarding of new datasets."
+    questions:
+      - "B Is there a data catalogue or register describing what data exists and who owns it?"
+      - "B Is data classified by sensitivity (public / internal / confidential / restricted)?"
+      - "S Are data stewards assigned with defined responsibilities?"
+      - "S Are business definitions (glossary, KPIs) standardised across teams?"
+      - "G* Is data lineage traceable from source to report or model?"
+      - "G Is data governance policy enforced through tooling rather than only documents?"
+      - "P Is data governance integrated with AI governance (model inputs traced to approved datasets)?"
+
+  - id: engineering
+    title: Data engineering & pipelines
+    low_action: "Automate the pipelines feeding the top use cases; replace manual refreshes with scheduled jobs."
+    mid_action: "Adopt pipeline standards: version control, testing, monitoring, orchestration, environment separation."
+    questions:
+      - "B Are data pipelines automated rather than run by hand?"
+      - "B Are pipelines monitored for failure and freshness?"
+      - "S Is pipeline code version-controlled and tested?"
+      - "S Are there separate development and production data environments?"
+      - "G* Is an orchestration tool used for scheduling and dependency management?"
+      - "G Are pipelines designed for incremental updates rather than full reloads?"
+      - "P Are feature stores or reusable data products available to AI teams?"
+
+  - id: ai_ready_data
+    title: AI-ready data (labels, documents, knowledge)
+    low_action: "Select 20 trusted, current, approved documents per use case; retire duplicates and outdated versions."
+    mid_action: "Build curated knowledge bases with metadata, version flags, permissions and refresh processes; set up labelling workflows."
+    questions:
+      - "F Are official, current versions of documents (policies, manuals, contracts) identifiable and separated from drafts?"
+      - "B Do documents carry metadata (owner, date, version, audience) usable by AI systems?"
+      - "S Are there processes to label or annotate data for supervised ML where needed?"
+      - "S Is document access permission information available for AI systems to enforce?"
+      - "G* Are knowledge sources for GenAI curated, deduplicated and refreshed on a defined cadence?"
+      - "G Is synthetic data considered where real data is scarce or sensitive?"
+      - "P Are evaluation datasets (golden sets) maintained per AI use case with domain-expert labels?"
+
+# ═════════════════════════════════════════════════════════════════════════════
+- id: platform
+  title: Technology, Platform & Integration
+  weight: 0.10
+  capabilities:
+
+  - id: infrastructure
+    title: Compute, cloud & infrastructure
+    low_action: "Agree a default cloud/compute path for AI workloads and how teams request it."
+    mid_action: "Provide self-service environments with cost guardrails; define GPU/accelerator access for training and inference."
+    questions:
+      - "F Can teams get compute, storage and model access for AI in days rather than months?"
+      - "B Is cloud (or equivalent) infrastructure available for AI workloads?"
+      - "S Are AI environments provisioned through repeatable templates (infrastructure as code)?"
+      - "S Is GPU / accelerator access available when training or self-hosting is needed?"
+      - "G* Are AI workloads isolated with appropriate network, cost and access controls?"
+      - "G Is infrastructure capacity planned for AI growth (inference volume, storage of embeddings/logs)?"
+      - "P Is there a sovereignty / residency option for AI workloads where regulation requires it?"
+
+  - id: integration
+    title: Integration & APIs
+    low_action: "Expose the 3 most important systems via APIs or scheduled exports; document authentication and data contracts."
+    mid_action: "Adopt an API-first policy and an integration layer (iPaaS / event bus) so AI can read and act on systems safely."
+    questions:
+      - "F Are core systems (CRM, ERP, ticketing, documents) reachable through APIs?"
+      - "B Are integrations documented (endpoints, owners, authentication)?"
+      - "S Is there an integration platform or standard pattern rather than point-to-point scripts?"
+      - "S Can AI systems safely write back to business systems (with validation and audit)?"
+      - "G* Are event streams or webhooks available for real-time triggers?"
+      - "G Are legacy systems assessed for integration constraints before AI use cases depend on them?"
+      - "P Is the organisation adopting standard tool interfaces for AI agents (e.g. MCP servers, function-calling schemas)?"
+
+  - id: ai_platform
+    title: AI / ML platform & tooling
+    low_action: "Approve a standard toolset for AI development (notebooks, model APIs, vector store, orchestration) and publish it."
+    mid_action: "Stand up a shared AI platform: model gateway, RAG components, evaluation tooling, prompt/version management, cost tracking."
+    questions:
+      - "F Is there an approved, standard way for teams to use AI/LLM tools inside the organisation?"
+      - "B Is there a shared toolset for AI development rather than each team choosing its own?"
+      - "S Is a model gateway / API layer used to centralise access, keys, logging and cost?"
+      - "S Are reusable components (RAG pipeline, chatbot template, document extraction) available?"
+      - "G* Is there an internal AI platform with self-service capabilities and documentation?"
+      - "G Are experiments, prompts and models versioned and tracked?"
+      - "P Does the platform support multiple model providers and open-weight models interchangeably?"
+
+  - id: architecture
+    title: Architecture standards
+    low_action: "Write reference architectures for the two most common patterns (RAG assistant, document automation)."
+    mid_action: "Maintain an architecture pattern library with review gates and reusable templates; run architecture reviews for AI systems."
+    questions:
+      - "B Are there reference architectures for common AI patterns?"
+      - "S Is architecture reviewed before AI systems go to production?"
+      - "S Are non-functional requirements (latency, availability, cost per request) defined for AI systems?"
+      - "G* Is there a pattern library with approved components and known trade-offs?"
+      - "G Are AI systems designed with fallbacks (cheaper model, cached answer, human handoff)?"
+      - "P Are architecture decisions for AI recorded (ADRs) and revisited as models change?"
+
+  - id: legacy
+    title: Legacy & technical debt readiness
+    low_action: "Identify legacy systems that block the top use cases and estimate the minimum integration work."
+    mid_action: "Plan modernisation for high-value blockers; wrap legacy with APIs where replacement isn't feasible."
+    questions:
+      - "B Are technical constraints from legacy systems known and documented?"
+      - "S Is technical debt that blocks AI initiatives prioritised in the IT roadmap?"
+      - "G* Are legacy systems wrapped with APIs or data extracts to enable AI use?"
+      - "G Is application modernisation aligned with AI ambitions?"
+      - "P Is there a target-state architecture that explicitly accommodates AI workloads?"
+
+# ═════════════════════════════════════════════════════════════════════════════
+- id: genai
+  title: GenAI, LLM & Agentic Readiness
+  weight: 0.10
+  capabilities:
+
+  - id: llm_adoption
+    title: LLM adoption & usage policy
+    low_action: "Approve one company LLM route (business account or API) and publish a one-page usage policy; stop personal-account usage."
+    mid_action: "Roll out approved assistants with SSO, logging and data controls; measure usage and value by function."
+    questions:
+      - "F! Is there an approved way to use LLM tools (ChatGPT, Claude, Copilot etc.) with company data?"
+      - "B Is 'shadow AI' (staff using personal AI accounts) understood and addressed?"
+      - "B Do staff know what data may and may not be entered into AI tools?"
+      - "S Are enterprise AI assistants deployed with single sign-on, logging and admin controls?"
+      - "S Is usage of AI assistants measured (adoption, tasks, satisfaction)?"
+      - "G* Are prompts, outputs and tool interactions logged for audit where required?"
+      - "P Are AI assistants embedded into core workflows (CRM, service desk, document management) rather than used standalone?"
+
+  - id: rag
+    title: Knowledge assistants & RAG
+    low_action: "Pilot one knowledge assistant on 20 curated documents with grounding, citations and a refusal path."
+    mid_action: "Standardise a RAG platform: layout-aware parsing, structure-aware chunking, hybrid search, reranking, evaluation set, ACL enforcement."
+    questions:
+      - "B Has the organisation built or piloted a knowledge assistant grounded in its own documents?"
+      - "S Do knowledge assistants cite sources and refuse when the answer is not in the documents?"
+      - "S Are permissions (who may see which documents) enforced inside AI retrieval?"
+      - "G* Is retrieval quality measured (recall, hit rate) with a golden set of real questions?"
+      - "G Are advanced retrieval techniques (hybrid search, reranking, contextual chunking, query rewriting) in use?"
+      - "P Is knowledge freshness managed (incremental indexing, deletion propagation, version flags)?"
+      - "P Are multi-modal sources (tables, images, audio, video) handled in knowledge pipelines?"
+
+  - id: prompting
+    title: Prompt engineering & evaluation
+    low_action: "Create a shared prompt library with versioning; define output-format standards for common tasks."
+    mid_action: "Adopt evaluation-driven development: golden sets, LLM-as-judge with human calibration, regression tests in CI."
+    questions:
+      - "B Are effective prompts shared and reused rather than rewritten by each person?"
+      - "S Are prompts version-controlled and tested before changes go live?"
+      - "S Are outputs evaluated systematically (test sets, scoring) rather than by feel?"
+      - "G* Is LLM-as-judge evaluation calibrated against human ratings?"
+      - "G Are structured outputs (schemas, function calling) used for reliability?"
+      - "P Are evaluations run automatically on every prompt, model or retrieval change?"
+
+  - id: agents
+    title: Agentic AI & automation readiness
+    low_action: "Map candidate multi-step workflows for agents; run one read-only agent pilot with hard budget and iteration caps."
+    mid_action: "Establish an agent framework with tool registry, permission scoping, human approval for destructive actions, tracing and budgets."
+    questions:
+      - "S Has the organisation assessed which workflows are suited to AI agents (multi-step, tool-using) versus simple assistants?"
+      - "S Are agents restricted to least-privilege tools with human approval for consequential actions?"
+      - "G* Are agent runs traced end-to-end (steps, tools, tokens, cost) and capped (iterations, time, cost)?"
+      - "G Are agent tools exposed through standard interfaces (function schemas, MCP) with documented permissions?"
+      - "P Are multi-agent or computer-use agents evaluated for reliability and safety before deployment?"
+      - "P Is there a strategy for agents interacting with external agents, marketplaces or customers?"
+
+  - id: model_strategy
+    title: Model selection, customisation & sovereignty
+    low_action: "Define a model tiering rule (cheap / mid / flagship) by task and a shortlist of approved models."
+    mid_action: "Evaluate models on your own tasks; plan for fine-tuning or open-weight models where cost, latency or residency demand it."
+    questions:
+      - "B Is model choice made per task (cost, quality, latency) rather than defaulting to the most expensive model?"
+      - "S Are models benchmarked on the organisation's own tasks before selection?"
+      - "S Are open-weight / self-hosted models considered for sensitive or high-volume workloads?"
+      - "G* Is fine-tuning or domain adaptation assessed against prompt engineering and RAG on cost and benefit?"
+      - "G Are model updates (provider version changes) tested before adoption to prevent silent regressions?"
+      - "P Are small / on-device / edge models considered where latency, privacy or cost requires them?"
+
+  - id: content_genai
+    title: Generative content & multimodal
+    low_action: "Define allowed uses of generated text, image, audio and video with disclosure and review rules."
+    mid_action: "Embed GenAI into content workflows with brand voice controls, fact-checking, rights checks and provenance/watermarking."
+    questions:
+      - "B Are rules defined for using generated content (text, images, audio, video) externally?"
+      - "S Are AI-generated outputs reviewed for accuracy, bias and brand consistency before publication?"
+      - "S Are IP and licensing risks of generated content assessed?"
+      - "G* Is provenance / disclosure applied to AI-generated content (labels, watermarks, metadata)?"
+      - "G Are voice, vision and multimodal AI opportunities (call summarisation, document vision, video) assessed?"
+      - "P Are deepfake and synthetic-media risks (fraud, impersonation) addressed in security awareness?"
+
+# ═════════════════════════════════════════════════════════════════════════════
+- id: people
+  title: People, Skills & Culture
+  weight: 0.10
+  capabilities:
+
+  - id: literacy
+    title: AI literacy (all staff)
+    low_action: "Deliver 'AI for All' training to managers and front-line staff: what AI does, hallucination, safe use, prompting basics."
+    mid_action: "Make AI literacy part of onboarding with a refresher each year; measure completion and confidence."
+    questions:
+      - "F Do business teams have basic AI literacy — what it can and cannot do, and how it fails?"
+      - "B Has AI awareness training been delivered to the majority of staff?"
+      - "S Is AI literacy part of onboarding for new employees?"
+      - "S Are managers equipped to identify AI opportunities in their teams?"
+      - "G* Are literacy levels measured (assessment, confidence survey)?"
+      - "P Is AI literacy tailored by role (leaders, knowledge workers, front-line, technical)?"
+
+  - id: technical_skills
+    title: Technical & specialist skills
+    low_action: "Identify 3-5 internal builders; give them a structured build track (e.g. no-code RAG, GenAI engineer) with a capstone."
+    mid_action: "Define role-based learning paths (engineer, GenAI engineer, data, MLOps) with certification and time allocation."
+    questions:
+      - "F Are there people who can build or configure AI solutions (in-house or through a partner)?"
+      - "B Are data engineering and analytics skills available in-house?"
+      - "S Are GenAI engineering skills (RAG, prompt engineering, evaluation, agents) available?"
+      - "S Are MLOps / deployment skills available to run AI in production?"
+      - "G* Are learning paths defined per technical role with progression and certification?"
+      - "G Is time formally allocated for upskilling (e.g. 10% learning time)?"
+      - "P Are specialist skills (AI security, AI governance, model risk) available or contracted?"
+
+  - id: roles
+    title: AI roles & organisation
+    low_action: "Define the minimum roles: AI product owner, data steward, model/system owner, reviewer."
+    mid_action: "Create job families and career paths for AI roles; embed AI responsibilities in existing role descriptions."
+    questions:
+      - "B Are AI roles (product owner, data steward, model owner) defined and filled?"
+      - "S Are AI responsibilities embedded in existing job descriptions rather than only in a central team?"
+      - "S Is there a career path for AI and data professionals?"
+      - "G* Are hiring plans and retention strategies in place for AI talent?"
+      - "G Do business analysts / product managers have AI-specific skills (use-case framing, evaluation, risk)?"
+      - "P Are workforce planning models used to anticipate role changes from AI?"
+
+  - id: culture
+    title: Culture, experimentation & trust
+    low_action: "Launch a monthly AI show-and-tell; celebrate documented experiments — including failures."
+    mid_action: "Create a community of practice with shared assets; recognise AI adoption in performance and recognition schemes."
+    questions:
+      - "B Is experimentation with AI encouraged within clear boundaries?"
+      - "B Is there a community or forum where AI learnings are shared across teams?"
+      - "S Are failures treated as learning and documented?"
+      - "S Do employees trust that AI is being introduced responsibly?"
+      - "G* Are learnings and reusable assets from AI projects captured in a shared repository?"
+      - "P Is AI adoption recognised in performance and reward systems?"
+
+  - id: leadership_capability
+    title: Leadership AI capability
+    low_action: "Run an executive AI briefing covering capabilities, risks, cost and how to read an AI proposal."
+    mid_action: "Provide leadership with a regular AI radar (trends, competitors, regulation) and decision frameworks."
+    questions:
+      - "B Have executives received AI education specific to their decision-making needs?"
+      - "S Can leaders critically evaluate AI proposals (evaluation, data plan, cost model, risk)?"
+      - "G* Is leadership briefed regularly on AI trends, regulation and competitor moves?"
+      - "P Do board members have sufficient AI understanding to oversee AI risk and strategy?"
+
+# ═════════════════════════════════════════════════════════════════════════════
+- id: delivery
+  title: Delivery, MLOps & Lifecycle
+  weight: 0.10
+  capabilities:
+
+  - id: lifecycle
+    title: AI development lifecycle & gates
+    low_action: "Define a simple idea → pilot → production lifecycle with entry and exit criteria per gate."
+    mid_action: "Embed the lifecycle in delivery tooling; include evaluation, risk review, cost review and Definition of Done at each gate."
+    questions:
+      - "F Is there a repeatable path from idea → pilot → production for AI use cases?"
+      - "B Are entry and exit criteria defined for each stage?"
+      - "S Does the Definition of Done include documentation, evaluation, validation and handover — not only working code?"
+      - "S Are risk and governance reviews built into the lifecycle rather than added at the end?"
+      - "G* Is the lifecycle tracked in tooling with visibility of every initiative's stage?"
+      - "P Are lifecycle metrics (cycle time, conversion, rework) measured and improved?"
+
+  - id: engineering_practice
+    title: Engineering practices
+    low_action: "Put all AI code, prompts and configs in version control with basic tests and CI."
+    mid_action: "Adopt config-driven design, automated testing (including evaluation tests), code review and environment separation for AI systems."
+    questions:
+      - "B Is AI code (including prompts and configs) version-controlled?"
+      - "B Is there automated testing and CI for AI applications?"
+      - "S Are parameters (models, thresholds, chunk sizes) configurable without redeploying?"
+      - "S Are components (model, retriever, store) behind interfaces so they can be swapped?"
+      - "G* Are development, staging and production environments separated for AI systems?"
+      - "G Are secrets and API keys managed securely (vault, rotation)?"
+      - "P Are infrastructure and AI pipelines deployed through automated, auditable releases?"
+
+  - id: mlops
+    title: MLOps & model management
+    low_action: "Register every model / prompt version in production with owner, date and rollback path."
+    mid_action: "Implement model registry, deployment automation, blue/green releases, drift monitoring and retraining triggers."
+    questions:
+      - "F Are AI models / prompts in production versioned with the ability to roll back?"
+      - "B Is there an inventory of models in production with owners?"
+      - "S Is model or prompt deployment automated and repeatable?"
+      - "S Is model performance monitored in production (accuracy, drift, refusal rate)?"
+      - "G* Are retraining or re-evaluation triggers defined (data drift, performance drop, provider updates)?"
+      - "G Are embedding model versions pinned and index changes versioned (blue/green)?"
+      - "P Is there a model lifecycle policy covering retirement and decommissioning?"
+
+  - id: evaluation
+    title: Evaluation & quality assurance
+    low_action: "Create a 30-question test sheet per AI system with expected answers, including out-of-scope questions."
+    mid_action: "Maintain golden sets (50-100 real queries) per system, run in CI, with retrieval and generation metrics and human calibration."
+    questions:
+      - "F Is AI output quality measured with a test set rather than judged by feel?"
+      - "B Do test sets include out-of-scope questions where the right answer is 'I don't know'?"
+      - "S Are retrieval quality (recall) and answer quality (faithfulness, correctness) measured separately?"
+      - "S Are production failures added to the test set as permanent regression cases?"
+      - "G* Are evaluations run automatically before every change (model, prompt, retrieval, data)?"
+      - "G Are bias, robustness and adversarial tests included for higher-risk systems?"
+      - "P Is evaluation quality itself audited (judge calibration, inter-rater agreement)?"
+
+  - id: observability
+    title: Observability & incident management
+    low_action: "Log every AI request: model, tokens, latency, retrieved sources, refusal flag, cost; define who responds to incidents."
+    mid_action: "Deploy tracing and dashboards per AI service; define SLOs, alerts and an AI incident-response runbook."
+    questions:
+      - "B Are AI system requests logged with enough detail to debug a wrong answer?"
+      - "S Are latency, error rate and refusal rate monitored with alerts?"
+      - "S Is there a defined incident process for AI failures (wrong outputs, outages, harmful content)?"
+      - "G* Are end-to-end traces (query, retrieved chunks, prompt, tokens, cost) available per request?"
+      - "G Are user feedback signals (thumbs, corrections, escalations) captured with reason codes?"
+      - "P Are SLOs for AI services defined and reported (availability, quality, cost per request)?"
+
+# ═════════════════════════════════════════════════════════════════════════════
+- id: governance
+  title: Governance, Ethics & Regulatory Compliance
+  weight: 0.10
+  capabilities:
+
+  - id: policy
+    title: Responsible-AI policy & principles
+    low_action: "Publish a one-page responsible-AI policy: approved tools, prohibited data, review requirement, disclosure, human oversight."
+    mid_action: "Expand into a policy framework (principles, standards, procedures) approved by leadership and refreshed annually."
+    questions:
+      - "F! Is there an approved responsible-AI policy covering privacy, fairness, transparency, safety and accountability?"
+      - "B Is the policy communicated and acknowledged by staff?"
+      - "S Are policy requirements translated into practical checklists for teams?"
+      - "S Is the policy reviewed at least annually against new regulation and technology?"
+      - "G* Are policy exceptions documented, approved and time-limited?"
+      - "P Is adherence to the policy audited and reported?"
+
+  - id: inventory_risk
+    title: AI inventory & risk classification
+    low_action: "Create an inventory of all AI systems and third-party AI tools: purpose, owner, data used, users affected."
+    mid_action: "Risk-classify every system (prohibited / high / limited / minimal) with controls per class; keep the inventory current through the lifecycle."
+    questions:
+      - "F! Is there an inventory of all AI systems and third-party AI tools in use?"
+      - "B Are AI use cases classified by risk level?"
+      - "S Are controls defined per risk class (documentation, human oversight, testing, monitoring)?"
+      - "S Is the inventory updated as systems are added, changed or retired?"
+      - "G* Does the inventory capture data sources, models, vendors, users affected and decision impact?"
+      - "P Is the inventory used for regulatory reporting (e.g. EU AI Act obligations) and audit?"
+
+  - id: review
+    title: Review, approval & human oversight
+    low_action: "Add a pre-production review checkpoint (privacy, security, bias, explainability) with a named approver."
+    mid_action: "Establish an AI review board with defined thresholds, SLAs and documented decisions; require human-in-the-loop design for consequential decisions."
+    questions:
+      - "F Is there a review checkpoint before an AI system reaches production or affects customers or staff?"
+      - "B Are humans able to override or escalate AI outputs in workflows?"
+      - "S Are review criteria defined (privacy, bias, security, explainability, accuracy)?"
+      - "S Is there a body (committee, board) with authority to approve or stop AI systems?"
+      - "G* Are review decisions and rationale documented and retained?"
+      - "G Is human oversight designed proportionately to risk (approval, sampling, monitoring)?"
+      - "P Are reviews independent from the teams building the systems for high-risk cases?"
+
+  - id: fairness
+    title: Fairness, transparency & explainability
+    low_action: "Identify AI uses affecting people (hiring, credit, service access); require bias checks and disclosure for them."
+    mid_action: "Adopt bias testing standards, explainability requirements by use case, and transparency notices for users."
+    questions:
+      - "B Are AI uses that affect individuals (employment, access to services, pricing) identified?"
+      - "S Are bias and fairness tested for those systems before and after deployment?"
+      - "S Are users told when they are interacting with AI or receiving AI-generated content?"
+      - "G* Can AI-driven decisions be explained to affected individuals in understandable terms?"
+      - "G Are there channels for individuals to contest AI-driven outcomes?"
+      - "P Are fairness metrics monitored continuously with thresholds and escalation?"
+
+  - id: regulatory
+    title: Regulatory compliance & standards
+    low_action: "Map which AI regulations and sector rules apply (EU AI Act, GDPR/DPDP, sector regulators); assign an owner."
+    mid_action: "Align to a framework (NIST AI RMF, ISO/IEC 42001) with gap assessment and remediation plan; prepare documentation packs."
+    questions:
+      - "B Are applicable AI regulations and sector rules identified with an owner?"
+      - "S Is compliance with data protection law (GDPR, DPDP, CCPA etc.) assured for AI data flows?"
+      - "S Are EU AI Act (or equivalent) obligations assessed for each AI system in scope?"
+      - "G* Is the organisation aligning to a recognised framework (NIST AI RMF, ISO/IEC 42001)?"
+      - "G Is technical documentation maintained to the standard regulators or clients require?"
+      - "P Is AI compliance included in internal audit scope with findings tracked?"
+
+  - id: third_party
+    title: Third-party & supply-chain AI risk
+    low_action: "Add AI-specific questions to vendor due diligence: data use, training on your data, model provenance, incident notification."
+    mid_action: "Maintain a register of AI vendors with risk ratings, contractual controls and periodic reassessment."
+    questions:
+      - "B Are AI vendors assessed for how they use and retain your data?"
+      - "S Are contracts with AI vendors reviewed for data use, IP, liability and audit rights?"
+      - "S Is the provenance of models and datasets used by vendors understood?"
+      - "G* Are third-party AI components (models, MCP servers, plugins) vetted before use?"
+      - "P Is concentration risk across AI providers assessed and mitigated?"
+
+# ═════════════════════════════════════════════════════════════════════════════
+- id: security
+  title: Security, Privacy & Resilience
+  weight: 0.08
+  capabilities:
+
+  - id: ai_security
+    title: AI-specific security
+    low_action: "Adopt an AI security checklist: prompt injection, data leakage, tool permissions, output handling; train builders on it."
+    mid_action: "Implement guardrails (input/output classifiers, delimiters, least-privilege tools), red-team AI systems, monitor for exfiltration patterns."
+    questions:
+      - "B Are prompt injection and data leakage risks understood by teams building AI?"
+      - "S Are AI systems tested against prompt injection and jailbreak attempts before release?"
+      - "S Are model outputs treated as untrusted input to downstream systems (no direct execution)?"
+      - "G* Are guardrail controls (input/output filtering, content policy classifiers) deployed for exposed systems?"
+      - "G Is hidden text in ingested documents stripped to prevent indirect prompt injection?"
+      - "P Are AI systems included in penetration testing and red-team exercises?"
+
+  - id: access
+    title: Identity, access & permissions
+    low_action: "Ensure AI tools use SSO; enforce document permissions inside retrieval; restrict API keys."
+    mid_action: "Implement chunk-level ACLs, per-tool permission scoping for agents, key rotation and privileged-access review."
+    questions:
+      - "F! Are access controls applied so AI systems only surface data a user is entitled to see?"
+      - "B Do AI tools use corporate identity (SSO, MFA)?"
+      - "S Are API keys and service accounts for AI managed, rotated and least-privilege?"
+      - "G* Are permissions re-checked at retrieval and at answer assembly (defence in depth)?"
+      - "P Are agent tool permissions scoped per task with audit of every action?"
+
+  - id: privacy
+    title: Privacy & data protection in AI
+    low_action: "Define which personal data may enter AI systems; redact PII before ingestion; document lawful basis."
+    mid_action: "Run DPIAs for AI use cases with personal data; implement PII detection on inputs and outputs; propagate deletion to indexes and caches."
+    questions:
+      - "F Is personal data protected when used in AI systems (minimisation, redaction, lawful basis)?"
+      - "B Are privacy impact assessments performed for AI use cases involving personal data?"
+      - "S Is PII detected and redacted in AI pipelines and outputs?"
+      - "S Are retention and deletion requirements applied to AI data stores (indexes, caches, logs)?"
+      - "G* Are cross-border data transfer and residency requirements met for AI processing?"
+      - "P Are privacy-enhancing technologies (anonymisation, synthetic data, federated approaches) used where appropriate?"
+
+  - id: resilience
+    title: Resilience & business continuity
+    low_action: "Identify AI dependencies in critical processes; define manual fallbacks."
+    mid_action: "Design fallbacks (alternative model, cached answers, human routing), test failover, include AI in BCP."
+    questions:
+      - "B Are business processes that depend on AI identified with manual fallbacks?"
+      - "S Are alternative models or providers available if a primary provider fails?"
+      - "G* Is AI included in business continuity and disaster recovery plans?"
+      - "P Are provider outages and degradation simulated in resilience testing?"
+
+  - id: security_governance
+    title: Security governance for AI
+    low_action: "Include AI systems in existing security policies and risk registers."
+    mid_action: "Adopt AI security standards (OWASP LLM Top 10, ISO 27001 controls for AI) with ownership and regular review."
+    questions:
+      - "B Are AI systems included in the organisation's security policy and risk register?"
+      - "S Is there a named security owner for AI systems?"
+      - "G* Are AI security standards (e.g. OWASP LLM Top 10) adopted and checked?"
+      - "P Are AI security metrics reported to leadership?"
+
+# ═════════════════════════════════════════════════════════════════════════════
+- id: finance
+  title: Investment, Cost & Value Realisation
+  weight: 0.08
+  capabilities:
+
+  - id: investment
+    title: Funding & investment planning
+    low_action: "Ring-fence an AI budget for the next 12 months covering pilots, platform, training and governance."
+    mid_action: "Adopt multi-year investment planning with portfolio-level funding, stage-gated release of funds and value tracking."
+    questions:
+      - "F Is AI investment planned beyond one-off pilots?"
+      - "B Is there a dedicated AI budget with a named owner?"
+      - "S Does the budget cover platform, data, training and governance — not only projects?"
+      - "G* Is funding released in stages tied to evidence of value?"
+      - "P Is AI investment benchmarked against peers and industry?"
+
+  - id: cost_management
+    title: AI cost management (FinOps)
+    low_action: "Estimate cost per request and monthly run cost for each AI system; set a budget alert."
+    mid_action: "Implement AI FinOps: cost per request by type, prompt caching, model routing, batch processing, output limits, dashboards and alerts."
+    questions:
+      - "F Is the running cost of AI systems (tokens, inference, hosting) known and tracked?"
+      - "B Is cost estimated before building an AI feature (per request × volume)?"
+      - "S Are cost controls in place (model tiering, caching, history trimming, output limits)?"
+      - "S Are costs attributed to teams or use cases?"
+      - "G* Are unit costs (cost per request / per task) monitored with alerts on drift?"
+      - "G Are long-conversation and agentic cost explosions guarded with caps?"
+      - "P Is AI spend optimised continuously (routing, batch, quantisation, provider negotiation)?"
+
+  - id: value_tracking
+    title: Value realisation & ROI
+    low_action: "Define an ROI template (baseline, target, actual, owner) and apply it to running initiatives."
+    mid_action: "Report realised value quarterly per initiative and at portfolio level; feed results into prioritisation."
+    questions:
+      - "F Is there a defined way to measure AI ROI and report it to leadership?"
+      - "B Are baselines captured before AI is deployed?"
+      - "S Are realised benefits measured after deployment and compared to the business case?"
+      - "G* Is AI value reported at portfolio level to leadership on a regular cadence?"
+      - "P Are value metrics used to reallocate investment across the AI portfolio?"
+
+  - id: procurement
+    title: Procurement & licensing
+    low_action: "Consolidate AI tool subscriptions; review licences for data-use terms."
+    mid_action: "Establish AI procurement standards (security, data use, pricing models, exit) and negotiate enterprise agreements."
+    questions:
+      - "B Are AI tool subscriptions and licences consolidated and reviewed?"
+      - "S Are pricing models (per seat, per token, per outcome) evaluated for total cost?"
+      - "G* Are enterprise agreements negotiated with data-use, security and exit provisions?"
+      - "P Is procurement equipped to evaluate AI offerings (standards, checklist, expert support)?"
+
+# ═════════════════════════════════════════════════════════════════════════════
+# INDUSTRY MODULES — optional add-ons (Gold+ recommended; selectable at any tier)
+# ═════════════════════════════════════════════════════════════════════════════
+industry_modules:
+
+- id: financial_services
+  title: Financial Services
+  questions:
+    - "S Are model risk management requirements (e.g. SR 11-7 style validation) applied to AI models?"
+    - "S Are AI uses in credit, fraud, AML and pricing risk-classified as high-risk with corresponding controls?"
+    - "G* Are explainability requirements for customer-affecting decisions met and documented?"
+    - "G Is AI-driven customer communication compliant with conduct and fair-treatment rules?"
+    - "P Are regulators' expectations on AI (local supervisory guidance) tracked and evidenced?"
+    - "P Is AI used in trading, advice or underwriting subject to independent validation?"
+
+- id: healthcare
+  title: Healthcare & Life Sciences
+  questions:
+    - "S Are clinical and non-clinical AI uses clearly separated with different control levels?"
+    - "S Is patient data handled under health-privacy rules (HIPAA, GDPR special category, local equivalents) in AI pipelines?"
+    - "G* Are clinical AI tools assessed for medical-device regulation applicability?"
+    - "G Is clinician oversight designed into every AI-supported clinical workflow?"
+    - "P Are AI outputs validated against clinical outcomes with post-market surveillance?"
+    - "P Is bias across patient populations tested and monitored?"
+
+- id: manufacturing
+  title: Manufacturing & Industrial
+  questions:
+    - "S Is operational technology (OT) data (sensors, PLCs, MES) accessible for AI use cases?"
+    - "S Are predictive maintenance and quality inspection use cases assessed with data availability?"
+    - "G* Are AI systems interacting with physical equipment subject to safety assessment?"
+    - "G Is edge / on-premise inference available where connectivity or latency demands it?"
+    - "P Are digital twins or simulation environments used to test AI before physical deployment?"
+
+- id: retail_ecommerce
+  title: Retail & E-commerce
+  questions:
+    - "S Is customer, product and transaction data unified enough for personalisation and forecasting?"
+    - "S Are AI-driven pricing and recommendations reviewed for fairness and consumer-protection compliance?"
+    - "G* Are demand forecasting and inventory optimisation models monitored for drift (seasonality, promotions)?"
+    - "G Is conversational commerce (chat, voice assistants) integrated with order and inventory systems?"
+    - "P Are AI-generated product content and marketing subject to accuracy and disclosure controls?"
+
+- id: public_sector
+  title: Public Sector & Government
+  questions:
+    - "S Are transparency and public-accountability obligations for algorithmic decisions identified?"
+    - "S Are procurement rules for AI (fairness, open standards, sovereignty) applied?"
+    - "G* Is an algorithmic impact assessment performed for citizen-affecting systems?"
+    - "G Are accessibility and multilingual needs addressed in AI-powered citizen services?"
+    - "P Is a public register of AI systems maintained where required?"
+
+- id: professional_services
+  title: Professional Services (legal, consulting, accounting)
+  questions:
+    - "S Is client confidentiality preserved in AI tools (no training on client data, matter-level isolation)?"
+    - "S Are AI-assisted deliverables reviewed by qualified professionals before release?"
+    - "G* Are engagement letters and client consents updated for AI use?"
+    - "G Is professional liability for AI-assisted advice assessed with insurers and regulators?"
+    - "P Are AI-enabled service lines (productised offerings) governed with quality standards?"

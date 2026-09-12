@@ -1,0 +1,659 @@
+# uniAIverse Academy — Curriculum Framework v2.0
+# ─────────────────────────────────────────────────────────────────────────────
+# Governance: every course has an owner, version, status, last_reviewed and review cadence.
+# Amend by editing this file; the API, website, proposals and tests read it. Record changes in CHANGELOG.md.
+# Status: active | draft | retired.   Level: 1 foundation · 2 practitioner · 3 advanced · 4 expert
+# Tier availability: which service tiers include this course (see pricing/tiers.yaml → training).
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "2.0"
+last_reviewed: "2026-09-12"
+review_cadence: quarterly
+governance:
+  curriculum_owner: Sarfi
+  change_process: "Propose in CHANGELOG.md → review by curriculum owner → bump course version → update last_reviewed"
+  retirement_rule: "Any course not reviewed in 2 quarters is flagged 'stale' by the API"
+  quality_bar:
+    - Every module has learning objectives, a lab or exercise, and an assessment
+    - Every technical course has a capstone with a Definition of Done
+    - Tool names are verified before each delivery (AI tooling changes monthly)
+    - Materials are versioned; slides, labs and handouts live in the course folder
+
+delivery_formats:
+  workshop: "Half-day or full-day, live, up to 20 people"
+  cohort: "Multi-week, live sessions + labs + mentorship office hours"
+  self_paced: "Recorded modules + labs + async Q&A"
+  executive_briefing: "90-120 minutes for leadership / board"
+  train_the_trainer: "Enable client staff to deliver internally"
+
+certification_levels:
+  - {id: aware,        title: "AI Aware",        requires: "Attendance + quiz ≥ 70%"}
+  - {id: practitioner, title: "AI Practitioner", requires: "Labs completed + capstone reviewed"}
+  - {id: professional, title: "AI Professional", requires: "Capstone meets Definition of Done + peer review"}
+  - {id: expert,       title: "AI Expert",       requires: "Professional + delivered one client-grade project"}
+
+# ═════════════════════════════════════════════════════════════════════════════
+tracks:
+  - id: everyone
+    title: AI for All
+    audience: Every employee
+    courses: [ai-for-all, ai-safe-use, ai-productivity]
+  - id: business
+    title: AI for Business
+    audience: Managers, analysts, function heads
+    courses: [ai-for-all, ai-for-business, llm-cost, ai-use-case-design, rag-nontechnical]
+  - id: leadership
+    title: AI Leadership & Board
+    audience: CXOs, board members, founders
+    courses: [ai-executive-briefing, ai-for-business, ai-governance-leaders, llm-cost]
+  - id: sales
+    title: AI for Sales
+    audience: Sales reps, SDRs, sales leaders
+    courses: [ai-for-all, ai-for-sales, ai-sales-agents]
+  - id: marketing
+    title: AI for Marketing
+    audience: Marketing and content teams
+    courses: [ai-for-all, ai-for-marketing, ai-content-governance]
+  - id: engineer
+    title: AI Engineer
+    audience: Software and data engineers
+    courses: [ai-engineer, ai-lifecycle, llm-cost, ai-security-builders]
+  - id: genai_engineer
+    title: GenAI Engineer
+    audience: Developers building LLM applications
+    courses: [genai-engineer, rag-advanced, agentic-engineer, ai-evals, llm-cost, ai-security-builders]
+  - id: data_mlops
+    title: Data & MLOps
+    audience: Data engineers, ML engineers, platform teams
+    courses: [data-foundations-ai, mlops, ai-lifecycle, ai-finops]
+  - id: governance
+    title: AI Governance, Risk & Compliance
+    audience: Risk, compliance, legal, audit, security
+    courses: [ai-governance-leaders, ai-governance-practitioner, ai-security-builders]
+  - id: professional
+    title: Individual Professionals (career track)
+    audience: Individuals upskilling for AI roles
+    courses: [ai-for-all, ai-use-case-design, rag-nontechnical, genai-engineer, ai-evals, ai-lifecycle]
+
+# ═════════════════════════════════════════════════════════════════════════════
+courses:
+
+# ── Foundation ────────────────────────────────────────────────────────────────
+- id: ai-for-all
+  title: AI for All
+  version: "2.0"
+  status: active
+  level: 1
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Everyone — no technical background
+  hours: 4
+  formats: [workshop, self_paced]
+  tiers: [bronze, silver, gold, platinum]
+  prerequisites: []
+  certification: aware
+  outcomes:
+    - Explain in plain words how an LLM works and why it makes things up
+    - Use AI tools safely — know what data may and may not be shared
+    - Write prompts that get reliable results for everyday tasks
+    - Verify AI output before relying on it
+  modules:
+    - {title: "The 10-minute win", hours: 0.5, topics: [real task with an AI tool, what worked and what didn't], lab: "Rewrite, summarise, translate a real document"}
+    - {title: "How it actually works", hours: 0.75, topics: [autocomplete on steroids, no database inside, hallucination, tokens, context window], lab: "Confident wrong answer demo"}
+    - {title: "What AI is good and bad at", hours: 0.5, topics: [drafting, summarising, translating, brainstorming vs counting, facts, recent events, reasoning limits], lab: "Sort 20 tasks into AI-suitable / not"}
+    - {title: "Prompting that works", hours: 0.75, topics: [context, format, examples, iteration, what doesn't work], lab: "Before/after on the same task"}
+    - {title: "Safety and data", hours: 0.5, topics: [data classification, disclosure, IP, deepfakes and scams], lab: "The salary-leak case"}
+    - {title: "Automate one weekly task", hours: 0.75, topics: [personal workflow, saved prompts, checking outputs], lab: "Build and show one automation"}
+    - {title: "Close: the 5 rules", hours: 0.25, topics: [verify, protect data, be specific, give context, own the output], lab: null}
+  assessment: "Quiz (15 questions) + one submitted prompt/output with verification notes"
+  folder: ai-for-all
+
+- id: ai-safe-use
+  title: Safe & Responsible AI Use at Work
+  version: "1.0"
+  status: active
+  level: 1
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Everyone (compliance-style short course)
+  hours: 1.5
+  formats: [self_paced, workshop]
+  tiers: [silver, gold, platinum]
+  prerequisites: []
+  certification: aware
+  outcomes: [Apply the company AI policy, Recognise prompt-injection and deepfake risks, Know when disclosure is required, Know how to report an AI incident]
+  modules:
+    - {title: "Your AI policy in practice", hours: 0.5, topics: [approved tools, prohibited data, disclosure], lab: "10 scenarios: allowed or not?"}
+    - {title: "Threats", hours: 0.5, topics: [prompt injection, data leakage, deepfake fraud, shadow AI], lab: "Spot the attack"}
+    - {title: "Incidents and escalation", hours: 0.5, topics: [what counts as an incident, reporting path, human oversight], lab: "Report a mock incident"}
+  assessment: "Quiz ≥ 80%"
+  folder: ai-safe-use
+
+- id: ai-productivity
+  title: AI Productivity Workflows
+  version: "1.0"
+  status: active
+  level: 1
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Knowledge workers
+  hours: 4
+  formats: [workshop]
+  tiers: [silver, gold, platinum]
+  prerequisites: [ai-for-all]
+  certification: aware
+  outcomes: [Build personal AI workflows for email, documents, meetings and research, Use enterprise assistants (Copilot / Claude / Gemini) inside daily tools]
+  modules:
+    - {title: "Meetings and email", hours: 1, topics: [transcription, summaries, action extraction, replies in your voice], lab: "Meeting → actions → follow-ups"}
+    - {title: "Documents and spreadsheets", hours: 1.5, topics: [drafting, structured extraction, formula help, analysis with verification], lab: "Report from raw notes"}
+    - {title: "Research and decisions", hours: 1, topics: [research briefs with sources, comparison tables, decision memos], lab: "Vendor comparison brief"}
+    - {title: "Your personal system", hours: 0.5, topics: [prompt library, templates, review habits], lab: "Save 5 workflows"}
+  assessment: "Submitted workflow library"
+  folder: ai-productivity
+
+# ── Business ──────────────────────────────────────────────────────────────────
+- id: ai-for-business
+  title: AI for Business Leaders
+  version: "2.0"
+  status: active
+  level: 2
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Founders, CXOs, function heads, managers
+  hours: 8
+  formats: [workshop, cohort]
+  tiers: [bronze, silver, gold, platinum]
+  prerequisites: []
+  certification: practitioner
+  outcomes:
+    - Prioritise AI use cases on value, feasibility and risk
+    - Read an AI proposal critically and spot red flags
+    - Own an AI initiative from idea to production with the right gates
+    - Estimate and control cost; define ROI
+  modules:
+    - {title: "Cut through the noise", hours: 0.75, topics: [what LLMs are and aren't, agents in plain words, three questions for any vendor], lab: null}
+    - {title: "Where value comes from", hours: 1, topics: [assist / automate / augment / new products / risk reduction, function case studies], lab: "Map your function to the five patterns"}
+    - {title: "Prioritisation lab", hours: 1, topics: [value × feasibility × risk × effort, quick wins vs strategic bets], lab: "Score your backlog with the uniAIverse strategy tool"}
+    - {title: "Readiness", hours: 1, topics: [the 10-domain framework, reading your score], lab: "Complete the Free readiness snapshot live"}
+    - {title: "Build, buy or partner", hours: 0.75, topics: [decision tree, TCO, lock-in, exit], lab: null}
+    - {title: "Idea → pilot → production", hours: 1, topics: [gates, exit criteria, Definition of Done], lab: "Design a pilot with success criteria"}
+    - {title: "Reading a proposal", hours: 0.75, topics: [no eval set, no cost model, no data plan, agentic as a selling word], lab: "Red-flag a real proposal"}
+    - {title: "Cost and ROI", hours: 0.75, topics: [token economics in 15 minutes, the $42 bot, ROI template], lab: "Cost one feature"}
+    - {title: "Risk and governance", hours: 0.5, topics: [risk tiers, one-page policy, what regulators ask first], lab: null}
+    - {title: "Your 90-day plan", hours: 0.5, topics: [outcome, use case, owner, budget, gates], lab: "One-page plan"}
+  assessment: "90-day plan reviewed by facilitator"
+  folder: ai-for-business
+
+- id: ai-use-case-design
+  title: AI Use-Case Design & Product Ownership
+  version: "1.0"
+  status: active
+  level: 2
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Product managers, business analysts, AI product owners
+  hours: 8
+  formats: [workshop, cohort]
+  tiers: [silver, gold, platinum]
+  prerequisites: [ai-for-all]
+  certification: practitioner
+  outcomes: [Frame a business problem as an AI task with a measurable metric, Write requirements including evaluation criteria and guardrails, Run discovery with users and data owners, Own the backlog through delivery]
+  modules:
+    - {title: "From pain point to AI task", hours: 1.5, topics: [problem statements, task types, non-AI alternatives], lab: "Frame three real problems"}
+    - {title: "Data and feasibility", hours: 1.5, topics: [data availability, quality, permissions, feasibility scoring], lab: "Data checklist per use case"}
+    - {title: "Requirements for AI", hours: 2, topics: [success metrics, evaluation set, human-in-the-loop, failure modes, cost limits], lab: "Write an AI PRD"}
+    - {title: "Prototyping without code", hours: 2, topics: [no-code tools, quick RAG, evaluation by test sheet], lab: "Prototype and test"}
+    - {title: "Running the initiative", hours: 1, topics: [gates, stakeholders, adoption tracking], lab: "Delivery plan"}
+  assessment: "AI PRD + prototype demo"
+  folder: ai-use-case-design
+
+- id: rag-nontechnical
+  title: Build Your Own AI Bot (RAG for non-technical people)
+  version: "2.0"
+  status: active
+  level: 2
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Business users, analysts, project owners
+  hours: 22
+  formats: [cohort, workshop]
+  tiers: [silver, gold, platinum]
+  prerequisites: [ai-for-all]
+  certification: practitioner
+  outcomes: [Build a working bot from your own documents without code, Diagnose why a bot is wrong and fix it, Know which settings to change and what they do, Estimate running cost, Know what to ask an engineer for]
+  modules:
+    - {title: "Day 1 — Understanding", hours: 4, topics: [hour-one win, how AI works, what RAG is and isn't, choosing documents], lab: "Bot answering from 1 document; curated folder"}
+    - {title: "Day 2 — Building the library", hours: 4, topics: [parsing, cleaning, chunking, contextual prefix, metadata, permissions, embeddings, vector DB], lab: "Bot on your own 20 documents"}
+    - {title: "Day 3 — Finding the right page", hours: 4, topics: [query rewriting, hybrid search, RRF, reranking, top-k], lab: "One-change-at-a-time tuning with before/after score"}
+    - {title: "Day 4 — Answering well and going live", hours: 4, topics: [grounding instruction, output spec, test sheet, cost, launch], lab: "Finished bot + test sheet + cost estimate"}
+    - {title: "Homework", hours: 6, topics: [document folder, 10 real questions, scoring, out-of-scope tests], lab: null}
+  assessment: "Working bot + 20-question test sheet + cost estimate"
+  folder: rag
+  files: [rag_course_nontechnical.pdf, rag_cheatsheet.pdf]
+
+# ── Leadership ────────────────────────────────────────────────────────────────
+- id: ai-executive-briefing
+  title: AI Executive & Board Briefing
+  version: "1.0"
+  status: active
+  level: 2
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Board members and C-suite
+  hours: 2
+  formats: [executive_briefing]
+  tiers: [gold, platinum]
+  prerequisites: []
+  certification: aware
+  outcomes: [Understand the AI landscape and what it means for the business model, Ask the right oversight questions on AI strategy and risk, Understand regulatory exposure and investment logic]
+  modules:
+    - {title: "State of AI — what changed this quarter", hours: 0.5, topics: [model capabilities, agents, cost curves, competitor moves], lab: null}
+    - {title: "Strategy and disruption", hours: 0.5, topics: [value pools, disruption scenarios, build vs partner], lab: null}
+    - {title: "Risk, regulation and oversight", hours: 0.5, topics: [EU AI Act, ISO 42001, liability, board questions], lab: null}
+    - {title: "Investment and the 12-month view", hours: 0.5, topics: [portfolio logic, readiness score, what to fund first], lab: null}
+  assessment: none
+  folder: ai-executive-briefing
+
+- id: ai-governance-leaders
+  title: AI Governance for Leaders
+  version: "1.0"
+  status: active
+  level: 2
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Executives, risk and compliance leaders
+  hours: 4
+  formats: [workshop, executive_briefing]
+  tiers: [silver, gold, platinum]
+  prerequisites: []
+  certification: aware
+  outcomes: [Set up an AI governance structure proportionate to risk, Understand EU AI Act / NIST AI RMF / ISO 42001 at decision level, Approve or stop AI systems with a defensible process]
+  modules:
+    - {title: "Why governance is a growth enabler", hours: 0.75, topics: [trust, procurement demands, incidents], lab: null}
+    - {title: "The frameworks, decoded", hours: 1, topics: [EU AI Act tiers, NIST AI RMF functions, ISO 42001 management system, sector rules], lab: "Map your systems to risk tiers"}
+    - {title: "Structure and roles", hours: 1, topics: [policy, inventory, review board, human oversight, third-party risk], lab: "Design your review process"}
+    - {title: "Metrics and reporting", hours: 0.75, topics: [what the board should see, incident reporting], lab: null}
+    - {title: "Action plan", hours: 0.5, topics: [30-day governance quick start], lab: "One-page plan"}
+  assessment: "Governance quick-start plan"
+  folder: ai-governance-leaders
+
+# ── Sales & Marketing ─────────────────────────────────────────────────────────
+- id: ai-for-sales
+  title: AI for Sales
+  version: "2.0"
+  status: active
+  level: 1
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Sales reps, SDRs, account managers
+  hours: 4
+  formats: [workshop]
+  tiers: [bronze, silver, gold, platinum]
+  prerequisites: []
+  certification: aware
+  outcomes: [Research accounts in minutes with sourced briefs, Write outreach in your own voice, Turn calls into CRM updates and follow-ups, Draft proposals and handle objections faster]
+  modules:
+    - {title: "Where the hours go", hours: 0.25, topics: [week mapping, the 30-40% that is research and typing], lab: "Map your week"}
+    - {title: "Account research", hours: 0.75, topics: [briefs with sources, triggers, stakeholders], lab: "Brief on a live prospect"}
+    - {title: "Outreach in your voice", hours: 0.75, topics: [voice sample + trigger + one ask, variants], lab: "Three variants, pick and edit"}
+    - {title: "Calls to CRM", hours: 0.75, topics: [transcripts, summaries, CRM fields, next steps], lab: "Call → CRM → follow-up"}
+    - {title: "Proposals and objections", hours: 0.75, topics: [skeleton from past wins, objection bank], lab: "Proposal draft"}
+    - {title: "Guardrails and playbook", hours: 0.75, topics: [no customer PII in public tools, disclosure, pricing stays human, saved prompts], lab: "5 prompts per pipeline stage"}
+  assessment: "Personal prompt playbook"
+  folder: ai-for-sales
+
+- id: ai-sales-agents
+  title: AI Agents for Sales Operations
+  version: "1.0"
+  status: active
+  level: 2
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Sales ops, RevOps, sales leaders
+  hours: 4
+  formats: [workshop]
+  tiers: [gold, platinum]
+  prerequisites: [ai-for-sales]
+  certification: practitioner
+  outcomes: [Design lead-qualification and enrichment agents, Integrate AI with CRM safely, Measure pipeline impact]
+  modules:
+    - {title: "Agent-suitable sales workflows", hours: 1, topics: [lead enrichment, qualification, routing, renewal alerts], lab: "Rank your workflows"}
+    - {title: "Building with no-code / CRM AI", hours: 2, topics: [CRM-native AI, automation platforms, tool permissions, human approval], lab: "Lead-qualification agent prototype"}
+    - {title: "Measuring and governing", hours: 1, topics: [conversion metrics, cost per lead, data rules], lab: "Metrics sheet"}
+  assessment: "Agent prototype + metrics sheet"
+  folder: ai-sales-agents
+
+- id: ai-for-marketing
+  title: AI for Marketing
+  version: "2.0"
+  status: active
+  level: 1
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Marketing and content teams
+  hours: 4
+  formats: [workshop]
+  tiers: [bronze, silver, gold, platinum]
+  prerequisites: []
+  certification: aware
+  outcomes: [Run an AI-assisted content pipeline that keeps brand voice, Repurpose content across channels, Use AI for research and analytics with verification, Apply rights, disclosure and fact-check guardrails]
+  modules:
+    - {title: "Content pipeline audit", hours: 0.5, topics: [brief → draft → review → publish → measure], lab: "Map your pipeline"}
+    - {title: "Brand voice kit", hours: 0.75, topics: [voice guide, exemplars, testing drafts], lab: "Build the kit"}
+    - {title: "Repurposing engine", hours: 0.75, topics: [long → short formats, consistency], lab: "One piece → six assets"}
+    - {title: "Ideation and audience research", hours: 0.75, topics: [personas from real data, message testing], lab: "Message matrix"}
+    - {title: "SEO and analytics", hours: 0.5, topics: [keyword clustering, briefs, AI as analyst with verification], lab: "Report read-out"}
+    - {title: "Guardrails and SOP", hours: 0.75, topics: [fact-checking, image rights, disclosure, regulated claims], lab: "Team SOP + pre-publish checklist"}
+  assessment: "Team AI content SOP"
+  folder: ai-for-marketing
+
+- id: ai-content-governance
+  title: AI Content Governance & Brand Safety
+  version: "1.0"
+  status: active
+  level: 2
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Marketing leads, brand, legal
+  hours: 2
+  formats: [workshop]
+  tiers: [gold, platinum]
+  prerequisites: [ai-for-marketing]
+  certification: aware
+  outcomes: [Define disclosure, provenance and rights rules for generated content, Set review workflows for AI-generated campaigns, Manage deepfake and impersonation risk to the brand]
+  modules:
+    - {title: "Rules for generated content", hours: 1, topics: [disclosure, watermarking / provenance, IP and licensing, regulated claims], lab: "Policy draft"}
+    - {title: "Brand risk", hours: 1, topics: [deepfakes, impersonation, monitoring, response plan], lab: "Response playbook"}
+  assessment: "Content governance policy"
+  folder: ai-content-governance
+
+# ── Engineering ───────────────────────────────────────────────────────────────
+- id: ai-engineer
+  title: AI Engineer
+  version: "2.0"
+  status: active
+  level: 2
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Software / data engineers with Python
+  hours: 32
+  formats: [cohort]
+  tiers: [silver, gold, platinum]
+  prerequisites: [ai-for-all]
+  certification: professional
+  outcomes: [Ship an ML/AI feature end-to-end with API, tests and monitoring, Build validated data pipelines, Use LLM APIs with structured output and tool calling, Deploy with CI, registry, rollback and drift monitoring]
+  modules:
+    - {title: "Problem framing and data", hours: 4, topics: [business ask → ML task, data audit, leakage, baselines, eval metric first], lab: "Frame a use case; write the metric"}
+    - {title: "Data pipelines", hours: 4, topics: [ingestion, validation, feature tables, versioning], lab: "Validated pipeline with quality report"}
+    - {title: "Classical ML that still wins", hours: 4, topics: [gradient boosting, calibration, explainability], lab: "Tabular model + model card"}
+    - {title: "LLM APIs for engineers", hours: 4, topics: [structured output, tool calling, batching, retries, rate limits], lab: "Typed LLM service with tests"}
+    - {title: "Serving", hours: 4, topics: [FastAPI, containers, config-driven design, secrets, CI], lab: "Dockerise + CI"}
+    - {title: "MLOps", hours: 4, topics: [experiment tracking, registry, blue/green, rollback], lab: "Two versions, switch, roll back"}
+    - {title: "Monitoring", hours: 4, topics: [data/prediction drift, latency/cost dashboards, alerting], lab: "Drift detection + alert"}
+    - {title: "Capstone", hours: 4, topics: [end-to-end feature reviewed against Definition of Done], lab: "Demo + review"}
+  assessment: "Capstone: eval set in repo · reproducible · API with schema validation · CI green · monitoring + rollback documented"
+  folder: ai-engineer
+
+- id: genai-engineer
+  title: GenAI Engineer
+  version: "2.0"
+  status: active
+  level: 3
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Developers building LLM applications
+  hours: 32
+  formats: [cohort]
+  tiers: [silver, gold, platinum]
+  prerequisites: [ai-engineer]
+  certification: professional
+  outcomes: [Build a production-grade RAG system with evals, guardrails and cost controls, Apply every layer of the RAG stack deliberately, Implement grounding, citations, refusal, ACLs and injection defence]
+  modules:
+    - {title: "LLM fundamentals for builders", hours: 4, topics: [tokens, context, structured output, tool calling, prompt patterns vs folklore], lab: "Typed client with retries"}
+    - {title: "Ingestion (L0-L3)", hours: 4, topics: [layout-aware parsing, cleaning, dedup, metadata and ACL capture], lab: "Parse a messy two-column PDF"}
+    - {title: "Chunking and enrichment (L4-L5)", hours: 4, topics: [structure-aware, parent-child, contextual prefix, late chunking], lab: "Contextual prefix; inspect chunks"}
+    - {title: "Embedding, storage, hybrid retrieval, reranking (L6-L12)", hours: 4, topics: [model choice, quantisation, HNSW, BM25, RRF, cross-encoders], lab: "Hybrid + rerank; recall@20"}
+    - {title: "Query understanding and generation (L9, L13-L15)", hours: 4, topics: [rewriting, filter extraction, grounding, citations, refusal, verification], lab: "Multi-turn grounded bot"}
+    - {title: "Evaluation (L17)", hours: 4, topics: [golden sets, RAGAS/DeepEval, LLM-as-judge discipline, CI], lab: "50-query golden set in CI"}
+    - {title: "Agents and routing (L22-L27)", hours: 4, topics: [ReAct, tool registry, MCP, budgets, termination, when not to go agentic], lab: "Router: simple / RAG / agent"}
+    - {title: "Production (L18-L21)", hours: 4, topics: [caching, cost per request, observability, injection, ACLs, PII, freshness], lab: "Trace + cost dashboard; capstone"}
+  assessment: "Capstone DoD: hybrid + rerank · contextual chunks · grounding + citations + refusal · golden set in CI recall@20 > 0.9 · per-request trace with cost · ACL pre-filter · injection defence"
+  folder: genai-engineer
+  files: [../rag/rag_cheatsheet.pdf]
+
+- id: rag-advanced
+  title: Advanced, Hybrid & Agentic RAG
+  version: "1.0"
+  status: active
+  level: 3
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Engineers with a working RAG system
+  hours: 8
+  formats: [workshop, cohort]
+  tiers: [gold, platinum]
+  prerequisites: [genai-engineer]
+  certification: professional
+  outcomes: [Choose the right RAG level for a problem, Build routers across documents / SQL / live APIs, Implement corrective and self-reflective retrieval, Handle multimodal and graph retrieval]
+  modules:
+    - {title: "The four levels", hours: 1, topics: [basic / advanced / hybrid / agentic, cost and latency, earn your way up], lab: null}
+    - {title: "Hybrid systems and routing", hours: 2, topics: [router design, text-to-SQL, live APIs, logging misroutes], lab: "Route 20 real questions"}
+    - {title: "GraphRAG and multimodal", hours: 2, topics: [knowledge graphs, ColPali-style page embeddings, table and image handling], lab: "Multi-hop question set"}
+    - {title: "Agentic retrieval", hours: 2, topics: [Self-RAG, CRAG, iterative loops, safety rails], lab: "Agent loop with caps"}
+    - {title: "Smart routing economics", hours: 1, topics: [simple / normal / complex tiers, the 56% saving], lab: "Cost model"}
+  assessment: "Hybrid router + eval comparison"
+  folder: rag-advanced
+
+- id: agentic-engineer
+  title: Agentic AI Engineer
+  version: "1.0"
+  status: active
+  level: 4
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Senior engineers building agents
+  hours: 24
+  formats: [cohort]
+  tiers: [gold, platinum]
+  prerequisites: [genai-engineer]
+  certification: expert
+  outcomes: [Design and ship reliable agents with tools, memory, budgets and human approval, Use MCP and function-calling standards, Evaluate trajectories and tool use, Operate multi-agent systems safely]
+  modules:
+    - {title: "Agent architecture", hours: 4, topics: [ReAct, plan-and-execute, single agent + tools first, state], lab: "Single agent with 3 tools"}
+    - {title: "Tools and MCP", hours: 4, topics: [schemas, MCP servers, tool-count token cost, permission scoping, destructive-action gating], lab: "Build and vet an MCP server"}
+    - {title: "Memory", hours: 4, topics: [short-term, working, long-term, procedural, episodic; offloading to files], lab: "Memory tiers"}
+    - {title: "Reliability and safety", hours: 4, topics: [termination, budgets, loop detection, critique and self-correction, injection via tools], lab: "Red-team your agent"}
+    - {title: "Evaluation of agents", hours: 4, topics: [trajectory evals, tool-use accuracy, cost per task, regression], lab: "Trajectory eval suite"}
+    - {title: "Multi-agent and computer use", hours: 4, topics: [supervisor/worker, parallel fan-out, browser/computer-use agents, when not to], lab: "Capstone"}
+  assessment: "Capstone: agent with tool registry, caps, tracing, trajectory evals and a safety review"
+  folder: agentic-engineer
+
+- id: ai-evals
+  title: AI Evaluation & Quality Engineering
+  version: "1.0"
+  status: active
+  level: 3
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Engineers, QA, product owners of AI systems
+  hours: 8
+  formats: [workshop, cohort]
+  tiers: [silver, gold, platinum]
+  prerequisites: [ai-for-all]
+  certification: practitioner
+  outcomes: [Build golden sets from real usage, Measure retrieval and generation separately, Run LLM-as-judge with human calibration, Put evals in CI and production monitoring]
+  modules:
+    - {title: "Why 'it feels better' fails", hours: 1, topics: [regressions, silent failures, out-of-scope tests], lab: null}
+    - {title: "Golden sets", hours: 2, topics: [real queries, distribution coverage, labelling, versioning], lab: "50-query set"}
+    - {title: "Metrics", hours: 2, topics: [recall@k, precision, nDCG, faithfulness, correctness, refusal correctness], lab: "Score a system"}
+    - {title: "LLM-as-judge", hours: 2, topics: [rubrics, calibration, biases], lab: "Calibrate a judge"}
+    - {title: "Evals in the lifecycle", hours: 1, topics: [CI gates, production sampling, feedback loops], lab: "CI gate"}
+  assessment: "Eval suite for one system"
+  folder: ai-evals
+
+- id: ai-security-builders
+  title: AI Security for Builders
+  version: "1.0"
+  status: active
+  level: 3
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Engineers, security teams
+  hours: 8
+  formats: [workshop]
+  tiers: [gold, platinum]
+  prerequisites: [ai-engineer]
+  certification: practitioner
+  outcomes: [Apply OWASP LLM Top 10 controls, Defend against direct and indirect prompt injection, Enforce ACLs in retrieval and agents, Red-team AI systems]
+  modules:
+    - {title: "Threat model", hours: 2, topics: [OWASP LLM Top 10, injection, data poisoning, exfiltration, denial of wallet], lab: "Threat model your system"}
+    - {title: "Controls", hours: 3, topics: [delimiters, hidden-text stripping, least-privilege tools, output handling, guardrail classifiers, ACL defence in depth], lab: "Implement 5 controls"}
+    - {title: "Red-teaming", hours: 2, topics: [attack libraries, automated probing, reporting], lab: "Red-team exercise"}
+    - {title: "Governance hooks", hours: 1, topics: [security review in the lifecycle, metrics], lab: null}
+  assessment: "Red-team report + remediation"
+  folder: ai-security-builders
+
+# ── Data & MLOps ──────────────────────────────────────────────────────────────
+- id: data-foundations-ai
+  title: Data Foundations for AI
+  version: "1.0"
+  status: active
+  level: 2
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Data engineers, analysts, data stewards
+  hours: 16
+  formats: [cohort]
+  tiers: [silver, gold, platinum]
+  prerequisites: []
+  certification: practitioner
+  outcomes: [Make data AI-ready: access, quality, catalogue, lineage, classification, Build curated knowledge bases for GenAI, Design pipelines with monitoring and incremental updates]
+  modules:
+    - {title: "AI-ready data", hours: 4, topics: [availability, quality dimensions, classification, permissions], lab: "Audit 10 datasets"}
+    - {title: "Catalogue, lineage, stewardship", hours: 4, topics: [catalogue tools, glossary, ownership], lab: "Catalogue entries"}
+    - {title: "Pipelines", hours: 4, topics: [orchestration, validation, incremental loads, CDC], lab: "Monitored pipeline"}
+    - {title: "Knowledge bases for GenAI", hours: 4, topics: [document curation, versioning, dedup, refresh, ACL metadata], lab: "Curated knowledge base"}
+  assessment: "Data readiness report for one use case"
+  folder: data-foundations-ai
+
+- id: mlops
+  title: MLOps & LLMOps
+  version: "1.0"
+  status: active
+  level: 3
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: ML / platform engineers
+  hours: 16
+  formats: [cohort]
+  tiers: [gold, platinum]
+  prerequisites: [ai-engineer]
+  certification: professional
+  outcomes: [Run models and LLM apps in production with versioning, monitoring, rollback and retraining triggers, Manage prompts, embeddings and indexes as versioned artefacts]
+  modules:
+    - {title: "Model lifecycle", hours: 4, topics: [registry, promotion, blue/green, retirement], lab: "Registry + promotion"}
+    - {title: "LLMOps", hours: 4, topics: [prompt versioning, embedding pinning, index versioning, provider updates], lab: "Version a RAG stack"}
+    - {title: "Monitoring", hours: 4, topics: [drift, quality, cost, SLOs, incident runbooks], lab: "Dashboards + alerts"}
+    - {title: "Platform patterns", hours: 4, topics: [model gateway, shared components, self-service, cost attribution], lab: "Gateway design"}
+  assessment: "Production readiness review of one system"
+  folder: mlops
+
+- id: ai-lifecycle
+  title: AI Development & Deployment Lifecycle
+  version: "2.0"
+  status: active
+  level: 2
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Engineers, PMs, delivery leads
+  hours: 8
+  formats: [workshop, cohort]
+  tiers: [silver, gold, platinum]
+  prerequisites: []
+  certification: practitioner
+  outcomes: [Run an AI project through discovery, definition, design, build, operationalisation, validation, deployment and scale with the right gates and owners]
+  modules:
+    - {title: "Phases 1-4", hours: 4, topics: [discovery, solution definition, architecture, build; gate criteria; worked example], lab: "Gate review"}
+    - {title: "Phases 5-8", hours: 4, topics: [operationalisation, validation and governance, deployment and handover, optimise and scale], lab: "Mock project through all gates"}
+  assessment: "Gate checklist completed for a real initiative"
+  folder: ai-lifecycle
+
+- id: ai-finops
+  title: AI FinOps
+  version: "1.0"
+  status: active
+  level: 2
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Platform, finance partners, product owners
+  hours: 4
+  formats: [workshop]
+  tiers: [gold, platinum]
+  prerequisites: [llm-cost]
+  certification: practitioner
+  outcomes: [Attribute AI cost per team and use case, Implement caching, routing, batching and caps, Report unit economics to leadership]
+  modules:
+    - {title: "Unit economics", hours: 1, topics: [cost per request / task / user, attribution], lab: "Cost model"}
+    - {title: "Controls", hours: 2, topics: [prompt caching, routing, batch, quantisation, output limits, agent caps], lab: "Apply three controls"}
+    - {title: "Reporting", hours: 1, topics: [dashboards, alerts, budget governance], lab: "Dashboard spec"}
+  assessment: "FinOps plan for one system"
+  folder: ai-finops
+
+- id: llm-cost
+  title: Calculating LLM Cost & Estimation Strategies
+  version: "2.0"
+  status: active
+  level: 1
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Product owners, engineers, finance partners
+  hours: 4
+  formats: [workshop, self_paced]
+  tiers: [bronze, silver, gold, platinum]
+  prerequisites: []
+  certification: aware
+  outcomes: [Estimate cost of any GenAI feature before launch, Explain tokens and pricing to non-technical stakeholders, Apply the three cost controls, Monitor cost per request]
+  modules:
+    - {title: "The billing unit", hours: 0.5, topics: [tokens, input vs output, cached input, reasoning tokens], lab: null}
+    - {title: "The per-request formula", hours: 0.75, topics: [system + context + history + question + answer], lab: "Whiteboard the $0.014 question"}
+    - {title: "Volume and growth", hours: 0.5, topics: [history growth, flagship-for-everything], lab: null}
+    - {title: "Cost a real feature", hours: 1, topics: [basic / RAG / agentic scenarios, sensitivity], lab: "cost_calculator.py"}
+    - {title: "Estimation strategies", hours: 0.75, topics: [bottom-up, top-down, benchmark from logs, ranges not numbers], lab: "Three-point estimate"}
+    - {title: "Controls and monitoring", hours: 0.5, topics: [caching, routing, batch, output limits, per-request alerts], lab: null}
+  assessment: "Cost sheet with best / expected / worst case"
+  folder: llm-cost
+  files: [cost_calculator.py]
+
+# ── Governance practitioner ───────────────────────────────────────────────────
+- id: ai-governance-practitioner
+  title: AI Governance Practitioner (EU AI Act · NIST AI RMF · ISO 42001)
+  version: "1.0"
+  status: active
+  level: 3
+  owner: Sarfi
+  last_reviewed: "2026-09-12"
+  audience: Risk, compliance, legal, audit, AI governance leads
+  hours: 16
+  formats: [cohort]
+  tiers: [gold, platinum]
+  prerequisites: [ai-governance-leaders]
+  certification: professional
+  outcomes: [Build and run an AI inventory and risk classification, Operate a review board and documentation standard, Prepare for EU AI Act obligations and ISO 42001 certification, Audit AI systems]
+  modules:
+    - {title: "Inventory and classification", hours: 4, topics: [system register, risk tiers, controls per tier], lab: "Classify 15 systems"}
+    - {title: "Frameworks in depth", hours: 4, topics: [EU AI Act obligations by role, NIST AI RMF functions, ISO 42001 clauses], lab: "Gap assessment"}
+    - {title: "Review, documentation, oversight", hours: 4, topics: [review board, technical documentation, human oversight design, incident process], lab: "Run a mock review"}
+    - {title: "Auditing AI", hours: 4, topics: [audit programme, evidence, testing bias and robustness, reporting], lab: "Audit plan"}
+  assessment: "Gap assessment + remediation plan for the organisation"
+  folder: ai-governance-practitioner
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Emerging topics watchlist — reviewed quarterly; promoted to courses/modules when stable.
+emerging_topics:
+  - {topic: "Computer-use and browser agents", status: "in agentic-engineer module 6", next_review: "2026-12"}
+  - {topic: "Small language models and on-device inference", status: "in genai-engineer module 1 + readiness question", next_review: "2026-12"}
+  - {topic: "Voice agents and real-time multimodal", status: "watch — draft workshop", next_review: "2026-12"}
+  - {topic: "AI agents interacting with external agents / agent marketplaces", status: "readiness question only", next_review: "2027-03"}
+  - {topic: "Synthetic data and privacy-enhancing technologies", status: "in data-foundations-ai", next_review: "2027-03"}
+  - {topic: "Model provenance, content watermarking and C2PA", status: "in ai-content-governance", next_review: "2026-12"}
+  - {topic: "Regulatory updates (EU AI Act phases, sector guidance, India DPDP rules)", status: "in governance courses; refresh each delivery", next_review: "quarterly"}

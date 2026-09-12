@@ -1,0 +1,50 @@
+# AI Readiness Audit — product tiers. Questions are cumulative (each tier includes the ones below).
+# "letters" lists which tier-codes from question_bank.yaml are included.
+tiers:
+  free:
+    title: Free Snapshot
+    letters: [F]
+    target: Demo / lead generation — any organisation
+    duration: 10 minutes, self-serve
+    price_usd: 0
+    report: Score, maturity level, domain radar, top 3 gaps. No PDF, no recommendations detail.
+    features: {pdf: false, recommendations: 3, evidence: false, benchmark: false, industry_modules: false, interviews: 0}
+  bronze:
+    title: Bronze — Small Business
+    letters: [F, B]
+    target: Startups and small businesses (< 50 staff)
+    duration: 1 week (2-hour facilitated session + debrief)
+    price_usd: 1500
+    report: Full scored report (10 domains, 51 capabilities), prioritised actions, 30/60/90-day plan, PDF.
+    features: {pdf: true, recommendations: 12, evidence: false, benchmark: false, industry_modules: false, interviews: 2}
+  silver:
+    title: Silver — Medium Business
+    letters: [F, B, S]
+    target: Medium businesses (50–250 staff)
+    duration: 2–3 weeks
+    price_usd: 6000
+    report: Bronze + capability heatmap, stakeholder interview synthesis, use-case backlog, leadership presentation.
+    features: {pdf: true, recommendations: 20, evidence: false, benchmark: true, industry_modules: true, interviews: 6}
+  gold:
+    title: Gold — Large Business
+    letters: [F, B, S, G]
+    target: Large organisations (250–1,000 staff)
+    duration: 4–6 weeks
+    price_usd: 18000
+    report: Silver + evidence-based validation, industry module, 12-month roadmap with budget ranges, ROI model, prototype scoping.
+    features: {pdf: true, recommendations: 30, evidence: true, benchmark: true, industry_modules: true, interviews: 12}
+  platinum:
+    title: Platinum — Enterprise
+    letters: [F, B, S, G, P]
+    target: Enterprises and groups (1,000+ staff, multi-BU)
+    duration: 6–10 weeks
+    price_usd: 45000
+    report: Gold + multi-BU comparison, operating-model design, board deck, regulatory readiness pack, 3-month advisory retainer.
+    features: {pdf: true, recommendations: 50, evidence: true, benchmark: true, industry_modules: true, interviews: 25}
+
+# Indicative benchmark scores by company size (uniAIverse engagement data + public surveys; update annually).
+benchmarks:
+  small:      {overall: 28, note: "Typical SMB: strong on experimentation, weak on data, governance and cost tracking."}
+  medium:     {overall: 38, note: "Typical mid-size: pilots exist; MLOps, governance and skills lag."}
+  large:      {overall: 47, note: "Typical large company: platforms emerging; value tracking and GenAI governance inconsistent."}
+  enterprise: {overall: 55, note: "Typical enterprise: mature data/governance; agentic readiness and FinOps still forming."}

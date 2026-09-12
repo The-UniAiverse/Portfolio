@@ -1,0 +1,205 @@
+# uniAIverse — Engagement Blueprints v1.0
+# Structured delivery methodology per service, per tier. Read by /api/<service>/blueprint and by proposals.
+# client_types: startup (<50) · sme (50-250) · large (250-1000) · enterprise (1000+) · professional (individual)
+# Edit freely — add phases, deliverables, tiers. Keep 'deliverables' concrete: a client should be able to tick them off.
+
+version: "1.0"
+last_reviewed: "2026-09-12"
+
+common:
+  roles:
+    engagement_lead: "Sarfi — accountable for scope, quality and final delivery"
+    genai_lead: "Harsh — GenAI/LLM application design and implementation"
+    engineering_lead: "Sahil — development stack, integrations, deployment"
+  governance:
+    - Weekly status note (progress, risks, decisions needed)
+    - Steering checkpoint at each phase gate
+    - Change requests documented before implementation
+    - Definition of Done: deliverables accepted, documentation handed over, next steps agreed
+  standard_phases: [Mobilise, Discover, Analyse, Design, Deliver, Handover]
+
+services:
+
+  strategy:
+    title: AI Transformation, Strategy & Roadmap
+    methodology: "Ambition → Opportunity → Readiness → Roadmap → Operating model → Value tracking"
+    tiers:
+      bronze:
+        client_types: [startup, sme]
+        weeks: 2
+        team: {engagement_lead: 6 days}
+        phases:
+          - {name: Mobilise, week: 1, activities: [kick-off, stakeholder list, data request], outputs: [engagement plan]}
+          - {name: Discover, week: 1, activities: [opportunity discovery workshop (3h), 4 interviews], outputs: [use-case long list]}
+          - {name: Analyse & Design, week: 2, activities: [value × feasibility × risk scoring, quick-win selection], outputs: [ranked top-10 backlog, 90-day starter roadmap]}
+          - {name: Handover, week: 2, activities: [read-out (90 min)], outputs: [slide pack, backlog sheet]}
+        deliverables: [Opportunity workshop record, Ranked use-case backlog (top 10), 90-day starter roadmap, Read-out deck]
+      silver:
+        client_types: [sme, large]
+        weeks: 5
+        team: {engagement_lead: 15 days, genai_lead: 3 days}
+        phases:
+          - {name: Mobilise, week: 1, activities: [kick-off, steering group set-up, document review], outputs: [charter]}
+          - {name: Discover, week: 1-2, activities: [Silver readiness audit, 8 interviews, 2 function workshops], outputs: [readiness report, use-case long list]}
+          - {name: Analyse, week: 3, activities: [portfolio scoring, dependency mapping, cost/benefit estimates], outputs: [ranked backlog with business cases]}
+          - {name: Design, week: 4, activities: [12-month roadmap, operating-model sketch, KPI framework], outputs: [roadmap, TOM sketch, KPI sheet]}
+          - {name: Handover, week: 5, activities: [leadership read-out, Q&A, next-steps plan], outputs: [final report]}
+        deliverables: [Readiness audit (Silver), Ranked backlog with one-page business cases, 12-month roadmap with phases owners KPIs, Target operating-model sketch, Budget and ROI model, Leadership presentation]
+      gold:
+        client_types: [large, enterprise]
+        weeks: 10
+        team: {engagement_lead: 30 days, genai_lead: 8 days, engineering_lead: 5 days}
+        phases:
+          - {name: Mobilise, week: 1, activities: [charter, steering, comms plan], outputs: [charter]}
+          - {name: Discover, week: 1-3, activities: [Gold readiness audit with evidence, 15 interviews, function workshops, process mining sample], outputs: [readiness report, evidence log]}
+          - {name: Analyse, week: 4-5, activities: [portfolio scoring, TCO models, vendor landscape, risk classification], outputs: [investment case]}
+          - {name: Design, week: 6-8, activities: [12-18 month roadmap, architecture blueprint (data, GenAI, MLOps), change and adoption plan, governance model], outputs: [roadmap, blueprint, change plan]}
+          - {name: Deliver, week: 8-9, activities: [prototype scoping for top use case, pilot plan], outputs: [pilot charter]}
+          - {name: Handover, week: 10, activities: [executive read-out, steering set-up for delivery], outputs: [final report, steering pack]}
+        deliverables: [Readiness audit (Gold) with evidence validation, Investment case and TCO, 12-18 month roadmap, Architecture blueprint, Change-management and adoption plan, Governance model, Pilot charter for first use case, Quarterly steering support for 6 months]
+      platinum:
+        client_types: [enterprise]
+        weeks: 16
+        team: {engagement_lead: 55 days, genai_lead: 15 days, engineering_lead: 10 days, fractional_cAIo: 4 days/month for 6 months}
+        phases:
+          - {name: Mobilise, week: 1-2, activities: [programme charter, PMO, BU sponsors], outputs: [programme charter]}
+          - {name: Discover, week: 2-6, activities: [Platinum audit across BUs, 25+ interviews, benchmark, regulatory scan], outputs: [multi-BU readiness report]}
+          - {name: Analyse, week: 6-9, activities: [portfolio across BUs, value pools, disruption scenarios, build/buy/partner], outputs: [strategy options paper]}
+          - {name: Design, week: 9-13, activities: [enterprise AI strategy, operating model and CoE design, funding model, roadmap, governance programme], outputs: [strategy, TOM, roadmap]}
+          - {name: Deliver, week: 13-15, activities: [PMO set-up, first-wave pilots mobilised], outputs: [wave-1 plan]}
+          - {name: Handover, week: 16, activities: [board presentation, transition to fractional CAIO retainer], outputs: [board deck, retainer plan]}
+        deliverables: [Enterprise AI strategy, Multi-BU readiness and benchmark, Operating model and CoE design, Funding model, 3-year roadmap, Governance programme, PMO and wave-1 pilots, Board deck, Fractional Chief AI Officer 6 months]
+
+  governance:
+    title: AI Governance, Safety & Compliance
+    methodology: "Inventory → Classify → Policy → Controls → Review → Monitor → Audit"
+    frameworks: [EU AI Act, NIST AI RMF, ISO/IEC 42001, OWASP LLM Top 10, GDPR / DPDP, sector regulation]
+    tiers:
+      bronze:
+        client_types: [startup, sme]
+        weeks: 2
+        team: {engagement_lead: 5 days}
+        phases:
+          - {name: Discover, week: 1, activities: [AI usage survey, tool inventory, 3 interviews], outputs: [AI inventory]}
+          - {name: Design, week: 2, activities: [risk classification, policy drafting, staff briefing], outputs: [policy, briefing]}
+        deliverables: [AI systems and tools inventory, Risk classification of current use cases, One-page responsible-AI policy, 45-minute staff briefing]
+      silver:
+        client_types: [sme, large]
+        weeks: 4
+        team: {engagement_lead: 12 days}
+        phases:
+          - {name: Discover, week: 1, activities: [inventory, data-flow mapping, 6 interviews], outputs: [inventory, data flows]}
+          - {name: Analyse, week: 2, activities: [risk classification, privacy gap review, regulatory applicability], outputs: [gap list]}
+          - {name: Design, week: 3, activities: [policy framework, pre-production review process, PII guidance], outputs: [policy set, review checklist]}
+          - {name: Handover, week: 4, activities: [staff and leadership briefing, owner assignment], outputs: [governance quick-start plan]}
+        deliverables: [Everything in Bronze, Policy framework (principles standards procedures), Pre-production AI review checklist and process, Privacy and PII handling guidance for AI data flows, Regulatory applicability map, Leadership briefing]
+      gold:
+        client_types: [large, enterprise]
+        weeks: 8
+        team: {engagement_lead: 24 days, genai_lead: 4 days}
+        phases:
+          - {name: Discover, week: 1-2, activities: [full inventory with evidence, 12 interviews, system deep-dives], outputs: [inventory register]}
+          - {name: Analyse, week: 3-4, activities: [framework gap assessment (NIST / ISO 42001 / EU AI Act), bias and robustness testing of one system, red-team], outputs: [gap assessment, test report]}
+          - {name: Design, week: 5-6, activities: [governance operating model, review board, documentation standard, monitoring and incident playbook], outputs: [governance model]}
+          - {name: Deliver, week: 7, activities: [run first review board, train reviewers], outputs: [review records]}
+          - {name: Handover, week: 8, activities: [remediation roadmap, leadership read-out], outputs: [final report]}
+        deliverables: [Everything in Silver, Framework gap assessment and remediation roadmap, Bias robustness and red-team test of one production system, Review board and reviewer training, Monitoring and incident-response playbook, Technical documentation standard]
+      platinum:
+        client_types: [enterprise]
+        weeks: 12
+        team: {engagement_lead: 40 days, genai_lead: 8 days, engineering_lead: 5 days}
+        phases:
+          - {name: Mobilise, week: 1, activities: [programme charter, regulatory scan], outputs: [charter]}
+          - {name: Discover, week: 2-4, activities: [enterprise inventory, third-party AI risk register, 20+ interviews], outputs: [registers]}
+          - {name: Analyse, week: 5-7, activities: [ISO 42001 readiness, EU AI Act obligation mapping by system, internal audit], outputs: [audit report]}
+          - {name: Design, week: 8-10, activities: [governance programme, documentation packs, metrics and reporting], outputs: [programme, packs]}
+          - {name: Handover, week: 11-12, activities: [board reporting, retainer set-up], outputs: [board pack]}
+        deliverables: [Full governance programme, Regulator and procurement-ready documentation pack, Internal audit and findings tracker, Third-party AI risk register, Board reporting, Quarterly audits for 12 months]
+
+  automation:
+    title: AI Automation & Workflow Optimisation
+    methodology: "Inventory → Measure → Prioritise → Design (RPA / LLM / hybrid) → Build → Monitor → Scale"
+    tiers:
+      bronze:
+        client_types: [startup, sme]
+        weeks: 2
+        team: {engagement_lead: 5 days}
+        phases:
+          - {name: Discover, week: 1, activities: [workflow inventory workshop, volume and time capture], outputs: [inventory of 5-10 workflows]}
+          - {name: Analyse & Design, week: 2, activities: [ROI model, current/future-state maps for top 2, approach selection], outputs: [ROI sheet, process maps]}
+        deliverables: [Workflow inventory with volumes and cost, ROI and payback model, Current and future-state maps for top 2 workflows, Recommended approach per workflow, Build plan]
+      silver:
+        client_types: [sme, large]
+        weeks: 6
+        team: {engagement_lead: 8 days, genai_lead: 10 days, engineering_lead: 8 days}
+        phases:
+          - {name: Discover & Design, week: 1-2, activities: [Bronze scope, detailed design of one automation, integration and data checks], outputs: [design doc]}
+          - {name: Build, week: 3-5, activities: [build, test with real data, human-in-the-loop design, evaluation], outputs: [working automation]}
+          - {name: Handover, week: 6, activities: [SOPs, training, monitoring set-up], outputs: [SOPs, runbook]}
+        deliverables: [Everything in Bronze, One automation built and deployed, Test evidence and evaluation, SOPs and runbook, User training, 30-day hypercare]
+      gold:
+        client_types: [large, enterprise]
+        weeks: 12
+        team: {engagement_lead: 14 days, genai_lead: 25 days, engineering_lead: 25 days}
+        phases:
+          - {name: Discover & Design, week: 1-3, activities: [inventory of 20+ workflows, process mining sample, designs for 3 automations, architecture], outputs: [designs, architecture]}
+          - {name: Build, week: 4-10, activities: [three automations in sequence, exception handling, dashboards], outputs: [three automations]}
+          - {name: Handover & Optimise, week: 11-12, activities: [monitoring, SOPs, optimisation plan], outputs: [dashboards, runbooks]}
+        deliverables: [Three automations delivered end-to-end, Monitoring dashboards and exception handling, Reusable components, SOPs and runbooks, 3-month optimisation support]
+      platinum:
+        client_types: [enterprise]
+        weeks: 24
+        team: {engagement_lead: 30 days, genai_lead: 50 days, engineering_lead: 50 days}
+        phases:
+          - {name: Mobilise, week: 1-2, activities: [CoE charter, intake process, platform selection], outputs: [charter]}
+          - {name: Platform, week: 3-8, activities: [automation platform, templates, governance, cost controls], outputs: [platform]}
+          - {name: Waves, week: 9-22, activities: [quarterly waves of automations, adoption tracking], outputs: [wave deliveries]}
+          - {name: Handover, week: 23-24, activities: [CoE transition, roadmap], outputs: [CoE handover]}
+        deliverables: [Automation centre-of-excellence, Reusable platform and templates, Intake and prioritisation process, Wave deliveries with adoption metrics, Quarterly reviews]
+
+  training:
+    title: Training & Mentorship
+    methodology: "Assess → Tailor → Deliver → Certify → Sustain"
+    tiers:
+      professional:
+        client_types: [professional]
+        weeks: 8
+        team: {mentor: 1 hour/week}
+        phases:
+          - {name: Assess, week: 1, activities: [skills self-assessment, goal setting], outputs: [learning plan]}
+          - {name: Learn, week: 2-7, activities: [self-paced modules, weekly mentor session, labs], outputs: [labs, capstone]}
+          - {name: Certify, week: 8, activities: [capstone review], outputs: [certificate]}
+        deliverables: [Personal learning plan, Track access (self-paced), 8 mentor sessions, Capstone review, Certificate]
+      bronze:
+        client_types: [startup, sme]
+        weeks: 1
+        team: {trainer: 1 day}
+        phases: [{name: Deliver, week: 1, activities: [one workshop], outputs: [recording, handouts]}]
+        deliverables: [One workshop from the catalogue up to 20 people, Handouts and glossary, Recording and slides, Quiz and certificates (AI Aware)]
+      silver:
+        client_types: [sme, large]
+        weeks: 3
+        team: {trainer: 3 days, mentor: 4 hours}
+        phases:
+          - {name: Tailor, week: 1, activities: [audience call, document and tool set-up], outputs: [tailored plan]}
+          - {name: Deliver, week: 2, activities: [one hands-on course (4 half-days)], outputs: [artefacts per participant]}
+          - {name: Sustain, week: 3, activities: [follow-up Q&A], outputs: [certificates]}
+        deliverables: [One hands-on course up to 15 people, Every participant leaves with a working artefact, Test sheets cost estimates and fault-finding cards, 2 weeks follow-up Q&A, Certificates (AI Practitioner)]
+      gold:
+        client_types: [large, enterprise]
+        weeks: 6
+        team: {trainer: 10 days, mentor: 24 hours}
+        phases:
+          - {name: Assess, week: 1, activities: [skills assessment, track selection], outputs: [cohort plan]}
+          - {name: Deliver, week: 1-6, activities: [two tracks in parallel, weekly live sessions, labs, office hours], outputs: [capstones]}
+          - {name: Certify, week: 6, activities: [capstone reviews], outputs: [certificates]}
+        deliverables: [Two learning paths in parallel up to 20 people, Weekly live sessions and labs, Mentorship office hours 2×/week, Graded capstone, Certificates (AI Practitioner / Professional)]
+      platinum:
+        client_types: [enterprise]
+        weeks: 13
+        team: {trainer: 30 days, mentor: 60 hours, curriculum_owner: 5 days}
+        phases:
+          - {name: Assess, week: 1-2, activities: [organisation-wide skills assessment, curriculum tailoring], outputs: [academy plan]}
+          - {name: Deliver, week: 3-12, activities: [all tracks, executive briefings, train-the-trainer], outputs: [certified cohorts, internal trainers]}
+          - {name: Sustain, week: 13, activities: [post-assessment, 12-month content updates], outputs: [impact report]}
+        deliverables: [Custom AI Academy across all tracks, Executive and board briefings, Train-the-trainer programme, Skills assessment before and after, 12 months of curriculum updates, Certificates up to AI Expert]
