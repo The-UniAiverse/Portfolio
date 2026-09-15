@@ -69,3 +69,16 @@ def test_strategy_governance_automation():
     assert c.post("/api/governance/classify", json={"use_case": "CV screening", "affects_individuals_rights": True}).json()["risk_tier"] == "high"
     assert c.post("/api/automation/roi", json={"build_cost": 10000, "monthly_run_cost": 200, "workflows": [
         {"name": "Invoices", "volume_per_month": 2000, "minutes_per_item": 6, "hourly_cost": 30}]}).json()["payback_months"] > 0
+
+def test_course_finder_free_and_paid():
+    for kind, track in [("developer", "genai_engineer"), ("student", "professional"), ("analyst", "business"), ("leader", "leadership"), ("compliance", "governance")]:
+        p = c.get(f"/api/training/course-finder/sample?kind={kind}").json()
+        r = c.post("/api/training/course-finder", json=p).json()
+        assert r["track"]["id"] == track, (kind, r["track"], r["signals"])
+        assert r["locked"] and "full_path" not in r
+        p["tier"] = "paid"; r = c.post("/api/training/course-finder", json=p).json()
+        assert r["full_path"] and r["week_by_week"] and r["capstone"]
+
+def test_course_finder_cv_text():
+    r = c.post("/api/training/course-finder", json={"cv_text": "Data engineer, 4 years. Python, SQL, Spark, Airflow, ML models with scikit-learn, MLflow.", "hours_per_week": 5}).json()
+    assert r["track"]["id"] == "data_mlops"

@@ -80,3 +80,27 @@ def recommend_path(track: str, goal: str = ""):
         raise HTTPException(400, f"track must be one of {[x['id'] for x in cur['tracks']]}")
     by_id = {c["id"]: c for c in cur["courses"]}
     return {"track": t, "goal": goal, "path": [{"id": i, "title": by_id[i]["title"], "hours": by_id[i]["hours"], "certification": by_id[i]["certification"]} for i in t["courses"]]}
+
+from .course_finder import Profile, find
+
+@router.post("/course-finder")
+def course_finder(profile: Profile):
+    """Profile / CV → recommended track and first course (free) or full personalised path (paid)."""
+    return find(profile)
+
+@router.get("/course-finder/sample")
+def course_finder_sample(kind: str = "developer"):
+    samples = {
+        "developer": Profile(name="Riya", current_role="Backend developer", education="B.Tech CS", years_experience=3,
+                             programming=["python", "javascript"], tech_stack=["fastapi", "postgres", "aws"],
+                             interests=["build chatbots", "rag"], goal="Become a GenAI engineer and build LLM apps", hours_per_week=6),
+        "student": Profile(name="Arjun", current_role="Final year student", education="BSc Computer Science", years_experience=0,
+                           programming=["python"], tech_stack=[], interests=["ai", "getting a job"], goal="First AI job in 12 months", hours_per_week=10),
+        "analyst": Profile(name="Meera", current_role="Business analyst", education="MBA", years_experience=5,
+                           programming=[], tech_stack=["excel", "power bi"], interests=["lead AI projects"], goal="Own AI initiatives in my company", hours_per_week=4),
+        "leader": Profile(name="Vikram", current_role="Head of Operations", education="MBA", years_experience=14,
+                          programming=[], tech_stack=[], interests=["strategy"], goal="Decide where to invest in AI", hours_per_week=2),
+        "compliance": Profile(name="Sana", current_role="Compliance manager", education="LLB", years_experience=7,
+                              programming=[], tech_stack=[], interests=["governance", "risk"], goal="Become the AI governance lead", hours_per_week=4),
+    }
+    return samples.get(kind, samples["developer"]).model_dump()

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Which AI course is right for you? — uniAIverse Academy</title>
+<style>
+  :root{--ink:#14213d;--paper:#fbfaf7;--line:#d9d6cf;--accent:#0f766e;--muted:#5b6170;--lock:#f1efe8}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;background:var(--paper);color:var(--ink);line-height:1.5}
+  header,main{max-width:760px;margin:0 auto;padding:0 20px}
+  header{padding-top:28px} h1{font-size:2rem;margin:0 0 4px;font-weight:600} header p{margin:0 0 20px;color:var(--muted)}
+  label{display:block;margin:14px 0 4px;font-weight:600}
+  input,textarea,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:6px;font:inherit;background:#fff}
+  textarea{min-height:110px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:560px){.row{grid-template-columns:1fr}}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+  .chips label{margin:0;font-weight:400;border:1px solid var(--line);border-radius:20px;padding:6px 12px;background:#fff;cursor:pointer;font-size:.9rem}
+  .chips input{display:none}.chips input:checked+span{font-weight:600;color:var(--accent)}
+  button{font:inherit;font-size:1rem;background:var(--accent);color:#fff;border:0;border-radius:6px;padding:12px 20px;cursor:pointer;margin-top:18px}
+  .hint{color:var(--muted);font-size:.9rem}
+  #result{display:none;margin:30px 0 80px;padding-top:20px;border-top:2px solid var(--ink)}
+  .track{font-size:1.6rem;font-weight:600;margin:0}
+  .card{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:14px 0;background:#fff}
+  .locked{background:var(--lock);color:var(--muted)} .locked li{margin:4px 0}
+  .locked h3{margin:0 0 6px;color:var(--ink)}
+  dt{font-weight:600;margin-top:10px} dd{margin:2px 0 0}
+</style>
+</head>
+<body>
+<header>
+  <h1>Which AI course is right for you?</h1>
+  <p>Answer six questions or paste your CV. You'll get your recommended track, first course and why — free. The full personalised path, gap analysis and week-by-week plan are part of the Professional tier.</p>
+</header>
+<main>
+  <form id="f">
+    <div class="row">
+      <div><label>Your current role</label><input id="role" placeholder="e.g. Final year student, Business analyst, Backend developer"></div>
+      <div><label>Education</label><input id="edu" placeholder="e.g. B.Tech CS, MBA, BCom"></div>
+      <div><label>Years of experience</label><input id="yrs" type="number" min="0" step="0.5" value="0"></div>
+      <div><label>Hours per week you can study</label><input id="hrs" type="number" min="1" step="1" value="5"></div>
+    </div>
+    <label>Languages you can actually write</label>
+    <div class="chips" id="prog"></div>
+    <label>Tools you use</label>
+    <div class="chips" id="stack"></div>
+    <label>What interests you</label>
+    <div class="chips" id="int"></div>
+    <label>Your goal in 6–12 months</label><input id="goal" placeholder="e.g. Build LLM apps at work · Lead AI projects · Get my first AI job">
+    <label>Paste your CV or LinkedIn summary <span class="hint">(optional — improves the match)</span></label>
+    <textarea id="cv"></textarea>
+    <button type="submit" id="go">Find my course</button> <span class="hint" id="status"></span>
+    <p class="hint">Demo profiles: <a href="#" data-k="student">student</a> · <a href="#" data-k="developer">developer</a> · <a href="#" data-k="analyst">analyst</a> · <a href="#" data-k="leader">leader</a> · <a href="#" data-k="compliance">compliance</a></p>
+  </form>
+
+  <section id="result">
+    <p class="hint">Your recommended track</p>
+    <p class="track" id="track"></p>
+    <p id="aud" class="hint"></p>
+    <dl>
+      <dt>Why</dt><dd id="why"></dd>
+      <dt>What you'll start with</dt><dd id="what"></dd>
+      <dt>When</dt><dd id="when"></dd>
+    </dl>
+    <div class="card locked">
+      <h3>Unlock the full plan</h3>
+      <ul id="locked"></ul>
+      <p id="upgrade"></p>
+    </div>
+  </section>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const API = location.origin + '/api/training';
+const CHIPS = {prog:['python','javascript','typescript','java','c#','go','sql','none'],
+               stack:['excel','power bi','pandas','postgres','aws','azure','react','fastapi','langchain','spark','airflow','none'],
+               int:['build chatbots','rag','agents','lead AI projects','strategy','data','sales','marketing','governance','risk','getting a job']};
+for (const [id, items] of Object.entries(CHIPS)) $(id).innerHTML = items.map(x=>`<label><input type="checkbox" value="${x}"><span>${x}</span></label>`).join('');
+const picked = id => [...$(id).querySelectorAll('input:checked')].map(i=>i.value).filter(v=>v!=='none');
+document.querySelectorAll('a[data-k]').forEach(a=>a.onclick=async e=>{
+  e.preventDefault(); const s = await (await fetch(API+'/course-finder/sample?kind='+a.dataset.k)).json();
+  $('role').value=s.current_role; $('edu').value=s.education; $('yrs').value=s.years_experience; $('hrs').value=s.hours_per_week; $('goal').value=s.goal; $('cv').value='';
+  for (const [id,key] of [['prog','programming'],['stack','tech_stack'],['int','interests']]) $(id).querySelectorAll('input').forEach(i=>i.checked=s[key].includes(i.value));
+});
+$('f').onsubmit = async e=>{
+  e.preventDefault(); $('go').disabled=true; $('status').textContent='Matching…';
+  const body={tier:'free',current_role:$('role').value,education:$('edu').value,years_experience:+$('yrs').value,hours_per_week:+$('hrs').value,
+              programming:picked('prog'),tech_stack:picked('stack'),interests:picked('int'),goal:$('goal').value,cv_text:$('cv').value||null};
+  const resp = await fetch(API+'/course-finder',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const r = await resp.json(); $('go').disabled=false; $('status').textContent='';
+  if(!resp.ok){ $('status').textContent='Could not match: '+JSON.stringify(r.detail); return; }
+  $('track').textContent=r.track.title; $('aud').textContent=r.track.audience; $('why').textContent=r.why;
+  $('what').innerHTML=`<b>${r.first_course.title}</b> (${r.first_course.hours}h, level ${r.first_course.level}) — ${r.first_course.what.join('; ')}`;
+  $('when').textContent=r.when;
+  $('locked').innerHTML=r.locked.map(x=>`<li>🔒 ${x}</li>`).join(''); $('upgrade').textContent=r.upgrade;
+  $('result').style.display='block'; $('result').scrollIntoView({behavior:'smooth'});
+};
+</script>
+</body>
+</html>

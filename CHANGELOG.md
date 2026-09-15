@@ -19,3 +19,6 @@ All framework, curriculum, pricing and blueprint changes are recorded here. Bump
 
 ## 2026-09-12 — v1.0
 - Initial release: 30-question audit, 9-course catalogue, tiered pricing, strategy/governance/automation calculators.
+
+## 2026-09-15 — v2.1
+- Course Finder: `POST /api/training/course-finder` (free vs paid depth), sample profiles, CV text parsing, `/course-finder` page.

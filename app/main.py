@@ -33,3 +33,7 @@ app.mount("/static", StaticFiles(directory=UI), name="static")
 @app.get("/", include_in_schema=False)
 def index():
     return FileResponse(UI / "index.html")
+
+@app.get("/course-finder", include_in_schema=False)
+def course_finder_page():
+    return FileResponse(UI / "course-finder.html")

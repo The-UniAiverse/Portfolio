@@ -5,6 +5,7 @@ Working, deployable code for Sarfi's service portfolio (per *AI Services — Rol
 | Priority | Service | API prefix | Status |
 |---|---|---|---|
 | 1 | **AI Readiness Audit** — Framework v2.0: 348 questions, 10 domains, 51 capabilities, 6 industry modules. Five audit tiers (Free 25 → Bronze 85 → Silver 179 → Gold 263 → Platinum 316 + industry). Evidence flags, critical-control red flags, benchmarks, capability heatmap, 30/60/90-day plan, PDF/MD report | `/api/readiness_audit` | ready |
+| 2 | **Course Finder** (free lead-gen) — profile / CV → recommended track, first course, why/what/when; paid tier adds full path, gap analysis, week-by-week plan, capstone, mentor plan. Demo at `/course-finder` | `/api/training/course-finder` | ready |
 | 2 | **Training & Mentorship** — Curriculum v2.0: 22 versioned courses, 10 tracks (incl. individual professionals), 4 certification levels, emerging-topics watchlist, staleness flags | `/api/training` | ready |
 | 3 | AI Transformation, Strategy & Roadmap — use-case prioritisation + phased roadmap | `/api/strategy` | beta |
 | 3 | AI Governance, Safety & Compliance — risk-tier classifier + controls + policy template | `/api/governance` | beta |
