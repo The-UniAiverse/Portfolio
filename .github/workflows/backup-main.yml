@@ -1,0 +1,29 @@
+name: Backup main before every update
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  save-previous-main-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get repository history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create a backup tag
+        env:
+          PREVIOUS_MAIN: ${{ github.event.before }}
+        run: |
+          TAG_NAME="backup-main-${PREVIOUS_MAIN}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag "$TAG_NAME" "$PREVIOUS_MAIN"
+          git push origin "$TAG_NAME"
