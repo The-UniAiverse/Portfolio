@@ -11,9 +11,9 @@ Working, deployable code for Sarfi's service portfolio (per *AI Services — Rol
 | — | **Payments** — Razorpay: cards, netbanking, UPI only under `UPI_LIMIT_INR` (default ₹2,000), NEFT/RTGS/IMPS via virtual accounts, webhook + signature verification, test mode without keys, tier auto-upgrade. Page at `/pay` | `/api/payments` | ready |
 | — | **uniAI website assistant** (replaces Orbi) — answers from `knowledge.yaml` about services, pricing, booking, demos, Quest; logs unanswered questions; optional LLM rephrasing. Website component in `website-patch/` | `/api/bot` | ready |
 | 2 | **Training & Mentorship** — Curriculum v2.0: 22 versioned courses, 10 tracks (incl. individual professionals), 4 certification levels, emerging-topics watchlist, staleness flags | `/api/training` | ready |
-| 3 | AI Transformation, Strategy & Roadmap — use-case prioritisation + phased roadmap | `/api/strategy` | beta |
-| 3 | AI Governance, Safety & Compliance — risk-tier classifier + controls + policy template | `/api/governance` | beta |
-| 4 | AI Automation & Workflow Optimisation — workflow inventory + ROI/payback calculator | `/api/automation` | beta |
+| 3 | **AI Transformation, Strategy & Roadmap** — intake → scored portfolio (value/feasibility/fit/risk/effort) → quadrants → business cases (TCO, ROI, payback, KPIs, risks) → readiness-based foundations → 3-phase roadmap with budgets → operating model → PDF/MD. Tunable in `strategy/config.yaml` | `/api/strategy` | ready |
+| 3 | **AI Governance, Safety & Compliance** — AI inventory → EU AI Act-structured risk tiers → required controls → NIST AI RMF / ISO 42001 gap assessment → 30/60/90-day remediation → tailored Responsible-AI policy → PDFs. Libraries in `governance/*.yaml` | `/api/governance` | ready |
+| 4 | **AI Automation & Workflow Optimisation** — workflow intake → approach per workflow (RPA / LLM / hybrid / agent / keep manual) → future state → ROI, payback, waves with week-by-week plans → PDF. Rules in `automation/playbook.yaml` | `/api/automation` | ready |
 | — | **Pricing & engagement blueprints** — Free/Professional/Bronze/Silver/Gold/Platinum per service, size multipliers (professional → enterprise), phases/deliverables/team per tier, one-call proposal skeleton | `/api/pricing` | ready |
 
 Everything works **without** an LLM key (rule-based, deterministic). Add a key and narratives are AI-written.
@@ -23,9 +23,13 @@ Everything works **without** an LLM key (rule-based, deterministic). Add a key a
 cp .env.example .env            # optionally set LLM_PROVIDER + key
 pip install -r requirements.txt
 uvicorn app.main:app --reload   # http://localhost:8000  (demo UI)  ·  /docs (Swagger)
-pytest -q                       # 18 tests
+pytest -q                       # 23 tests
+python scripts/validate_content.py   # every YAML, question bank, curriculum, quest, bot, pricing, and the workshop demos
 # or: docker compose up
 ```
+
+## Demo pages
+`/` audit · `/course-finder` · `/quest` · `/pay` · `/tools` (strategy, governance, automation with PDF reports) · `/admin` · `/docs`
 
 ## Try the audit in 10 seconds
 Open http://localhost:8000 → pick a tier (and an industry module for Silver+) → *fill with sample answers* → *Score my readiness* → download the PDF.
@@ -36,6 +40,7 @@ Framework outline for the website/proposals: `GET /api/readiness_audit/framework
 `Portfolio/package.json` still points `repository.url` and `homepage` at `github.com/waghmarepb/uniaiverse-website` — update to `github.com/The-UniAiverse/Portfolio`.
 
 ## Customise without touching code
+Full guide: `docs/EDITING.md` — one table: what you want to change → which file → what to run.
 | What | Where |
 |---|---|
 | Audit questions, tiers per question, evidence/critical flags, remediation text | `app/services/readiness_audit/question_bank.yaml` (line format `F*! text`) |

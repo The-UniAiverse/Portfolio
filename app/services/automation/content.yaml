@@ -1,0 +1,25 @@
+# Automation engine content — approaches, design patterns, build-plan templates. Edit freely.
+version: "1.0"
+approaches:
+  rpa:    {title: "Scripted / RPA", when: "deterministic steps, structured inputs, stable systems", build_weeks: 2, run_cost_month: 50,  reliability: "high", tools: [Python scripts, n8n, Power Automate, UiPath]}
+  llm:    {title: "LLM workflow",   when: "reading, writing, classifying or extracting from unstructured inputs", build_weeks: 4, run_cost_month: 300, reliability: "medium — needs eval set", tools: [LLM API, Dify, n8n, LangChain]}
+  hybrid: {title: "Hybrid (scripts + LLM steps)", when: "structured flow with judgement steps inside", build_weeks: 5, run_cost_month: 250, reliability: "medium-high", tools: [n8n, Python, LLM API]}
+  agent:  {title: "Agentic workflow", when: "multi-step, cross-system, needs lookups and retries", build_weeks: 8, run_cost_month: 900, reliability: "lower — caps and approval gates mandatory", tools: [LangGraph, MCP tools, custom loop]}
+  none:   {title: "Do not automate yet", when: "low volume, unstable process, or missing data access", build_weeks: 0, run_cost_month: 0, reliability: "-", tools: []}
+
+future_state_patterns:
+  rpa:    [Trigger on arrival (email / folder / API), Validate input against schema, Execute steps, Post to system of record, Exception queue for failures, Daily reconciliation report]
+  llm:    [Trigger on arrival, Extract or classify with LLM (structured output), Confidence check → human review below threshold, Post to system of record, Log prompt/response/cost, Weekly eval against test set]
+  hybrid: [Trigger on arrival, Scripted validation, LLM judgement step with structured output, Rule-based routing on result, Human approval for exceptions, Post + audit log]
+  agent:  [Trigger or request, Agent plans lookups across systems (read-only tools), Draft action, Human approval gate, Execute via tool, Trace + cost log, Hard caps on iterations/cost]
+
+human_in_loop_by_risk:
+  low:  "Sample 5% of outputs weekly"
+  mid:  "Review outputs below confidence threshold; approve exceptions"
+  high: "Approve every consequential action before execution"
+
+build_plan_template:
+  - {phase: "Week 1", items: [Confirm volumes and baseline, Access to systems / data, Define success metrics and test set (20 real items)]}
+  - {phase: "Weeks 2-3", items: [Build happy path, Exception handling and human queue, Logging and cost tracking]}
+  - {phase: "Week 4", items: [Parallel run against manual process, Measure accuracy and time, Fix top failures]}
+  - {phase: "Go-live", items: [SOP and training, Monitoring dashboard, Owner named, 30-day hypercare]}

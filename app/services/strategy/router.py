@@ -1,53 +1,35 @@
-"""AI Transformation, Strategy & Roadmap — use-case prioritisation + phased roadmap.
-Feed it an audit result (optional) plus candidate use cases; it returns a ranked backlog and a 3-phase plan."""
+"""AI Transformation, Strategy & Roadmap — end to end: intake → scored portfolio → business cases → phased roadmap → operating model → PDF/MD report."""
 from __future__ import annotations
-from fastapi import APIRouter
-from pydantic import BaseModel, Field
-from app.core import llm
+from fastapi import APIRouter, HTTPException
+from fastapi.responses import FileResponse
+from app.core.config import settings
+from . import engine
+from .schemas import StrategyRequest
 
 router = APIRouter()
 
-class UseCase(BaseModel):
-    name: str
-    value: int = Field(..., ge=1, le=5, description="business value 1-5")
-    feasibility: int = Field(..., ge=1, le=5, description="data + tech readiness 1-5")
-    risk: int = Field(..., ge=1, le=5, description="regulatory/operational risk 1-5 (5 = highest)")
-    effort_weeks: int = Field(4, ge=1)
-    function: str = "General"
-
-class RoadmapRequest(BaseModel):
-    organisation: str
-    readiness_score: float | None = Field(None, description="overall score from the readiness audit")
-    use_cases: list[UseCase]
-
-def _score(u: UseCase) -> float:
-    # value and feasibility up, risk down; effort lightly penalised
-    return round(u.value * 2 + u.feasibility * 1.5 - u.risk * 1.2 - u.effort_weeks * 0.1, 2)
+@router.get("/config")
+def config(): return engine.cfg()
 
 @router.post("/roadmap")
-def roadmap(req: RoadmapRequest):
-    ranked = sorted(req.use_cases, key=_score, reverse=True)
-    backlog = [{"rank": i, "name": u.name, "function": u.function, "score": _score(u),
-                "quadrant": ("Quick win" if u.value >= 3 and u.feasibility >= 4 else
-                             "Strategic bet" if u.value >= 4 else
-                             "Fill-in" if u.feasibility >= 4 else "Deprioritise")}
-               for i, u in enumerate(ranked, 1)]
-    quick = [b["name"] for b in backlog if b["quadrant"] == "Quick win"][:3]
-    strategic = [b["name"] for b in backlog if b["quadrant"] == "Strategic bet"][:3]
-    foundations = []
-    if req.readiness_score is not None and req.readiness_score < 40:
-        foundations = ["Data access + classification for chosen use cases", "Approved LLM route and AI policy",
-                       "AI literacy training for affected teams"]
-    phases = {
-        "Phase 1 — Foundations & quick wins (0-3 months)": foundations + [f"Pilot: {q}" for q in quick],
-        "Phase 2 — Scale what works (3-6 months)": [f"Productionise: {q}" for q in quick] + [f"Design: {s}" for s in strategic],
-        "Phase 3 — Strategic bets & operating model (6-12 months)": [f"Deliver: {s}" for s in strategic] +
-            ["MLOps + governance operating rhythm", "AI portfolio review cadence"],
-    }
-    text = llm.complete(
-        f"Write a 150-word rationale for this AI roadmap for {req.organisation}. Readiness score: {req.readiness_score}. "
-        f"Ranked backlog: {backlog}. Phases: {phases}. Plain prose.") or (
-        f"The backlog for {req.organisation} is ranked by value and feasibility with risk and effort as penalties. "
-        f"Quick wins ({', '.join(quick) or 'none identified'}) go first to prove value within a quarter; strategic bets "
-        f"({', '.join(strategic) or 'none identified'}) follow once foundations and delivery rhythm exist.")
-    return {"organisation": req.organisation, "backlog": backlog, "phases": phases, "rationale": text}
+def roadmap(req: StrategyRequest):
+    r = engine.build(req)
+    md, pdf = engine.render(r)
+    r["report_markdown_url"] = f"/api/strategy/report/{md}"; r["report_pdf_url"] = f"/api/strategy/report/{pdf}"
+    return r
+
+@router.get("/report/{filename}")
+def get_report(filename: str):
+    p = settings.outputs_dir / "strategy" / filename
+    if not p.exists() or p.suffix not in {".md", ".pdf"}: raise HTTPException(404, "not found")
+    return FileResponse(p)
+
+@router.get("/sample")
+def sample():
+    return {"organisation": "Acme Logistics", "company_size": "medium", "top_goal": "Cut back-office cost 30% in 12 months", "readiness_score": 33,
+            "use_cases": [
+                {"name": "Invoice & POD document extraction", "function": "Finance", "description": "Extract fields from supplier invoices and proof-of-delivery scans", "owner": "Finance lead", "value": 4, "feasibility": 5, "strategic_fit": 4, "risk": 2, "effort_weeks": 4, "data_ready": 4, "monthly_benefit_usd": 9000},
+                {"name": "Customer support assistant", "function": "Customer service", "description": "Grounded chatbot over SOPs and shipment FAQs with escalation", "owner": "CS manager", "value": 4, "feasibility": 4, "strategic_fit": 4, "risk": 3, "effort_weeks": 6, "data_ready": 3, "monthly_benefit_usd": 6000},
+                {"name": "Demand forecasting for fleet planning", "function": "Operations", "description": "Weekly demand forecast per lane to plan fleet capacity", "owner": "Ops head", "value": 5, "feasibility": 2, "strategic_fit": 5, "risk": 3, "effort_weeks": 14, "data_ready": 2, "monthly_benefit_usd": 20000},
+                {"name": "HR policy knowledge assistant", "function": "HR", "description": "Answer leave, travel and expense policy questions", "owner": "HR lead", "value": 2, "feasibility": 5, "strategic_fit": 2, "risk": 2, "effort_weeks": 3, "data_ready": 4, "monthly_benefit_usd": 1500},
+                {"name": "Dynamic pricing engine", "function": "Sales", "description": "AI-suggested quotes per lane and customer", "owner": None, "value": 5, "feasibility": 1, "strategic_fit": 4, "risk": 5, "effort_weeks": 20, "data_ready": 1, "monthly_benefit_usd": None}]}

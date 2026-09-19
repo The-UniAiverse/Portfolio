@@ -1,0 +1,38 @@
+# AI Strategy & Roadmap engine — everything tunable lives here. Edit freely.
+version: "1.0"
+scoring:                     # weights for the portfolio score (higher = do first)
+  value: 2.0
+  feasibility: 1.5
+  strategic_fit: 1.0
+  risk: -1.2                  # 5 = highest risk
+  effort_per_week: -0.1
+quadrants:                   # decided from value / feasibility
+  quick_win:    {value_min: 3, feasibility_min: 4, label: "Quick win",     colour: "#15803d"}
+  strategic:    {value_min: 4, feasibility_min: 1, label: "Strategic bet", colour: "#1d4ed8"}
+  fill_in:      {value_min: 1, feasibility_min: 4, label: "Fill-in",       colour: "#ca8a04"}
+  deprioritise: {value_min: 1, feasibility_min: 1, label: "Deprioritise",  colour: "#6b7280"}
+phases:
+  - {id: p1, title: "Phase 1 — Foundations & quick wins", months: "0-3",  takes: [quick_win],  max_items: 3}
+  - {id: p2, title: "Phase 2 — Scale what works",          months: "3-6",  takes: [quick_win, strategic], max_items: 3}
+  - {id: p3, title: "Phase 3 — Strategic bets",            months: "6-12", takes: [strategic, fill_in], max_items: 4}
+foundations_by_readiness:    # inserted into Phase 1 depending on readiness score (from the audit) — lower score, more foundations
+  - {below: 40, items: ["Data access and classification for the chosen use cases", "Approved LLM route and one-page responsible-AI policy", "AI literacy training for affected teams", "Named AI sponsor, budget line and monthly steering"]}
+  - {below: 60, items: ["Reference architecture for the first pattern (RAG / automation)", "Evaluation sets and Definition of Done per use case", "Governance review gate before production"]}
+  - {below: 101, items: ["Portfolio review cadence and value tracking"]}
+kpi_library:                 # suggested KPIs by use-case pattern (matched on keywords in the use-case name / description)
+  - {match: [support, ticket, helpdesk, service desk, chatbot, assistant], kpis: ["First-response time", "Resolution time", "Deflection rate", "CSAT"]}
+  - {match: [invoice, document, extraction, contract, form, ocr], kpis: ["Processing time per document", "Straight-through rate", "Error rate", "Cost per document"]}
+  - {match: [sales, lead, crm, proposal, outreach], kpis: ["Lead-to-opportunity rate", "Research time per account", "Proposal turnaround", "Win rate"]}
+  - {match: [forecast, demand, inventory, churn, predict, model], kpis: ["Forecast accuracy (MAPE)", "Stock-out / overstock rate", "Retention uplift", "Decision lead time"]}
+  - {match: [marketing, content, campaign, seo], kpis: ["Content throughput", "Cost per asset", "Engagement rate", "Time-to-publish"]}
+  - {match: [hr, onboarding, policy, knowledge, wiki], kpis: ["Time-to-answer", "Self-service rate", "Onboarding time", "Policy query volume to HR"]}
+  - {match: [finance, reconciliation, audit, compliance, report], kpis: ["Close time", "Exceptions per period", "Manual hours", "Audit findings"]}
+default_kpis: ["Hours saved per month", "Cycle time", "Quality / error rate", "Adoption (active users)"]
+budget_bands_usd:            # indicative build cost by effort; run cost by pattern (edit to your rates)
+  effort_weeks: {small: [1, 4], medium: [5, 10], large: [11, 26]}
+  build_per_week: 3500
+  run_monthly: {assistant: 300, automation: 500, model: 800, default: 400}
+operating_model_options:
+  - {id: central, title: "Central AI team (CoE)", fits: "Under 250 staff or early maturity", pros: "Fast standards, scarce skills pooled", cons: "Bottleneck as demand grows"}
+  - {id: hub_spoke, title: "Hub-and-spoke", fits: "250-2,000 staff, several functions adopting", pros: "Central platform + embedded owners", cons: "Needs clear RACI"}
+  - {id: federated, title: "Federated with guardrails", fits: "Enterprise, mature data and governance", pros: "Scale, ownership close to value", cons: "Duplication without strong platform"}

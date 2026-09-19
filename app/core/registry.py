@@ -22,9 +22,9 @@ class ServiceSpec:
 SERVICES: list[ServiceSpec] = [
     ServiceSpec("readiness_audit", "AI Readiness Audit", "Sarfi", 1, "app.services.readiness_audit.router", "ready"),
     ServiceSpec("training",        "Training & Mentorship", "Sarfi", 2, "app.services.training.router", "ready"),
-    ServiceSpec("strategy",        "AI Transformation, Strategy & Roadmap", "Sarfi", 3, "app.services.strategy.router", "beta"),
-    ServiceSpec("governance",      "AI Governance, Safety & Compliance", "Sarfi", 3, "app.services.governance.router", "beta"),
-    ServiceSpec("automation",      "AI Automation & Workflow Optimisation", "Sarfi", 4, "app.services.automation.router", "beta"),
+    ServiceSpec("strategy",        "AI Transformation, Strategy & Roadmap", "Sarfi", 3, "app.services.strategy.router", "ready"),
+    ServiceSpec("governance",      "AI Governance, Safety & Compliance", "Sarfi", 3, "app.services.governance.router", "ready"),
+    ServiceSpec("automation",      "AI Automation & Workflow Optimisation", "Sarfi", 4, "app.services.automation.router", "ready"),
     ServiceSpec("pricing",         "Service Tiers & Pricing", "Sarfi", 0, "app.services.pricing.router", "ready"),
     ServiceSpec("quest",           "uniAI Quest — Interview Playground & Knowledge Hub", "Sarfi", 2, "app.services.quest.router", "ready"),
     ServiceSpec("bot",             "uniAI website assistant", "Harsh", 0, "app.services.bot.router", "ready"),

@@ -1,0 +1,37 @@
+# Automation playbook. Edit freely.
+version: "1.0"
+approaches:
+  rpa:    {label: "RPA / scripted automation", fit: "Deterministic steps, structured inputs, stable systems", tools: ["Power Automate", "n8n", "Python scripts", "UiPath"], risk: "Brittle on UI/format change"}
+  llm:    {label: "LLM workflow (GenAI)", fit: "Reading, writing, classifying, extracting from unstructured text", tools: ["Dify", "n8n + LLM node", "LangChain/LangGraph", "Document AI"], risk: "Needs evaluation set, grounding and human review"}
+  hybrid: {label: "Hybrid: scripts + LLM for judgement steps", fit: "Structured pipeline with one or two judgement or extraction steps", tools: ["n8n", "Power Automate + LLM", "custom FastAPI service"], risk: "Two skill sets; design the handoff"}
+  agent:  {label: "Agentic workflow", fit: "Multi-step, cross-system, variable paths; needs tools and retries", tools: ["LangGraph", "MCP tools", "custom agent runtime"], risk: "Cost and reliability — cap iterations, require approval for actions"}
+  manual: {label: "Keep manual (for now)", fit: "Low volume, high variability, or data not accessible", tools: [], risk: "—"}
+
+approach_rules:   # evaluated in order
+  - {approach: manual, when: "(volume_per_month * minutes_per_item) < 300 or data_access == 'none'"}   # under 5h/month or no data access
+  - {approach: agent,  when: "multi_step and cross_system and needs_judgement"}
+  - {approach: llm,    when: "needs_judgement and not rule_based"}
+  - {approach: rpa,    when: "rule_based and not needs_judgement"}
+  - {approach: hybrid, when: "True"}
+
+step_patterns:   # how a typical step is transformed in the future state
+  receive:  {future: "Auto-ingest from email/API/form; classify and route", automation: 0.9}
+  read:     {future: "AI extracts fields / summarises with confidence scores", automation: 0.8}
+  lookup:   {future: "System lookup via API", automation: 0.95}
+  decide:   {future: "Rules where deterministic; AI recommendation with human approval where judgement", automation: 0.5}
+  write:    {future: "AI drafts; human edits and approves", automation: 0.7}
+  update:   {future: "Write-back to system via API with validation and audit log", automation: 0.9}
+  notify:   {future: "Templated notification, auto-sent after approval", automation: 0.95}
+  review:   {future: "Human review by exception (sampling + confidence threshold)", automation: 0.6}
+
+implementation_plan:
+  - {week: "1", activities: ["Confirm baseline (volume, minutes, error cost) with owners", "Data/system access verified", "Define success metrics and evaluation set"]}
+  - {week: "2-3", activities: ["Build future-state flow in chosen tool", "Human-in-the-loop and exception path", "Test with 50 real items"]}
+  - {week: "4", activities: ["Pilot with one team", "Measure time, errors, adoption", "Fix top 3 failure modes"]}
+  - {week: "5-6", activities: ["Roll out", "Monitoring dashboard + alerts", "SOP and training", "30-day hypercare"]}
+
+risks:
+  - "Process changes upstream break the automation — add monitoring and an owner"
+  - "Low adoption because exceptions are painful — design the exception path first"
+  - "AI extraction errors propagate silently — confidence thresholds and sampling review"
+  - "Cost drift on LLM steps — track cost per item and cap"

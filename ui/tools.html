@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Consulting tools — uniAIverse</title>
+<style>
+:root{--ink:#14213d;--paper:#fbfaf7;--line:#d9d6cf;--accent:#0f766e;--muted:#5b6170}
+body{margin:0;font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;background:var(--paper);color:var(--ink);line-height:1.5}
+header,main{max-width:860px;margin:0 auto;padding:0 20px} header{padding-top:26px} h1{margin:0;font-size:1.8rem;font-weight:600} .hint{color:var(--muted);font-size:.9rem}
+nav{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:12px 0} nav button{font:inherit;background:none;border:0;padding:10px 12px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent} nav button.on{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+textarea{width:100%;min-height:260px;font:12px/1.4 ui-monospace,Menlo,monospace;border:1px solid var(--line);border-radius:6px;padding:10px;background:#fff}
+button.primary{font:inherit;background:var(--accent);color:#fff;border:0;border-radius:6px;padding:10px 16px;cursor:pointer} button.ghost{font:inherit;background:#fff;border:1px solid var(--line);border-radius:6px;padding:9px 14px;cursor:pointer}
+.card{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fff;margin:14px 0} .links a{margin-right:14px;color:var(--accent)} pre{white-space:pre-wrap;font-size:.85rem}
+</style></head>
+<body><header><h1>Consulting tools</h1><p class="hint">Strategy & Roadmap · Governance & Compliance · Automation & ROI — each runs the full uniAIverse methodology and produces a client-ready PDF. Load the sample, edit the JSON (or paste intake data), run.</p></header>
+<main>
+<nav><button class="on" data-s="strategy">Strategy & Roadmap</button><button data-s="governance">Governance</button><button data-s="automation">Automation & ROI</button></nav>
+<p class="hint" id="desc"></p>
+<textarea id="input"></textarea>
+<p><button class="ghost" id="load">Load sample</button> <button class="primary" id="run">Run engagement</button> <span class="hint" id="status"></span></p>
+<div id="out"></div>
+</main>
+<script>
+const $=id=>document.getElementById(id); let svc='strategy';
+const EP={strategy:'roadmap', governance:'assess', automation:'assess'};
+const DESC={strategy:'Intake: organisation, goal, readiness score (from the audit), use cases scored 1-5 with effort and monthly benefit. Output: ranked backlog with quadrants, business cases (TCO, ROI, payback, KPIs, risks), foundations, 3-phase roadmap with budgets, operating model, PDF.',
+ governance:'Intake: AI systems inventory with risk attributes and a 10-question gap self-assessment (0-4). Output: risk tier per system (EU AI Act structure), required controls, NIST AI RMF / ISO 42001 gap scores, 30/60/90-day remediation roadmap, tailored Responsible-AI policy, PDFs.',
+ automation:'Intake: workflows with volumes, minutes, cost, error rates, shape (rule-based / judgement / multi-step / cross-system) and data access. Output: approach per workflow (RPA / LLM / hybrid / agent / keep manual), future state, ROI and payback, wave plan, risks, PDF.'};
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));b.classList.add('on');svc=b.dataset.s;$('desc').textContent=DESC[svc];$('input').value='';$('out').innerHTML='';load();});
+async function load(){ $('input').value = JSON.stringify(await (await fetch(`/api/${svc}/sample`)).json(), null, 2); }
+$('load').onclick=load;
+function summary(b){
+  if(svc==='strategy') return `<p><b>Backlog:</b> ${b.backlog.map(x=>`${x.rank}. ${x.name} <i>(${x.quadrant_label})</i>`).join(' · ')}</p><p><b>Phases:</b> ${b.phases.map(p=>`${p.title.split(' — ')[0]}: ${p.initiatives.map(i=>i.name).join(', ')||'foundations'}`).join(' · ')}</p><p><b>Year 1:</b> build $${b.totals.build_usd.toLocaleString()} · run $${b.totals.run_monthly_usd.toLocaleString()}/mo · quantified benefit $${Math.round(b.totals.annual_benefit_usd).toLocaleString()}/yr · <b>operating model:</b> ${b.operating_model.title}</p>`;
+  if(svc==='governance') return `<p><b>Risk tiers:</b> ${Object.entries(b.tier_counts).map(([k,v])=>`${k} ${v}`).join(', ')} · <b>governance maturity:</b> ${b.org_gap_overall}/100</p><p><b>Gap scores:</b> ${Object.entries(b.org_gap_scores||{}).map(([k,v])=>`${k} ${typeof v==='object'?v.score:v}`).join(' · ')}</p><p><b>First 30 days:</b> ${(b.roadmap['30 days']||[]).slice(0,4).join('; ')}</p>`;
+  return `<p><b>Approach per workflow:</b> ${b.workflows.map(w=>`${w.workflow} → ${w.approach_label}`).join(' · ')}</p><p><b>Portfolio:</b> ${b.totals.hours_freed_per_month} hours freed/mo · saving $${b.totals.monthly_saving.toLocaleString()}/mo · build $${b.totals.build_cost.toLocaleString()} · top-3 year-1 net $${b.totals.year1_net_top3.toLocaleString()}</p><p><b>Waves:</b> ${b.waves.map(w=>`Wave ${w.wave}: ${w.workflow} (${w.approach})`).join(' · ')}</p>`;
+}
+$('run').onclick=async()=>{ let body; try{ body=JSON.parse($('input').value);}catch(e){ return $('status').textContent='Invalid JSON: '+e.message; }
+  $('status').textContent='Running the engagement…'; const r=await fetch(`/api/${svc}/${EP[svc]}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); const b=await r.json(); $('status').textContent='';
+  if(!r.ok) return $('out').innerHTML=`<div class="card"><pre>${JSON.stringify(b.detail,null,2)}</pre></div>`;
+  $('out').innerHTML=`<div class="card"><h3>Executive summary</h3><p>${b.narrative}</p>${summary(b)}<p class="links"><a href="${b.report_pdf_url}">Download PDF report</a><a href="${b.report_markdown_url}">Markdown</a>${b.policy_pdf_url?`<a href="${b.policy_pdf_url}">Responsible-AI policy (PDF)</a>`:''}</p></div>`; };
+$('desc').textContent=DESC[svc]; load();
+</script></body></html>

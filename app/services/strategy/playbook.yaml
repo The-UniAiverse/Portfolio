@@ -1,0 +1,47 @@
+# Strategy engagement content. Edit freely — the engine reads this at every request.
+version: "1.0"
+discovery_questions:   # asked in the opportunity workshop / intake form
+  - {id: goals, text: "What are the 3 business outcomes leadership wants in 12 months (revenue, cost, risk, customer, speed)?"}
+  - {id: pains, text: "Which 5 processes consume the most manual effort or cause the most errors today?"}
+  - {id: data, text: "Where does the data for those processes live, and can it be accessed without manual extraction?"}
+  - {id: systems, text: "Which core systems (CRM, ERP, ticketing, documents) have APIs?"}
+  - {id: people, text: "Who could own AI initiatives in each function? What skills exist in-house?"}
+  - {id: constraints, text: "Budget envelope, regulatory constraints, data residency, timelines?"}
+  - {id: done, text: "What has been tried with AI already, and what happened?"}
+
+scoring:
+  weights: {value: 2.0, feasibility: 1.5, data_readiness: 1.0, risk: -1.2, effort: -0.1}   # effort per week
+  quadrants:
+    quick_win:   {label: "Quick win",     rule: "value>=3 and feasibility>=4 and data_readiness>=3"}
+    strategic:   {label: "Strategic bet", rule: "value>=4"}
+    fill_in:     {label: "Fill-in",       rule: "feasibility>=4"}
+    deprioritise: {label: "Deprioritise",  rule: "True"}
+
+benefit_model:   # rough benefit per use case = base by pattern × value score; used only to produce a range for the business case
+  patterns:
+    assist:   {desc: "Assist people (drafting, summarising, search)", monthly_benefit_per_value_point_usd: 800}
+    automate: {desc: "Automate a workflow end to end",                 monthly_benefit_per_value_point_usd: 2500}
+    augment:  {desc: "Augment decisions (forecasting, scoring)",       monthly_benefit_per_value_point_usd: 3000}
+    product:  {desc: "New product or customer-facing feature",         monthly_benefit_per_value_point_usd: 4000}
+    risk:     {desc: "Reduce risk / compliance cost",                  monthly_benefit_per_value_point_usd: 1500}
+  cost_model:   # build cost by effort weeks × blended rate; run cost by pattern
+    blended_weekly_rate_usd: 3000
+    monthly_run_usd: {assist: 300, automate: 600, augment: 800, product: 1500, risk: 400}
+
+operating_models:
+  small:      {name: "Partner-led with an internal owner", why: "Under 50 people: one accountable owner, external delivery, focus on 1-2 quick wins.", roles: ["AI sponsor (founder/COO)", "Use-case owner per initiative", "Delivery partner (uniAIverse)"]}
+  medium:     {name: "Hub-and-spoke (lightweight CoE)", why: "50-250 people: a 2-3 person hub sets standards and platform; functions own use cases.", roles: ["Head of AI / Data (hub lead)", "AI product owner per function", "Data steward", "Governance reviewer (part-time)"]}
+  large:      {name: "Centre of Excellence with federated delivery", why: "250-1000 people: CoE owns platform, governance and skills; BUs fund and own outcomes.", roles: ["Head of AI", "Platform/MLOps lead", "GenAI engineering pod", "BU AI product owners", "AI risk officer"]}
+  enterprise: {name: "AI portfolio office + federated CoEs", why: "1000+: enterprise portfolio governance, funding model, multiple CoEs aligned to standards.", roles: ["Chief AI Officer", "Portfolio office", "Platform organisation", "BU CoEs", "AI governance board"]}
+
+phases:
+  - {name: "Phase 1 — Foundations & quick wins", months: "0-3", goals: ["Prove value with 2-3 quick wins", "Fix the data and access blockers for them", "Approve an LLM route and a one-page AI policy", "AI literacy for affected teams"]}
+  - {name: "Phase 2 — Scale what works", months: "3-6", goals: ["Productionise the quick wins with monitoring", "Design and pilot the first strategic bet", "Stand up reusable components (RAG, automation templates)", "Establish evaluation and cost tracking"]}
+  - {name: "Phase 3 — Strategic bets & operating model", months: "6-12", goals: ["Deliver strategic bets", "Operating rhythm: portfolio review, governance board, FinOps", "Skills programme by role", "12-month value report to leadership"]}
+
+kpis:
+  - "Pilot-to-production conversion rate (target ≥ 50%)"
+  - "Monthly value realised vs business case (target ≥ 80%)"
+  - "Cost per AI request / task (trend down quarter on quarter)"
+  - "Adoption: active users of each AI capability (target ≥ 60% of intended users)"
+  - "Governance: 100% of production systems in inventory with risk tier and review record"

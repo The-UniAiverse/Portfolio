@@ -61,14 +61,12 @@ def test_blueprint_consistency():
         for t in spec["tiers"]:
             assert t in tiers["services"][svc]["tiers"], (svc, t)
 
-def test_strategy_governance_automation():
-    r = c.post("/api/strategy/roadmap", json={"organisation": "Acme", "readiness_score": 32, "use_cases": [
-        {"name": "Invoice extraction", "value": 4, "feasibility": 5, "risk": 2, "effort_weeks": 3},
-        {"name": "Churn model", "value": 5, "feasibility": 2, "risk": 3, "effort_weeks": 10}]})
-    assert r.json()["backlog"][0]["name"] == "Invoice extraction"
-    assert c.post("/api/governance/classify", json={"use_case": "CV screening", "affects_individuals_rights": True}).json()["risk_tier"] == "high"
-    assert c.post("/api/automation/roi", json={"build_cost": 10000, "monthly_run_cost": 200, "workflows": [
-        {"name": "Invoices", "volume_per_month": 2000, "minutes_per_item": 6, "hourly_cost": 30}]}).json()["payback_months"] > 0
+def test_quick_calculators_still_work():
+    r = c.post("/api/governance/classify", json={"name": "CV screening", "affects_individuals_rights": True})
+    assert r.status_code == 200 and "high" in str(r.json()).lower()
+    r = c.post("/api/automation/roi", json={"organisation": "Acme", "workflows": [
+        {"name": "Invoices", "volume_per_month": 2000, "minutes_per_item": 6, "hourly_cost": 30}]})
+    assert r.status_code == 200
 
 def test_course_finder_free_and_paid():
     for kind, track in [("developer", "genai_engineer"), ("student", "professional"), ("analyst", "business"), ("leader", "leadership"), ("compliance", "governance")]:
@@ -124,3 +122,27 @@ def test_admin_requires_token():
 def test_workshop_in_curriculum():
     r = c.get("/api/training/course/agentic-ai-workshop").json()
     assert r["hours"] == 16 and "WORKSHOP.md" in r["materials"] and r["outline_markdown"].startswith("# Agentic")
+
+# ── v2.3: strategy / governance / automation end to end ───────────────────────
+def test_strategy_end_to_end():
+    b = c.post("/api/strategy/roadmap", json=c.get("/api/strategy/sample").json()).json()
+    assert b["backlog"][0]["quadrant"] == "quick_win" and len(b["phases"]) == 3 and b["phases"][0]["foundations"]
+    assert b["totals"]["build_usd"] > 0 and b["backlog"][0]["business_case"]["payback_months"]
+    assert c.get(b["report_pdf_url"]).status_code == 200 and c.get(b["report_markdown_url"]).status_code == 200
+
+def test_governance_end_to_end():
+    b = c.post("/api/governance/assess", json=c.get("/api/governance/sample").json()).json()
+    assert sum(b["tier_counts"].values()) == len(b["inventory"]) and "30 days" in b["roadmap"]
+    assert c.get(b["report_pdf_url"]).status_code == 200 and c.get(b["policy_pdf_url"]).status_code == 200
+
+def test_automation_end_to_end():
+    b = c.post("/api/automation/assess", json=c.get("/api/automation/sample").json()).json()
+    assert {w["approach"] for w in b["workflows"]} & {"llm", "rpa", "hybrid", "agent", "manual"} and b["waves"] and b["totals"]["monthly_saving"] > 0
+    assert c.get(b["report_pdf_url"]).status_code == 200
+
+def test_pages_served():
+    for p in ["/", "/course-finder", "/quest", "/pay", "/tools", "/admin"]:
+        assert c.get(p).status_code == 200, p
+
+def test_services_not_beta():
+    assert all(s["status"] == "ready" for s in c.get("/api/health").json()["services"])

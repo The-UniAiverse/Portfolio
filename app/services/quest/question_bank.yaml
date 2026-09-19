@@ -976,17 +976,6 @@ topics:
     tags:
     - debugging
     - interview
-  - d: 2
-    q: Hybrid search combines…
-    options:
-    - Two LLMs
-    - Semantic (vector) and keyword (BM25) search
-    - Google and Bing
-    - Cache and DB
-    answer: 1
-    why: Meaning finds synonyms; keywords find ERR_4471. You need both.
-    tags:
-    - retrieval
   - d: 3
     q: Reranking is worth it because…
     options:
@@ -1164,18 +1153,6 @@ topics:
     tags:
     - safety
     - interview
-  - d: 2
-    q: MCP (Model Context Protocol) is…
-    options:
-    - A model
-    - A standard way to expose tools and data to agents
-    - A payment method
-    - A chunking strategy
-    answer: 1
-    why: USB-C for AI tools.
-    tags:
-    - trends
-    - tools
   - d: 3
     q: 20 tool definitions in every call cost about…
     options:
@@ -1187,18 +1164,6 @@ topics:
     why: Prune tools per route or load them lazily.
     tags:
     - cost
-    - interview
-  - d: 3
-    q: A write-capable agent with broad permissions is…
-    options:
-    - Productive
-    - An incident waiting to happen — scope per task, confirm destructive actions
-    - Standard
-    - Required
-    answer: 1
-    why: Read-only agent = nuisance. Write agent = incident.
-    tags:
-    - safety
     - interview
   - d: 2
     q: When is agentic NOT worth it?

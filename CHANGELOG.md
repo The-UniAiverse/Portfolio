@@ -29,3 +29,8 @@ All framework, curriculum, pricing and blueprint changes are recorded here. Bump
 - **uniAI bot**: knowledge-base assistant for the website (replaces Orbi); `website-patch/` with `UniAIBot.tsx`, layout change, rewrites example, package.json fix.
 - **Workshop**: Agentic AI & LLM Economics (1/2 days) trainer plan + exercises; added to business, leadership and GenAI engineer tracks.
 - **Repo standard**: `features/*` → `dev` → `main` with backup-before-merge, CI on all branches, PR template, deploy workflow, Caddy/Compose for api.uniaiverse.ai, daily news refresh action.
+
+## 2026-09-19 — v2.3
+- Strategy, Governance and Automation promoted from beta to **end-to-end engagements**: structured intake, engines with editable YAML config, business cases / gap assessment / wave plans, PDF + Markdown reports, `/tools` page.
+- Agentic AI workshop is now a **delivery kit**: 41-slide deck built from `slides.yaml` (speaker notes), minute-by-minute facilitator guide, 7 runnable demos (offline or live), sample documents, exercise sheets, handout cards, `run_all.py` pre-flight.
+- `scripts/validate_content.py` (content integrity + demos), `scripts/new_course.py` (course pack generator), `scripts/build_slides.*`, `docs/EDITING.md`.

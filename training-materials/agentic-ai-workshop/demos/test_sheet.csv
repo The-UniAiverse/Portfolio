@@ -1,0 +1,15 @@
+question,expected,type
+How many days of annual leave do permanent employees get?,20 working days,simple
+How much leave do contractors get?,12 days per year pro-rata; no carry-over,simple
+What is the difference between employee and contractor leave?,20 working days for employees vs 12 days pro-rata for contractors; no carry-over for contractors,comparison
+How late must a delivery be for a shipping fee refund?,more than 24 hours late,simple
+Within how many days must a damage claim be raised?,48 hours of delivery,exact
+Who reviews damage claims above INR 10000?,the Claims Committee (weekly),simple
+What does error ERR_SVC_4471 mean?,payment gateway timeout; retry after 5 minutes,exact
+Can I use my personal ChatGPT account with customer data?,Personal ChatGPT accounts must not be used with company data — only the approved enterprise accounts,simple
+What is the CEO's salary?,I could not find this in the available documents,out_of_scope
+When is a shipment considered lost and what is refunded?,not delivered within 10 working days; full declared value and shipping fee,multi
+How do I get my money back if my parcel arrived broken?,Damage claims require photographs and the packing slip within 48 hours,paraphrase
+How much holiday do temps get?,Contractors accrue leave at 12 days per year pro-rata,paraphrase
+My password expired on the portal — what do I do?,ERR_AUTH_2210 indicates an expired SSO session; sign in again,paraphrase
+Is vacation paid out when a freelancer's contract ends?,Contractor leave does not carry over and is not paid out on termination,paraphrase

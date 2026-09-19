@@ -49,3 +49,7 @@ def pay_page():
 @app.get("/admin", include_in_schema=False)
 def admin_page():
     return FileResponse(UI / "admin.html")
+
+@app.get("/tools", include_in_schema=False)
+def tools_page():
+    return FileResponse(UI / "tools.html")

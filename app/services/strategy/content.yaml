@@ -1,0 +1,37 @@
+# AI Strategy engine content — edit freely. Used by engine.py to build the strategy report.
+version: "1.0"
+value_patterns:
+  assist:   {title: "Assist people", examples: [drafting, summarising, search over documents, meeting notes], typical_gain: "10-30% time saved on knowledge work"}
+  automate: {title: "Automate workflows", examples: [document extraction, ticket triage, invoice processing, report generation], typical_gain: "40-70% of handling time on repetitive flows"}
+  augment:  {title: "Augment decisions", examples: [forecasting, risk scoring, recommendation, anomaly detection], typical_gain: "better decisions, measured against a baseline"}
+  product:  {title: "New products & channels", examples: [AI features, conversational commerce, personalisation], typical_gain: "new revenue; longer payback"}
+  risk:     {title: "Reduce risk", examples: [fraud detection, compliance monitoring, quality inspection], typical_gain: "fewer incidents, lower cost of failure"}
+
+quadrants:
+  quick_win:   {title: "Quick win",      rule: "value >= 3 and feasibility >= 4", play: "Pilot in 4-8 weeks, productionise in the same quarter"}
+  strategic:   {title: "Strategic bet",  rule: "value >= 4 and feasibility < 4",  play: "Fund foundations first (data, integration, skills); design now, deliver in phase 2-3"}
+  fill_in:     {title: "Fill-in",        rule: "value < 3 and feasibility >= 4",   play: "Do when capacity allows; bundle with a quick win"}
+  deprioritise: {title: "Deprioritise",   rule: "otherwise",                        play: "Park; revisit at the next quarterly review"}
+
+operating_models:
+  central:    {title: "Central AI team",       fits: "< 250 staff or first 12 months", pros: [speed, consistency, one budget], cons: [bottleneck, distance from the business]}
+  hub_spoke:  {title: "Hub and spoke",         fits: "250-2,000 staff, several functions adopting", pros: [standards from the hub, ownership in spokes], cons: [needs clear RACI, funding model]}
+  federated:  {title: "Federated with CoE",    fits: "enterprise, mature data", pros: [scale, business ownership], cons: [duplication risk, governance load]}
+  partner_led: {title: "Partner-led",           fits: "no in-house builders yet", pros: [fast start, low fixed cost], cons: [dependence; plan the handover]}
+
+foundations_by_readiness:   # inserted into Phase 1 depending on readiness score
+  low:  [Data access and classification for the chosen use cases, Approved LLM route and one-page AI policy, AI literacy training for affected teams, Named sponsor budget and steering cadence]
+  mid:  [Reference architecture for GenAI apps, Evaluation sets and test sheets per use case, MLOps basics (versioning monitoring rollback), Risk classification and review gate]
+  high: [Portfolio governance and value tracking, Platform self-service with cost guardrails, Quarterly model and vendor review]
+
+kpis_by_pattern:
+  assist:   [minutes saved per task, adoption (weekly active users), satisfaction]
+  automate: [handling time per item, straight-through rate, error rate, cost per item]
+  augment:  [decision accuracy vs baseline, override rate, time to decision]
+  product:  [feature usage, conversion, retention, revenue attributed]
+  risk:     [incidents caught, false-positive rate, loss avoided]
+
+budget_bands_usd:   # indicative per use case by complexity; edit for your market
+  low:  {pilot: 5000,  production: 20000, run_per_month: 300}
+  mid:  {pilot: 15000, production: 60000, run_per_month: 1200}
+  high: {pilot: 40000, production: 150000, run_per_month: 4000}

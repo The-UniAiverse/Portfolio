@@ -1,46 +1,37 @@
-"""AI Automation & Workflow Optimisation — workflow inventory scoring + ROI calculator."""
+"""AI Automation & Workflow Optimisation — inventory → ROI → approach → current/future state → implementation plan → PDF."""
 from __future__ import annotations
-from fastapi import APIRouter
-from pydantic import BaseModel, Field
+from fastapi import APIRouter, HTTPException
+from fastapi.responses import FileResponse
+from app.core.config import settings
+from . import engine
+from .engine import AutomationRequest, Workflow, Step
 
 router = APIRouter()
 
-class Workflow(BaseModel):
-    name: str
-    volume_per_month: int = Field(..., ge=1)
-    minutes_per_item: float = Field(..., ge=0.1)
-    people_involved: int = Field(1, ge=1)
-    hourly_cost: float = Field(25.0, description="fully loaded cost per hour, in your currency")
-    error_rate_pct: float = Field(2.0, ge=0, le=100)
-    cost_per_error: float = Field(20.0, ge=0)
-    automation_potential_pct: float = Field(60.0, ge=0, le=100, description="share of the work AI can absorb")
-    rule_based: bool = Field(False, description="True if steps are deterministic (RPA/scripts fit)")
-    needs_judgement: bool = Field(True, description="True if reading/writing/deciding is involved (LLM fit)")
+@router.get("/playbook")
+def playbook(): return engine.playbook()
 
-class ROIRequest(BaseModel):
-    currency: str = "USD"
-    build_cost: float = Field(15000, description="one-off implementation cost")
-    monthly_run_cost: float = Field(300, description="LLM/API + hosting per month")
-    workflows: list[Workflow]
+@router.post("/assess")
+def assess(req: AutomationRequest): return engine.run(req)
 
 @router.post("/roi")
-def roi(req: ROIRequest):
-    rows, total_saving = [], 0.0
-    for w in req.workflows:
-        hours = w.volume_per_month * w.minutes_per_item / 60
-        labour = hours * w.hourly_cost
-        errors = w.volume_per_month * w.error_rate_pct / 100 * w.cost_per_error
-        saving = (labour + errors) * w.automation_potential_pct / 100
-        total_saving += saving
-        approach = ("LLM agent / GenAI workflow" if w.needs_judgement and not w.rule_based else
-                    "RPA / scripted automation" if w.rule_based and not w.needs_judgement else
-                    "Hybrid: scripts + LLM for judgement steps")
-        rows.append({"workflow": w.name, "hours_per_month": round(hours, 1), "labour_cost": round(labour, 2),
-                     "error_cost": round(errors, 2), "monthly_saving": round(saving, 2), "recommended_approach": approach,
-                     "priority_score": round(saving / max(1, w.people_involved), 1)})
-    rows.sort(key=lambda r: r["monthly_saving"], reverse=True)
-    net = total_saving - req.monthly_run_cost
-    payback = round(req.build_cost / net, 1) if net > 0 else None
-    return {"currency": req.currency, "workflows": rows, "total_monthly_saving": round(total_saving, 2),
-            "net_monthly_benefit": round(net, 2), "payback_months": payback,
-            "year_one_roi_pct": round(100 * (net * 12 - req.build_cost) / req.build_cost, 1) if req.build_cost else None}
+def roi(req: AutomationRequest):
+    """Quick numbers only (website calculator) — no report files."""
+    a = engine.analyse(req); return {"workflows": a["workflows"], "totals": a["totals"]}
+
+@router.get("/report/{filename}")
+def report(filename: str):
+    p = settings.outputs_dir / "automation" / filename
+    if not p.exists() or p.suffix not in {".md", ".pdf"}: raise HTTPException(404, "not found")
+    return FileResponse(p)
+
+@router.get("/sample")
+def sample():
+    return AutomationRequest(organisation="Acme Logistics", industry="Logistics", workflows=[
+        Workflow(name="Supplier invoice processing", function="Finance", owner="AP lead", trigger="Invoice email", volume_per_month=2200, minutes_per_item=7, people_involved=3, hourly_cost=22, error_rate_pct=4, cost_per_error=35, turnaround_hours=72, rule_based=False, needs_judgement=True, data_access="api",
+                 steps=[Step(name="Receive invoice email", kind="receive", minutes=0.5), Step(name="Read and key fields", kind="read", minutes=3), Step(name="Match to PO in ERP", kind="lookup", minutes=1.5, system="ERP"), Step(name="Decide on mismatch", kind="decide", minutes=1), Step(name="Post to ERP", kind="update", minutes=0.5, system="ERP"), Step(name="Notify supplier", kind="notify", minutes=0.5)]),
+        Workflow(name="Delivery exception emails", function="Customer service", owner="CS lead", trigger="Carrier exception", volume_per_month=1500, minutes_per_item=9, people_involved=4, hourly_cost=18, error_rate_pct=3, cost_per_error=25, turnaround_hours=6, needs_judgement=True, multi_step=True, cross_system=True, data_access="api",
+                 steps=[Step(name="Read exception", kind="read", minutes=2), Step(name="Look up shipment + customer", kind="lookup", minutes=2, system="TMS/CRM"), Step(name="Decide action", kind="decide", minutes=2), Step(name="Write customer email", kind="write", minutes=2), Step(name="Update TMS", kind="update", minutes=1, system="TMS")]),
+        Workflow(name="Driver onboarding documents", function="HR", owner="HR ops", trigger="New hire", volume_per_month=60, minutes_per_item=45, people_involved=1, hourly_cost=20, error_rate_pct=5, cost_per_error=80, turnaround_hours=96, needs_judgement=True, data_access="export"),
+        Workflow(name="Weekly KPI report compilation", function="Operations", owner="Ops analyst", trigger="Monday", volume_per_month=4, minutes_per_item=240, people_involved=1, hourly_cost=30, error_rate_pct=10, cost_per_error=50, turnaround_hours=24, rule_based=True, needs_judgement=False, data_access="api"),
+        Workflow(name="Ad-hoc customs queries", function="Compliance", owner="Customs lead", trigger="Email", volume_per_month=12, minutes_per_item=60, people_involved=1, hourly_cost=35, error_rate_pct=2, cost_per_error=500, turnaround_hours=48, needs_judgement=True, data_access="none")]).model_dump()

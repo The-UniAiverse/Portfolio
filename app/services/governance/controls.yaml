@@ -1,0 +1,84 @@
+# Governance content library. Edit freely: risk tiers, controls, framework mapping, policy template, gap questions.
+version: "1.0"
+risk_tiers:
+  prohibited: {label: "Prohibited", desc: "Social scoring, manipulative techniques, untargeted biometric scraping — do not deploy."}
+  high:       {label: "High risk",  desc: "Affects rights, safety, access to services, employment, credit; biometric ID; critical infrastructure."}
+  limited:    {label: "Limited risk", desc: "Interacts with people or generates content — transparency obligations."}
+  minimal:    {label: "Minimal risk", desc: "Internal productivity, no material impact on individuals."}
+
+classification_rules:   # evaluated in order; first match wins. Fields come from the system record.
+  - {tier: prohibited, when: "manipulative_or_social_scoring"}
+  - {tier: high, when: "affects_individuals_rights or uses_biometrics_or_surveillance or safety_critical or (fully_automated_decisions and processes_personal_data)"}
+  - {tier: limited, when: "interacts_with_public or generates_content"}
+  - {tier: minimal, when: "True"}
+
+controls:   # id, title, applies_to tiers, framework refs, evidence expected
+  - {id: C01, title: "System registered in AI inventory with owner, purpose, data, users affected", tiers: [minimal, limited, high], nist: GOVERN, iso42001: "A.6.2", eu_ai_act: "Art. 49 (registration, high-risk)", evidence: "Inventory record"}
+  - {id: C02, title: "Risk classification recorded and reviewed on change", tiers: [minimal, limited, high], nist: MAP, iso42001: "6.1.2", eu_ai_act: "Art. 6", evidence: "Classification record"}
+  - {id: C03, title: "Responsible-AI policy acknowledged by system owner and users", tiers: [minimal, limited, high], nist: GOVERN, iso42001: "5.2", eu_ai_act: "Art. 4 (AI literacy)", evidence: "Policy + acknowledgement"}
+  - {id: C04, title: "Transparency: users told they interact with AI / content is AI-generated", tiers: [limited, high], nist: GOVERN, iso42001: "A.8.2", eu_ai_act: "Art. 50", evidence: "UI notice / label"}
+  - {id: C05, title: "Human oversight: ability to override, escalate, or stop", tiers: [limited, high], nist: MANAGE, iso42001: "A.9.3", eu_ai_act: "Art. 14", evidence: "Design doc, escalation path"}
+  - {id: C06, title: "Grounding, citations and refusal path for factual assistants", tiers: [limited, high], nist: MEASURE, iso42001: "A.6.2.4", eu_ai_act: "Art. 15 (accuracy)", evidence: "Prompt/config, eval results"}
+  - {id: C07, title: "Evaluation set with accuracy, robustness and out-of-scope tests; results retained", tiers: [limited, high], nist: MEASURE, iso42001: "A.6.2.4", eu_ai_act: "Art. 15", evidence: "Golden set + results"}
+  - {id: C08, title: "Bias and fairness testing across affected groups, before and after deployment", tiers: [high], nist: MEASURE, iso42001: "A.6.2.4", eu_ai_act: "Art. 10", evidence: "Bias test report"}
+  - {id: C09, title: "Data governance: provenance, quality, lawful basis, minimisation", tiers: [limited, high], nist: MAP, iso42001: "A.7", eu_ai_act: "Art. 10", evidence: "Data sheet / DPIA"}
+  - {id: C10, title: "Technical documentation (architecture, models, prompts, data, limits)", tiers: [high], nist: GOVERN, iso42001: "A.6.2.7", eu_ai_act: "Art. 11, Annex IV", evidence: "Tech doc pack"}
+  - {id: C11, title: "Logging and audit trail of inputs, outputs and decisions", tiers: [limited, high], nist: MEASURE, iso42001: "A.6.2.8", eu_ai_act: "Art. 12", evidence: "Log samples, retention config"}
+  - {id: C12, title: "Pre-production review and sign-off by an independent reviewer", tiers: [limited, high], nist: MANAGE, iso42001: "8.4", eu_ai_act: "Art. 43 (conformity)", evidence: "Review record"}
+  - {id: C13, title: "Security: prompt-injection defence, least-privilege tools, output handling", tiers: [limited, high], nist: MANAGE, iso42001: "A.6.2.6", eu_ai_act: "Art. 15", evidence: "Security test report"}
+  - {id: C14, title: "Privacy: PII detection/redaction, retention and deletion propagation", tiers: [limited, high], nist: MAP, iso42001: "A.7.4", eu_ai_act: "GDPR/DPDP alignment", evidence: "DPIA, deletion test"}
+  - {id: C15, title: "Post-deployment monitoring: quality, drift, refusal rate, complaints", tiers: [limited, high], nist: MANAGE, iso42001: "9.1", eu_ai_act: "Art. 72", evidence: "Dashboard, alert config"}
+  - {id: C16, title: "Incident response and reporting procedure for AI failures", tiers: [limited, high], nist: MANAGE, iso42001: "A.8.4", eu_ai_act: "Art. 73", evidence: "Runbook, incident log"}
+  - {id: C17, title: "Third-party model / vendor due diligence and contract terms", tiers: [minimal, limited, high], nist: GOVERN, iso42001: "A.10", eu_ai_act: "Art. 25 (value chain)", evidence: "Vendor assessment"}
+  - {id: C18, title: "Periodic review (annual minimum) and decommissioning plan", tiers: [minimal, limited, high], nist: GOVERN, iso42001: "10.1", eu_ai_act: "—", evidence: "Review calendar"}
+
+gap_questions:   # organisation-level maturity of the governance function; 0-4 scale
+  - {id: policy, text: "Approved responsible-AI policy in place and communicated?", nist: GOVERN}
+  - {id: inventory, text: "Complete, maintained inventory of AI systems and vendors?", nist: GOVERN}
+  - {id: classification, text: "Every system risk-classified with controls per tier?", nist: MAP}
+  - {id: review_board, text: "Review body with authority to approve/stop systems?", nist: MANAGE}
+  - {id: evaluation, text: "Standard evaluation and bias-testing practice?", nist: MEASURE}
+  - {id: monitoring, text: "Production monitoring and incident process for AI?", nist: MANAGE}
+  - {id: privacy, text: "DPIAs and PII controls applied to AI data flows?", nist: MAP}
+  - {id: security, text: "AI-specific security standards (OWASP LLM Top 10) applied?", nist: MANAGE}
+  - {id: training, text: "AI literacy and role-based governance training delivered?", nist: GOVERN}
+  - {id: audit, text: "AI within internal audit scope; findings tracked?", nist: GOVERN}
+
+policy_template: |
+  # Responsible AI Policy — {org}
+  *Version 1.0 · Owner: {owner} · Effective {date} · Review: annual*
+
+  ## 1. Purpose and scope
+  This policy governs the use, development and procurement of artificial intelligence at {org}, including generative AI tools, models embedded in software, and automated decision systems. It applies to all staff, contractors and suppliers acting on our behalf.
+
+  ## 2. Principles
+  - **Accountable:** every AI system has a named owner and is listed in the AI inventory.
+  - **Transparent:** people are told when they interact with AI or receive AI-generated content that matters to them.
+  - **Fair:** systems affecting individuals are tested for bias before and after deployment.
+  - **Safe and secure:** systems are evaluated, monitored and protected against misuse, including prompt injection and data leakage.
+  - **Private:** personal data is minimised, protected and deleted in line with data-protection law.
+  - **Human in control:** consequential decisions have human oversight and a route to contest outcomes.
+
+  ## 3. Approved tools and data
+  Staff may use only tools listed on the approved AI tools register. The following may never be entered into AI tools without written approval from {owner}: customer personal data, employee data, financial records not yet public, source code marked confidential, and anything classified Restricted.
+
+  ## 4. Risk classification and review
+  Every AI use case is classified (prohibited / high / limited / minimal) before build. High and limited-risk systems require a pre-production review covering accuracy, bias, privacy, security and human oversight. Prohibited uses are not built.
+
+  ## 5. Transparency and oversight
+  Customer-facing or staff-affecting AI must disclose AI involvement, cite sources where it states facts, and provide escalation to a human. Fully automated decisions with legal or similarly significant effect on individuals are not permitted without a documented exception.
+
+  ## 6. Suppliers and models
+  AI vendors are assessed for data use, model provenance, security and exit terms before onboarding. Contracts prohibit training on our data unless explicitly agreed.
+
+  ## 7. Incidents
+  Suspected AI failures (harmful, wrong or leaked outputs; misuse) are reported to {owner} within one working day and handled under the incident procedure.
+
+  ## 8. Roles
+  - Policy owner: {owner}
+  - System owners: accountable for compliance of their systems
+  - Reviewers: {reviewers}
+  - All staff: complete AI literacy training and follow this policy
+
+  ## 9. Review
+  This policy is reviewed annually and whenever regulation or the AI inventory changes materially.

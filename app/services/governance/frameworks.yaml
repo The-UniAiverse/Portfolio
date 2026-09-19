@@ -1,0 +1,74 @@
+# AI Governance frameworks & controls. Guidance aligned to public frameworks; not legal advice. Edit freely.
+version: "1.0"
+
+risk_tiers:
+  prohibited: {title: "Prohibited", colour: "#7f1d1d", meaning: "Practices such as manipulative techniques, social scoring, untargeted facial scraping. Do not deploy."}
+  high:       {title: "High risk",  colour: "#c2410c", meaning: "Affects safety or fundamental rights: employment, credit, education, essential services, biometrics, critical infrastructure, law enforcement."}
+  limited:    {title: "Limited risk", colour: "#ca8a04", meaning: "Interacts with people or generates content: chatbots, generated text/images/video, emotion recognition in non-high-risk settings."}
+  minimal:    {title: "Minimal risk", colour: "#15803d", meaning: "Internal productivity, analytics, spam filters, most back-office automation."}
+
+# Controls required per tier (cumulative: high includes limited and minimal). Each control has an id used in gap assessment.
+controls:
+  minimal:
+    - {id: INV,  title: "Registered in the AI inventory (purpose, owner, data, users affected)"}
+    - {id: POL,  title: "Covered by the responsible-AI policy and acceptable-use rules"}
+    - {id: REV1, title: "Annual review of purpose, data and performance"}
+  limited:
+    - {id: TRN,  title: "Transparency: users told they interact with AI / content is AI-generated"}
+    - {id: GRD,  title: "Grounding, citations and refusal path for factual assistants"}
+    - {id: ESC,  title: "Escalation path to a human"}
+    - {id: MON1, title: "Basic monitoring: refusal rate, complaints, drift"}
+    - {id: INJ,  title: "Prompt-injection and data-leakage controls for exposed systems"}
+  high:
+    - {id: RMS,  title: "Risk management system with documented risk assessment, updated through the lifecycle"}
+    - {id: DGV,  title: "Data governance: quality, representativeness, bias testing, provenance"}
+    - {id: DOC,  title: "Technical documentation sufficient for a regulator or auditor"}
+    - {id: LOG,  title: "Logging and audit trail of operation and decisions"}
+    - {id: HUM,  title: "Human oversight with the ability to intervene and override"}
+    - {id: ACC,  title: "Accuracy, robustness and cybersecurity testing before and after deployment"}
+    - {id: REV2, title: "Independent pre-deployment review and sign-off (Compliance + Engineering)"}
+    - {id: PMM,  title: "Post-market monitoring and serious-incident reporting"}
+    - {id: EXP,  title: "Explainability: affected individuals can get a meaningful explanation and contest outcomes"}
+  personal_data:   # added whenever personal data is processed, any tier
+    - {id: DPIA, title: "Privacy impact assessment (DPIA) and lawful basis documented"}
+    - {id: PII,  title: "PII minimisation / redaction at ingestion and on outputs"}
+    - {id: RET,  title: "Retention and deletion propagated to indexes, caches and logs"}
+  third_party:     # added whenever a vendor model/tool is used
+    - {id: VND,  title: "Vendor due diligence: data use, training on your data, provenance, incident notification"}
+    - {id: CTR,  title: "Contract covers IP, liability, audit rights and exit"}
+  agentic:         # added whenever the system takes actions via tools
+    - {id: LPT,  title: "Least-privilege tools; destructive actions gated behind human confirmation"}
+    - {id: CAP,  title: "Hard caps: iterations, cost, wall-clock; loop detection; audit of every action"}
+
+frameworks:
+  nist_ai_rmf:
+    title: "NIST AI RMF 1.0"
+    functions:
+      - {id: GOVERN,  title: "Govern",  asks: "Policies, roles, accountability, culture, third-party risk", evidence_controls: [POL, INV, VND, CTR, REV2]}
+      - {id: MAP,     title: "Map",     asks: "Context, intended use, risks and impacts identified per system", evidence_controls: [INV, RMS, DPIA]}
+      - {id: MEASURE, title: "Measure", asks: "Risks measured: accuracy, bias, robustness, security, privacy", evidence_controls: [DGV, ACC, INJ, MON1]}
+      - {id: MANAGE,  title: "Manage",  asks: "Risks prioritised and treated; monitoring, incidents, decommissioning", evidence_controls: [PMM, HUM, ESC, LOG, RET, CAP]}
+  iso_42001:
+    title: "ISO/IEC 42001:2023 AI management system"
+    clauses:
+      - {id: "4",  title: "Context of the organisation", evidence_controls: [INV]}
+      - {id: "5",  title: "Leadership & policy", evidence_controls: [POL]}
+      - {id: "6",  title: "Planning: risk & impact assessment, objectives", evidence_controls: [RMS, DPIA]}
+      - {id: "7",  title: "Support: resources, competence, awareness, documentation", evidence_controls: [DOC, TRN]}
+      - {id: "8",  title: "Operation: AI system lifecycle controls, third parties", evidence_controls: [REV2, ACC, DGV, VND, CTR, HUM, LPT]}
+      - {id: "9",  title: "Performance evaluation: monitoring, audit, management review", evidence_controls: [MON1, PMM, LOG, REV1]}
+      - {id: "10", title: "Improvement: incidents, corrective action", evidence_controls: [PMM, ESC]}
+  eu_ai_act:
+    title: "EU AI Act (structure of obligations)"
+    obligations:
+      - {id: "Art.5",  title: "Prohibited practices", tier: prohibited, evidence_controls: []}
+      - {id: "Art.9",  title: "Risk management system", tier: high, evidence_controls: [RMS]}
+      - {id: "Art.10", title: "Data and data governance", tier: high, evidence_controls: [DGV]}
+      - {id: "Art.11-12", title: "Technical documentation & record-keeping", tier: high, evidence_controls: [DOC, LOG]}
+      - {id: "Art.13", title: "Transparency to deployers", tier: high, evidence_controls: [DOC]}
+      - {id: "Art.14", title: "Human oversight", tier: high, evidence_controls: [HUM]}
+      - {id: "Art.15", title: "Accuracy, robustness, cybersecurity", tier: high, evidence_controls: [ACC, INJ]}
+      - {id: "Art.50", title: "Transparency for chatbots and generated content", tier: limited, evidence_controls: [TRN]}
+      - {id: "Art.72-73", title: "Post-market monitoring & incident reporting", tier: high, evidence_controls: [PMM]}
+
+maturity_labels: {0: "Missing", 1: "Partial", 2: "Implemented"}

@@ -1,0 +1,28 @@
+# Responsible-AI policy template. {org}, {owner}, {tools}, {review_body}, {contact} are filled from the request.
+version: "1.0"
+title: "Responsible AI Policy — {org}"
+sections:
+  - title: "1. Purpose and scope"
+    text: "This policy sets out how {org} designs, buys, deploys and uses artificial intelligence, including generative AI and AI agents. It applies to all staff, contractors and third parties acting on our behalf, and to every AI system that processes our data, interacts with our customers or influences decisions about people."
+  - title: "2. Principles"
+    bullets: ["Accountable: every AI system has a named owner.", "Lawful and fair: we comply with applicable AI, data-protection and sector regulation and test for bias where people are affected.", "Transparent: people are told when they interact with AI or receive AI-generated content.", "Safe and secure: AI systems are tested, monitored and protected against misuse, including prompt injection and data leakage.", "Human oversight: consequential decisions keep a human able to intervene and override.", "Proportionate: controls scale with risk."]
+  - title: "3. Approved tools and how to request new ones"
+    text: "Approved AI tools: {tools}. Any other tool, model, plugin or agent must be requested through {owner} and assessed before use. Personal accounts must not be used for company work."
+  - title: "4. Data you may and may not use with AI"
+    bullets: ["Public and internal-general data: allowed in approved tools.", "Confidential data (contracts, financials, customer records): only in tools approved for that classification, never in consumer accounts.", "Restricted data (personal data of employees/customers, health, credentials, secrets): only in systems that passed a privacy assessment, with minimisation and redaction.", "Never enter passwords, keys, card numbers or government IDs into any AI tool."]
+  - title: "5. Risk classification and required controls"
+    text: "Every AI use case is classified as prohibited, high, limited or minimal risk before build or purchase, following the framework maintained by {owner}. Controls required per class are listed in the AI Control Standard and verified before production."
+  - title: "6. Review before production"
+    text: "No AI system reaches customers, staff-affecting decisions or external content without a documented review by {review_body} covering privacy, security, bias, accuracy and explainability. High-risk systems require independent sign-off."
+  - title: "7. Transparency and disclosure"
+    text: "Chatbots and assistants identify themselves as AI. AI-generated content published externally is labelled or carries provenance metadata. Customers can request a human."
+  - title: "8. Human oversight and escalation"
+    text: "Workflows using AI define who reviews outputs, when sampling or approval is required, and how to escalate. Agents that can take actions operate with least-privilege tools and human confirmation for consequential or irreversible actions."
+  - title: "9. Incidents"
+    text: "Wrong or harmful outputs, data leaks, suspected manipulation or outages involving AI are reported to {contact} within one business day. Serious incidents follow the corporate incident process and, where required, regulatory notification."
+  - title: "10. Third parties"
+    text: "AI vendors are assessed for data use (including whether they train on our data), security, provenance, incident notification and exit terms before contracting. Contracts cover IP, liability and audit rights."
+  - title: "11. Roles"
+    bullets: ["Policy owner: {owner}.", "Review body: {review_body}.", "System owners: accountable for their systems' inventory entry, controls and monitoring.", "All staff: use approved tools, protect data, verify outputs, report incidents."]
+  - title: "12. Review"
+    text: "This policy is reviewed at least annually and whenever regulation, tooling or risk changes materially. Version {version}, approved {date}."
