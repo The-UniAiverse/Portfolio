@@ -40,7 +40,7 @@ slides:
 - type: demo
   title: "Demo 2 · The confident wrong answer"
   bullets: ["Closed-book: ask about your company", "Open-book: same question with the right page on the desk", "Same model. The difference is the library."]
-  command: "python demos/demo2_hallucination.py"
+  command: "python demos/02_hallucination.py"
   notes: "If a key is configured, ask live about the client's own policy. If not, the recorded exchange shows the identical pattern."
 
 - type: table
@@ -69,7 +69,7 @@ slides:
 - type: demo
   title: "Demo 1 · What does one question cost?"
   bullets: ["System + context + history + question → input", "Answer → output", "Three tiers, with and without caching", "The two explosions: history and flagship-for-everything"]
-  command: "python demos/demo1_tokens_and_cost.py"
+  command: "python demos/01_tokens_and_cost.py"
   notes: "Whiteboard the formula before running the script. Ask: which of these lines does your dashboard show?"
 
 - type: lab
@@ -102,7 +102,7 @@ slides:
 - type: demo
   title: "Demo 3 · Basic vs Advanced, one change at a time"
   bullets: ["Fixed chunks → heading chunks + prefix", "+ hybrid search (RRF)", "+ reranking (drops the superseded draft)", "Then a grounded answer, and a refusal"]
-  command: "python demos/demo3_rag_basic_vs_advanced.py"
+  command: "python demos/03_rag_basic_vs_advanced.py"
   notes: "Watch the scoreboard go 3 → 5. Point at the DRAFT document being demoted by the reranker — 'old cards survive' unless you handle it."
 
 - type: bullets
@@ -118,7 +118,7 @@ slides:
 - type: demo
   title: "Demo 4 · The router"
   bullets: ["Six questions in, three backends answer", "Same words, different machinery"]
-  command: "python demos/demo4_hybrid_router.py"
+  command: "python demos/04_router.py"
   notes: "Ask the room to classify five of their own questions before running."
 
 - type: lab
@@ -161,7 +161,7 @@ slides:
 - type: demo
   title: "Demo 5 · An agent with rails"
   bullets: ["Scenario 1: reads, checks policy, asks a human, acts", "Scenario 2: the human says no — the agent stops with a draft", "Scenario 3: the model repeats itself — loop detection ends it cleanly"]
-  command: "python demos/demo5_agent_with_rails.py"
+  command: "python demos/05_agent.py"
   notes: "Point at the gate: issue_refund is the only tool that changes the world, and it's the only one behind a human."
 
 - type: bullets
@@ -187,7 +187,7 @@ slides:
 - type: demo
   title: "Demo 6 · Token optimisation and smart routing"
   bullets: ["Baseline → caching → history trim → k=5 → output cap", "All-cheap vs all-agentic vs routed", "Sort your questions before you spend"]
-  command: "python demos/demo6_token_optimisation.py"
+  command: "python demos/06_routing_economics.py"
   notes: "Order of payoff: caching → routing → batch → output limits → rerank 50 not 500 → quantised indexes."
 
 - type: table
@@ -209,7 +209,7 @@ slides:
 - type: demo
   title: "Demo 7 · From numbers to a roadmap"
   bullets: ["Two workflows → approach, saving, payback", "Three use cases → quadrants → three phases"]
-  command: "python demos/demo7_roi_and_plan.py"
+  command: "python demos/07_roi_and_plan.py"
   notes: "Then show the PDF the tool produces — that's the deliverable a client receives."
 
 - type: bullets

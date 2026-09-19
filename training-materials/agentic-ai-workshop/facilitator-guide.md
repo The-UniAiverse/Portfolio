@@ -2,7 +2,7 @@
 
 This is the run sheet. Slides are in `slides/slides.md` (PDF: `slides/slides.pdf`); demos in `demos/`; exercise sheets in `exercises.md`. Every demo runs offline; with an API key in the repo `.env` the same commands use a real model.
 
-**One week before:** run `demos/run_all.sh` on the laptop you will use. Collect 20 client documents into `demos/sample_docs/` (Markdown or plain text; headings matter). Print `exercises.md` per table and the five handout cards. Create tool logins for the room. Check model names/prices and write the date on slide 8.
+**One week before:** run `demos/run_all.py` on the laptop you will use. Collect 20 client documents into `demos/sample_docs/` (Markdown or plain text; headings matter). Print `exercises.md` per table and the five handout cards. Create tool logins for the room. Check model names/prices and write the date on slide 8.
 
 **Room:** tables of 3–4, mixed roles. Projector + your terminal visible. Flipchart. Wi-Fi tested with 20 devices.
 
