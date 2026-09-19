@@ -1,0 +1,116 @@
+# uniAI — the website assistant's knowledge base. Edit freely; no code or API key needed.
+# Each entry: intent id, trigger phrases (matched loosely), answer, optional link + quick replies.
+# Keep answers to 2-4 sentences. The bot cites this file, never invents.
+
+bot:
+  name: uniAI
+  greeting: "Hi, I'm uniAI 👋 I can explain what uniAIverse does, help you book a call, point you to the free demos, or get you into the uniAI Quest playground. What would you like?"
+  fallback: "I don't have that one yet. I can help with our services, pricing tiers, booking a call, the free AI Readiness Audit, the Course Finder, or uniAI Quest. Or ask a human: {contact_email}."
+  quick_replies: ["What does uniAIverse do?", "Book a call", "Free AI readiness check", "Which course is right for me?", "Play uniAI Quest", "Pricing"]
+  contact_email: info@uniaiverse.ai
+  calendly_url: https://calendly.com/uniaiverse2025/30min
+  chatgpt_url: ""   # optional: link to a public ChatGPT GPT named uniAI for longer conversations
+
+intents:
+  - id: about
+    triggers: [what is uniaiverse, what do you do, about, who are you, company, services, what services, offer]
+    answer: "uniAIverse is an AI consulting and training studio. We do AI strategy and readiness audits, training and mentorship (from AI for All to Agentic AI Engineer), GenAI applications like chatbots and RAG systems, automation, MLOps, and AI governance. Three owners: Sarfi (strategy, data, MLOps, training), Harsh (GenAI applications) and Sahil (engineering)."
+    link: {label: "See all services", url: "{site}/services"}
+    quick_replies: ["Book a call", "Pricing", "Training courses"]
+
+  - id: book
+    triggers: [book, schedule, appointment, call, meeting, talk to someone, consultation, calendly, slot, demo call]
+    answer: "You can book a free 30-minute call directly — pick any slot that suits you. We'll cover what you're trying to do with AI and which service or course fits."
+    link: {label: "Book a 30-min call", url: "{calendly}"}
+    quick_replies: ["What happens on the call?", "Pricing"]
+
+  - id: call_expectation
+    triggers: [what happens on the call, how does the call work, prepare for call]
+    answer: "It's a discovery chat, not a sales pitch: your goals, your data and systems, and what a first step would look like. Bring one problem you'd like AI to solve. If useful, we'll suggest the free readiness snapshot beforehand."
+    link: {label: "Book now", url: "{calendly}"}
+
+  - id: audit
+    triggers: [readiness, audit, assessment, how ready, maturity, score, free check, snapshot]
+    answer: "The AI Readiness Audit scores your organisation across 10 domains (strategy, data, platform, GenAI, people, delivery, governance, security, finance, value). The free snapshot is 25 questions and 10 minutes; paid tiers go up to 348 questions with interviews, benchmarks and a full report."
+    link: {label: "Take the free snapshot", url: "{api}/"}
+    quick_replies: ["Audit pricing", "Book a call"]
+
+  - id: course_finder
+    triggers: [which course, course for me, learning path, what should i learn, recommend course, student, career, cv, upskill, training for me]
+    answer: "Try the Course Finder: answer six questions or paste your CV and it recommends a track, your first course, and why. The free result shows the recommendation; the Professional tier adds a full personalised path, gap analysis, week-by-week plan and mentoring."
+    link: {label: "Open the Course Finder", url: "{api}/course-finder"}
+    quick_replies: ["Training courses", "Play uniAI Quest"]
+
+  - id: training
+    triggers: [training, courses, workshop, mentorship, curriculum, learn ai, classes, batch, bootcamp, academy]
+    answer: "We run 23 courses across 10 tracks: AI for All, AI for Business, Leadership, Sales, Marketing, AI Engineer, GenAI Engineer, Agentic AI, Data & MLOps, and Governance — plus the 1-2 day Agentic AI & LLM Business Workshop. Formats: workshops, cohorts, self-paced, executive briefings."
+    link: {label: "Browse the curriculum", url: "{api}/api/training/curriculum"}
+    quick_replies: ["Which course is right for me?", "Agentic AI workshop", "Training pricing"]
+
+  - id: workshop
+    triggers: [agentic workshop, agentic ai workshop, llm workshop, 1 day workshop, 2 day workshop, business workshop, rag workshop]
+    answer: "The Agentic AI & LLM Business Workshop (1 or 2 days) covers how LLMs and tokens work, costing, RAG → advanced → hybrid → agentic RAG, the new generation of models and how to evaluate them, token optimisation, and a strategic playbook with ROI. Everyone leaves with a costed use-case plan."
+    link: {label: "Workshop outline", url: "{api}/api/training/course/agentic-ai-workshop"}
+    quick_replies: ["Book a call", "Training pricing"]
+
+  - id: quest
+    triggers: [quest, playground, quiz, game, interview prep, practice, play, test my knowledge, interview]
+    answer: "uniAI Quest is our AI interview playground: quizzes on AI, GenAI, LLMs, tokens, prompting, RAG, agents, MLOps, ethics and new models, with XP, levels and interview challenges. Free tier gives 3 quizzes a day; Gold and Platinum include dedicated mentor time."
+    link: {label: "Play uniAI Quest", url: "{api}/quest"}
+    quick_replies: ["Quest tiers", "Which course is right for me?"]
+
+  - id: quest_tiers
+    triggers: [quest tiers, quest pricing, quest plans, mentor time, platinum quest, gold quest]
+    answer: "Quest tiers (monthly): Free · Bronze ₹499 (all topics, full news feed) · Silver ₹999 (interview challenges, mock sets) · Gold ₹3,999 (2h/month mentor time) · Platinum ₹9,999 (4h/month incl. a full mock interview and CV review). Mentor slots are mutually agreed."
+    link: {label: "See Quest tiers", url: "{api}/api/quest/tiers"}
+
+  - id: pricing
+    triggers: [pricing, price, cost, how much, fees, tiers, bronze, silver, gold, platinum, quote]
+    answer: "Every service has Bronze / Silver / Gold / Platinum tiers sized for startups through enterprises, plus a free tier for the audit and a Professional tier for individuals. For example, the AI Readiness Audit runs from free (snapshot) to $1,500 (Bronze) up to enterprise engagements. Tell me the service and I'll point you to the exact tier."
+    link: {label: "Pricing and tiers", url: "{api}/api/pricing/tiers"}
+    quick_replies: ["Audit pricing", "Training pricing", "Book a call"]
+
+  - id: audit_pricing
+    triggers: [audit pricing, audit cost, readiness price]
+    answer: "AI Readiness Audit: Free snapshot (25 questions) · Bronze $1,500, 1 week, small business · Silver $6,000, 2-3 weeks, medium · Gold $18,000, 4-6 weeks, large, with evidence validation · Platinum $45,000+, enterprise, multi-BU with board deck. INR quotes available."
+    link: {label: "Audit tiers", url: "{api}/api/readiness_audit/tiers"}
+
+  - id: training_pricing
+    triggers: [training pricing, course cost, training price, workshop price, how much is training]
+    answer: "Training: Professional (individual) $900 for an 8-week mentored track · Bronze $2,500 one-day workshop up to 20 people · Silver $7,500 hands-on 4-half-day course · Gold $20,000 six-week cohort · Platinum $60,000 three-month AI Academy. INR quotes available."
+    link: {label: "Training tiers", url: "{api}/api/pricing/tiers?service=training"}
+
+  - id: demos
+    triggers: [demo, demos, try, playground of ai, examples, show me, hands on, what can i try]
+    answer: "Three things you can try right now, free: the AI Readiness snapshot (10 minutes), the Course Finder (six questions or your CV), and uniAI Quest (quizzes and interview challenges). No sign-up needed for the free tiers."
+    link: {label: "Free readiness snapshot", url: "{api}/"}
+    quick_replies: ["Which course is right for me?", "Play uniAI Quest"]
+
+  - id: payment
+    triggers: [pay, payment, upi, card, neft, rtgs, imps, invoice, bank transfer, razorpay]
+    answer: "We accept cards and netbanking for any amount, UPI for amounts under ₹2,000, and NEFT / RTGS / IMPS bank transfer for larger amounts. Checkout is through Razorpay; bank transfers get a reference number and are confirmed within one working day."
+    link: {label: "Payment options", url: "{api}/api/payments/catalog"}
+
+  - id: rag
+    triggers: [rag, retrieval, chatbot on documents, knowledge bot, chat with documents]
+    answer: "RAG (retrieval-augmented generation) means fetching the right pages from your documents before the model answers — so it cites sources and says 'not found' instead of inventing. We build RAG systems (Harsh's team) and teach a no-code 4-half-day course where you build your own."
+    link: {label: "RAG course", url: "{api}/api/training/course/rag-nontechnical"}
+
+  - id: team
+    triggers: [team, sarfi, harsh, sahil, who owns, founder, people]
+    answer: "Sarfi leads AI strategy, consulting, data, MLOps and training. Harsh leads GenAI applications — LLM integrations, chatbots, RAG. Sahil owns the development stack and engineering foundation."
+    link: {label: "About us", url: "{site}/#about"}
+
+  - id: contact
+    triggers: [contact, email, phone, reach, whatsapp, location, where are you]
+    answer: "Email {contact_email} or book a call directly. We work with clients in India and internationally, remote-first."
+    link: {label: "Book a call", url: "{calendly}"}
+
+  - id: news
+    triggers: [news, latest ai, updates, what's new, new models, astra, fable]
+    answer: "uniAI Quest includes a curated AI news feed — every item is reviewed and approved by our team before it appears, so it stays signal, not noise. Headlines are free; summaries are in Bronze and above."
+    link: {label: "AI news feed", url: "{api}/api/quest/news"}
+
+  - id: thanks
+    triggers: [thanks, thank you, great, cool, ok, bye]
+    answer: "Anytime. If you want a human, book a call or email {contact_email}."

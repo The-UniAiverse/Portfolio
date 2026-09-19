@@ -22,3 +22,10 @@ All framework, curriculum, pricing and blueprint changes are recorded here. Bump
 
 ## 2026-09-15 — v2.1
 - Course Finder: `POST /api/training/course-finder` (free vs paid depth), sample profiles, CV text parsing, `/course-finder` page.
+
+## 2026-09-19 — v2.2
+- **uniAI Quest**: quiz engine (136 questions, 10 topics, 3 difficulty levels), interview challenges, XP/levels, daily limits per tier, curated news pipeline (RSS → pending → admin approval), question drafts from news, mentor requests. Pages `/quest`, `/admin`.
+- **Payments**: Razorpay orders, signature verification, webhook, Smart Collect bank transfer, UPI-under-limit rule, test mode, tier grants. Page `/pay`.
+- **uniAI bot**: knowledge-base assistant for the website (replaces Orbi); `website-patch/` with `UniAIBot.tsx`, layout change, rewrites example, package.json fix.
+- **Workshop**: Agentic AI & LLM Economics (1/2 days) trainer plan + exercises; added to business, leadership and GenAI engineer tracks.
+- **Repo standard**: `features/*` → `dev` → `main` with backup-before-merge, CI on all branches, PR template, deploy workflow, Caddy/Compose for api.uniaiverse.ai, daily news refresh action.

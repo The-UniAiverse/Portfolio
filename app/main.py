@@ -37,3 +37,15 @@ def index():
 @app.get("/course-finder", include_in_schema=False)
 def course_finder_page():
     return FileResponse(UI / "course-finder.html")
+
+@app.get("/quest", include_in_schema=False)
+def quest_page():
+    return FileResponse(UI / "quest.html")
+
+@app.get("/pay", include_in_schema=False)
+def pay_page():
+    return FileResponse(UI / "pay.html")
+
+@app.get("/admin", include_in_schema=False)
+def admin_page():
+    return FileResponse(UI / "admin.html")

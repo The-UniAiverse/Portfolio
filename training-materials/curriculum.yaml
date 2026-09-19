@@ -41,11 +41,11 @@ tracks:
   - id: business
     title: AI for Business
     audience: Managers, analysts, function heads
-    courses: [ai-for-all, ai-for-business, llm-cost, ai-use-case-design, rag-nontechnical]
+    courses: [ai-for-all, ai-for-business, agentic-ai-workshop, llm-cost, ai-use-case-design, rag-nontechnical]
   - id: leadership
     title: AI Leadership & Board
     audience: CXOs, board members, founders
-    courses: [ai-executive-briefing, ai-for-business, ai-governance-leaders, llm-cost]
+    courses: [ai-executive-briefing, agentic-ai-workshop, ai-for-business, ai-governance-leaders, llm-cost]
   - id: sales
     title: AI for Sales
     audience: Sales reps, SDRs, sales leaders
@@ -61,7 +61,7 @@ tracks:
   - id: genai_engineer
     title: GenAI Engineer
     audience: Developers building LLM applications
-    courses: [genai-engineer, rag-advanced, agentic-engineer, ai-evals, llm-cost, ai-security-builders]
+    courses: [agentic-ai-workshop, genai-engineer, rag-advanced, agentic-engineer, ai-evals, llm-cost, ai-security-builders]
   - id: data_mlops
     title: Data & MLOps
     audience: Data engineers, ML engineers, platform teams
@@ -646,6 +646,35 @@ courses:
     - {title: "Auditing AI", hours: 4, topics: [audit programme, evidence, testing bias and robustness, reporting], lab: "Audit plan"}
   assessment: "Gap assessment + remediation plan for the organisation"
   folder: ai-governance-practitioner
+
+# ── Flagship workshop ─────────────────────────────────────────────────────────
+- id: agentic-ai-workshop
+  title: "Agentic AI & LLM Economics — Working Workshop (1 or 2 days)"
+  version: "1.0"
+  status: active
+  level: 2
+  owner: Sarfi
+  last_reviewed: "2026-09-19"
+  audience: Business leaders, product owners, analysts and engineers together — mixed rooms work
+  hours: 16
+  formats: [workshop, cohort, executive_briefing]
+  tiers: [bronze, silver, gold, platinum]
+  prerequisites: []
+  certification: practitioner
+  outcomes:
+    - Explain how LLMs, tokens and context windows work and what they cost, in numbers
+    - Choose between Basic, Advanced, Hybrid and Agentic RAG for a real problem — and know when not to go agentic
+    - Use new-generation models (frontier reasoning models, e.g. Claude Fable 5.1 class, and whatever ships next) deliberately: tiering, routing, prompt caching, token optimisation
+    - Build a working agent with tools, budgets and a human-approval gate in the room
+    - Leave with a costed, ROI-backed 90-day plan for one business workflow
+  modules:
+    - {title: "Day 1 AM — How it actually works", hours: 4, topics: [prediction machine, hallucination, tokens and context, structured output, tool calling, live cost of one question, model generations and what 'reasoning' models change], lab: "Hour-one win + cost one real question by hand"}
+    - {title: "Day 1 PM — RAG ladder", hours: 4, topics: [Basic → Advanced → Hybrid → Agentic, chunking and contextual prefix, hybrid search + reranking, routing documents/SQL/live APIs, evaluation], lab: "Build a grounded assistant on the client's documents; before/after score"}
+    - {title: "Day 2 AM — Agents that don't run away", hours: 4, topics: [ReAct loop, tools and MCP, memory, budgets and termination, human approval for consequential actions, injection and permissions, when an agent is the wrong answer], lab: "Build an agent with 3 tools, a cap and an approval gate"}
+    - {title: "Day 2 PM — Strategy, optimisation and ROI", hours: 4, topics: [token optimisation (caching, routing, batch, output limits), model tiering, use-case prioritisation, workflow ROI model, governance quick start, 90-day plan], lab: "Cost + ROI sheet for one workflow; present the plan"}
+  assessment: "Working agent demo + costed 90-day plan presented to the room"
+  folder: agentic-ai-workshop
+  files: [WORKSHOP.md, exercises.md]
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Emerging topics watchlist — reviewed quarterly; promoted to courses/modules when stable.

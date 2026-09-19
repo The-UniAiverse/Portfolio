@@ -1,0 +1,9 @@
+# Automatic HTTPS. Point DNS: api.uniaiverse.ai → this server's IP.
+api.uniaiverse.ai {
+    reverse_proxy api:8000
+    encode gzip
+    header {
+        Strict-Transport-Security "max-age=31536000"
+        X-Content-Type-Options nosniff
+    }
+}

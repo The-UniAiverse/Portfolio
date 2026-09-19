@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>uniAIverse admin</title>
+<style>body{font-family:Georgia,serif;max-width:900px;margin:0 auto;padding:20px;color:#14213d;background:#fbfaf7}input,textarea{width:100%;padding:8px;font:inherit}button{font:inherit;padding:8px 12px;margin:4px 4px 0 0;cursor:pointer}.it{border:1px solid #d9d6cf;border-radius:8px;padding:12px;margin:10px 0;background:#fff}.hint{color:#5b6170;font-size:.9rem}h2{margin-top:28px}</style></head>
+<body><h1>uniAIverse admin</h1>
+<p><label>Admin token <input id="tok" type="password" placeholder="ADMIN_TOKEN from .env"></label></p>
+<h2>News queue <button onclick="refresh()">Fetch sources now</button> <button onclick="queue()">Reload queue</button></h2>
+<div id="queue"></div>
+<h2>Add news manually</h2>
+<div class="it"><input id="nt" placeholder="Title"><input id="nu" placeholder="URL"><textarea id="ns" placeholder="One-paragraph summary"></textarea><button onclick="addNews()">Add (auto-approved)</button></div>
+<h2>Question drafts from news</h2><div id="drafts"></div>
+<h2>Mentor requests</h2><div id="mentor"></div>
+<h2>Unanswered bot questions</h2><div id="unans"></div>
+<h2>Mark bank transfer paid</h2><div class="it"><input id="pid" placeholder="payment reference"><button onclick="paid()">Mark paid</button></div>
+<h2>Set a user's Quest tier</h2><div class="it"><input id="su" placeholder="user id"><input id="st" placeholder="tier (free/bronze/silver/gold/platinum)"><button onclick="setTier()">Set</button></div>
+<script>
+const $ = id => document.getElementById(id), H = () => ({'Content-Type':'application/json','X-Admin-Token': $('tok').value});
+const j = (u,o={}) => fetch(u,{...o, headers:H()}).then(r=>r.json());
+try{ $('tok').value = localStorage.getItem('admin_tok')||''; }catch(e){} $('tok').onchange = () => { try{localStorage.setItem('admin_tok',$('tok').value)}catch(e){} };
+async function queue(){ const q = await j('/api/quest/admin/news/queue?status=pending'); $('queue').innerHTML = Array.isArray(q) && q.length ? q.map(n => `<div class="it"><b>${n.title}</b> <span class="hint">${n.source}</span><br><a href="${n.url}" target="_blank">${n.url}</a><p class="hint">${n.summary||''}</p>
+  <button onclick="mod('${n.id}','approve')">Approve</button><button onclick="mod('${n.id}','reject')">Reject</button><button onclick="draft('${n.id}')">Draft quiz question</button></div>`).join('') : `<p class="hint">${q.detail || 'Queue empty.'}</p>`; }
+async function refresh(){ const r = await j('/api/quest/admin/news/refresh',{method:'POST'}); alert(JSON.stringify(r)); queue(); }
+async function mod(id,a){ await j(`/api/quest/admin/news/${id}/${a}`,{method:'POST'}); queue(); }
+async function draft(id){ const r = await j(`/api/quest/admin/news/${id}/draft-question`,{method:'POST'}); alert(r.detail || 'Draft created — review below'); drafts(); }
+async function addNews(){ const r = await j('/api/quest/admin/news',{method:'POST',body:JSON.stringify({title:$('nt').value,url:$('nu').value,summary:$('ns').value})}); alert(JSON.stringify(r)); }
+async function drafts(){ const d = await j('/api/quest/admin/drafts'); $('drafts').innerHTML = Array.isArray(d)&&d.length ? d.map(x=>`<div class="it"><pre style="white-space:pre-wrap">${x.question}</pre><span class="hint">${x.topic} · ${x.source_url||''}</span><br><button onclick="appr(${x.id})">Approve into question bank</button></div>`).join('') : `<p class="hint">${d.detail||'No drafts.'}</p>`; }
+async function appr(id){ const r = await j(`/api/quest/admin/drafts/${id}/approve`,{method:'POST'}); alert(JSON.stringify(r)); drafts(); }
+async function mentor(){ const m = await j('/api/quest/admin/mentor-requests'); $('mentor').innerHTML = Array.isArray(m)&&m.length ? m.map(x=>`<div class="it">${x.user_id} · <b>${x.tier}</b> · ${x.topic} · ${x.preferred_slots} · ${x.status}</div>`).join('') : `<p class="hint">${m.detail||'None.'}</p>`; }
+async function unans(){ const u = await j('/api/bot/admin/unanswered'); $('unans').innerHTML = Array.isArray(u)&&u.length ? u.map(x=>`<div class="it">${x.question} <span class="hint">×${x.n}</span></div>`).join('') : `<p class="hint">${u.detail||'Nothing unanswered.'}</p>`; }
+async function paid(){ alert(JSON.stringify(await j(`/api/payments/admin/mark-paid/${$('pid').value}`,{method:'POST'}))); }
+async function setTier(){ alert(JSON.stringify(await j('/api/quest/admin/set-tier',{method:'POST',body:JSON.stringify({user_id:$('su').value,tier:$('st').value})}))); }
+queue(); drafts(); mentor(); unans();
+</script></body></html>

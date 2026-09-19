@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>uniAI Quest — Play. Learn. Interview. Lead in AI.</title>
+<style>
+  :root{--ink:#14213d;--paper:#fbfaf7;--line:#d9d6cf;--accent:#0f766e;--gold:#b7791f;--muted:#5b6170;--bad:#b91c1c;--ok:#15803d}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;background:var(--paper);color:var(--ink);line-height:1.5}
+  header{max-width:820px;margin:0 auto;padding:26px 20px 10px}
+  h1{margin:0;font-size:2rem;font-weight:600} h1 span{color:var(--accent)}
+  header p{margin:4px 0 0;color:var(--muted)}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0}
+  .pill{border:1px solid var(--line);border-radius:20px;padding:6px 12px;background:#fff;font-size:.9rem}
+  nav{display:flex;gap:4px;max-width:820px;margin:0 auto;padding:0 20px;border-bottom:1px solid var(--line)}
+  nav button{font:inherit;background:none;border:0;padding:10px 12px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent}
+  nav button.on{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+  main{max-width:820px;margin:0 auto;padding:16px 20px 80px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+  .card{border:1px solid var(--line);border-radius:10px;padding:14px;background:#fff}
+  .card.locked{opacity:.55}
+  .card h3{margin:0 0 4px;font-size:1.05rem} .card p{margin:0;color:var(--muted);font-size:.9rem}
+  .card button{margin-top:10px}
+  button.primary{font:inherit;background:var(--accent);color:#fff;border:0;border-radius:6px;padding:10px 16px;cursor:pointer}
+  button.ghost{font:inherit;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px 14px;cursor:pointer}
+  .q{padding:14px 0;border-top:1px solid var(--line)} .q p{margin:0 0 8px;font-weight:600}
+  .opt{display:block;border:1px solid var(--line);border-radius:6px;padding:9px 12px;margin:6px 0;background:#fff;cursor:pointer}
+  .opt input{margin-right:8px} .opt.ok{border-color:var(--ok);background:#ecfdf5} .opt.bad{border-color:var(--bad);background:#fef2f2}
+  .why{font-size:.9rem;color:var(--muted);margin:6px 0 0}
+  .xp{font-size:2.4rem;font-weight:600;line-height:1}
+  .news{padding:12px 0;border-top:1px solid var(--line)} .news a{color:var(--accent)} .news small{color:var(--muted)}
+  .tier{border:1px solid var(--line);border-radius:10px;padding:16px;background:#fff}
+  .tier.hot{border-color:var(--gold);box-shadow:0 0 0 2px #f6e7c9}
+  .tier .price{font-size:1.5rem;font-weight:600} .tier ul{padding-left:18px;margin:8px 0;font-size:.92rem}
+  .hint{color:var(--muted);font-size:.9rem}
+  .lock{background:#f1efe8;border-radius:8px;padding:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>uni<span>AI</span> Quest</h1>
+  <p>Play. Learn. Interview. Lead in AI. — quizzes, interview challenges and a curated feed of what changed this week.</p>
+  <div class="bar">
+    <span class="pill" id="who">Guest</span><span class="pill" id="lvl">Rookie · 0 XP</span><span class="pill" id="tierpill">Free</span>
+    <span class="hint" id="today"></span>
+  </div>
+</header>
+<nav>
+  <button class="on" data-t="play">Play</button><button data-t="interview">Interview</button><button data-t="news">News</button><button data-t="progress">Progress</button><button data-t="tiers">Tiers</button>
+</nav>
+<main>
+  <section id="play"><div class="grid" id="topics"></div><div id="quiz"></div></section>
+  <section id="interview" hidden></section>
+  <section id="news" hidden></section>
+  <section id="progress" hidden></section>
+  <section id="tiers" hidden><div class="grid" id="tiergrid"></div></section>
+</main>
+<script>
+const $ = id => document.getElementById(id), API = location.origin + '/api/quest';
+let uid = null; try { uid = localStorage.getItem('quest_uid'); if(!uid){ uid = 'u_' + Math.random().toString(36).slice(2,10); localStorage.setItem('quest_uid', uid);} } catch(e){ uid = 'guest'; }
+const j = (u, o) => fetch(u, o).then(r => r.json().then(b => ({ok: r.ok, status: r.status, b})));
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => { document.querySelectorAll('nav button').forEach(x => x.classList.remove('on')); b.classList.add('on');
+  document.querySelectorAll('main section').forEach(s => s.hidden = s.id !== b.dataset.t); ({play: topics, interview, news, progress, tiers})[b.dataset.t](); });
+
+async function head(){ const {b} = await j(`${API}/progress?user_id=${uid}`); $('who').textContent = uid; $('lvl').textContent = `${b.level.title} · ${b.level.xp} XP`;
+  $('tierpill').textContent = b.entitlements.title; $('today').textContent = `${b.quizzes_today}/${b.entitlements.quizzes_per_day} quizzes today`; }
+async function topics(){ head(); const {b} = await j(`${API}/topics?user_id=${uid}`); $('quiz').innerHTML = '';
+  $('topics').innerHTML = b.topics.map(t => `<div class="card ${t.locked?'locked':''}"><h3>${t.emoji} ${t.title}</h3><p>${t.blurb}</p><p class="hint">${t.questions} questions</p>
+    <button class="${t.locked?'ghost':'primary'}" onclick="${t.locked?"go('tiers')":`play('${t.id}')`}">${t.locked?'Bronze+':'Play 5'}</button></div>`).join(''); }
+function go(t){ document.querySelector(`nav button[data-t=${t}]`).click(); }
+async function play(topic){ const r = await j(`${API}/quiz?topic=${topic}&user_id=${uid}&n=5`); $('topics').innerHTML = '';
+  if(!r.ok){ $('quiz').innerHTML = `<div class="lock">${r.b.detail}</div><p><button class="ghost" onclick="topics()">Back</button> <button class="primary" onclick="go('tiers')">See tiers</button></p>`; return; }
+  const q = r.b; $('quiz').innerHTML = `<h2>${q.emoji} ${q.title}</h2>` + q.questions.map((x,i) => `<div class="q" id="q_${x.id}"><p>${i+1}. ${x.q} <small class="hint">· level ${x.d}</small></p>` +
+    x.options.map((o,k) => `<label class="opt"><input type="radio" name="${x.id}" value="${k}">${o}</label>`).join('') + '</div>').join('') +
+    `<p><button class="primary" id="sub">Check answers</button> <button class="ghost" onclick="topics()">Back</button></p>`;
+  $('sub').onclick = async () => { const answers = {}; q.questions.forEach(x => { const s = document.querySelector(`input[name="${x.id}"]:checked`); if(s) answers[x.id] = +s.value; });
+    const {b} = await j(`${API}/quiz/submit`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({user_id: uid, topic, answers})});
+    b.results.forEach(rs => { const opts = document.querySelectorAll(`#q_${rs.id} .opt`); opts[rs.answer].classList.add('ok'); if(!rs.correct && rs.your_answer != null) opts[rs.your_answer].classList.add('bad');
+      $(`q_${rs.id}`).insertAdjacentHTML('beforeend', `<p class="why">${rs.correct?'✅':'❌'} ${rs.why}</p>`); });
+    const nextTxt = b.level.next ? ` · ${b.level.next.xp - b.level.xp} XP to ${b.level.next.title}` : '';
+    const card = document.createElement('div'); card.className = 'card';
+    card.innerHTML = `<div class="xp">+${b.xp_earned} XP</div><p>${b.score}/${b.total} correct${b.perfect?' — perfect, bonus applied':''}. You're <b>${b.level.title}</b>${nextTxt}.</p>
+      <button class="primary" onclick="play('${topic}')">Play again</button> <button class="ghost" onclick="topics()">Other topics</button>`;
+    $('sub').replaceWith(card); head(); };
+}
+async function interview(){ const {b} = await j(`${API}/challenges?user_id=${uid}`); const s = $('interview');
+  if(b.locked){ s.innerHTML = `<h2>Interview challenges</h2><div class="lock">${b.unlock}</div>` + b.preview.map(c => `<div class="q"><p>${c.prompt}</p><span class="hint">${c.topic} · level ${c.level} · model answer and "what interviewers listen for" in Silver+</span></div>`).join('') + `<p><button class="primary" onclick="go('tiers')">See tiers</button></p>`; return; }
+  s.innerHTML = `<h2>Interview challenges</h2>` + b.challenges.map(c => `<div class="q"><p>${c.prompt}</p><span class="hint">${c.topic} · level ${c.level}</span><details><summary>Interviewers listen for</summary><ul>${c.listen_for.map(x=>`<li>${x}</li>`).join('')}</ul><p><b>Model answer.</b> ${c.model_answer}</p>
+    <p>Rate yourself <select id="r_${c.id}">${[1,2,3,4,5].map(n=>`<option>${n}</option>`).join('')}</select> <button class="ghost" onclick="subC('${c.id}')">Submit</button></p></details></div>`).join(''); }
+async function subC(id){ const {b} = await j(`${API}/challenges/submit`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({user_id: uid, challenge_id: id, self_rating: +$('r_'+id).value})}); alert(`+${b.xp_earned} XP. ${b.mentor_feedback}`); head(); }
+async function news(){ const {b} = await j(`${API}/news?user_id=${uid}&limit=20`); $('news').innerHTML = `<h2>Curated AI news</h2><p class="hint">Reviewed and approved by uniAIverse before it appears here.</p>` +
+  (b.items.length ? b.items.map(n => `<div class="news"><a href="${n.url}" target="_blank" rel="noopener">${n.title}</a><br><small>${n.source} · ${n.published || ''}</small>${n.summary?`<p>${n.summary}</p>`:''}</div>`).join('') : '<p class="hint">No items approved yet.</p>'); }
+async function progress(){ const {b} = await j(`${API}/progress?user_id=${uid}`); const t = Object.entries(b.by_topic);
+  $('progress').innerHTML = `<h2>Your progress</h2><div class="card"><div class="xp">${b.level.xp} XP</div><p><b>${b.level.title}</b> · ${b.tier} tier</p></div>` +
+    (t.length ? t.map(([k,v]) => `<div class="q"><p>${k}</p><span class="hint">${v.attempts} quizzes · ${Math.round(100*v.correct/v.total)}% correct</span></div>`).join('') : '<p class="hint">Play a quiz to see progress.</p>') +
+    `<p class="hint">Suggested next: ${b.suggested_next.join(', ')}. ${b.learning_path_hint}</p>`; }
+async function tiers(){ const {b} = await j(`${API}/tiers`); $('tiergrid').innerHTML = Object.entries(b.tiers).map(([id,t]) => `<div class="tier ${id==='gold'?'hot':''}"><h3>${t.title}</h3><div class="price">${t.price_inr?`₹${t.price_inr.toLocaleString('en-IN')}/mo`:'Free'}</div>
+  <ul>${t.features.map(f=>`<li>${f}</li>`).join('')}</ul>${t.mentor_hours_per_month?`<p class="hint">${t.mentor_hours_per_month}h mentor time/month, slots mutually agreed.</p>`:''}
+  ${t.price_inr?`<a class="primary" style="display:inline-block;text-decoration:none" href="/pay?product=quest.${id}&user=${uid}"><button class="primary">Get ${t.title}</button></a>`:''}</div>`).join(''); }
+topics();
+</script>
+</body>
+</html>

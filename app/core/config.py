@@ -15,12 +15,21 @@ class Settings:
     port: int = int(os.getenv("APP_PORT", "8000"))
     cors_origins: list[str] = _list("CORS_ORIGINS", "http://localhost:3000")
     enabled_services: list[str] = _list(
-        "ENABLED_SERVICES", "readiness_audit,training,strategy,governance,automation,pricing"
+        "ENABLED_SERVICES", "readiness_audit,training,strategy,governance,automation,pricing,quest,bot,payments"
     )
     llm_provider: str = os.getenv("LLM_PROVIDER", "none").lower()
     llm_model: str = os.getenv("LLM_MODEL", "claude-sonnet-4-6")
     anthropic_key: str | None = os.getenv("ANTHROPIC_API_KEY") or None
     openai_key: str | None = os.getenv("OPENAI_API_KEY") or None
+    admin_token: str | None = os.getenv("ADMIN_TOKEN") or None
+    public_url: str = os.getenv("PUBLIC_URL", "http://localhost:8000")
+    site_url: str = os.getenv("SITE_URL", "https://uniaiverse.ai")
+    # Payments
+    razorpay_key_id: str | None = os.getenv("RAZORPAY_KEY_ID") or None
+    razorpay_key_secret: str | None = os.getenv("RAZORPAY_KEY_SECRET") or None
+    razorpay_webhook_secret: str | None = os.getenv("RAZORPAY_WEBHOOK_SECRET") or None
+    upi_limit_inr: int = int(os.getenv("UPI_LIMIT_INR", "2000"))
+    bank_details: str = os.getenv("BANK_TRANSFER_DETAILS", "")
     outputs_dir: Path = ROOT / "outputs"
     materials_dir: Path = ROOT / "training-materials"
     pricing_dir: Path = ROOT / "pricing"

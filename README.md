@@ -6,6 +6,10 @@ Working, deployable code for Sarfi's service portfolio (per *AI Services — Rol
 |---|---|---|---|
 | 1 | **AI Readiness Audit** — Framework v2.0: 348 questions, 10 domains, 51 capabilities, 6 industry modules. Five audit tiers (Free 25 → Bronze 85 → Silver 179 → Gold 263 → Platinum 316 + industry). Evidence flags, critical-control red flags, benchmarks, capability heatmap, 30/60/90-day plan, PDF/MD report | `/api/readiness_audit` | ready |
 | 2 | **Course Finder** (free lead-gen) — profile / CV → recommended track, first course, why/what/when; paid tier adds full path, gap analysis, week-by-week plan, capstone, mentor plan. Demo at `/course-finder` | `/api/training/course-finder` | ready |
+| 2 | **uniAI Quest** — *Play. Learn. Interview. Lead in AI.* 136 quizzes across 10 topics (AI basics, GenAI, LLMs, tokens & cost, prompting, RAG, agents, MLOps, ethics, new models), interview challenges with model answers, XP levels, curated AI news with admin approval, mentor time for Gold/Platinum. Free → Platinum tiers in ₹. Page at `/quest`, admin at `/admin` | `/api/quest` | ready |
+| 2 | **Agentic AI & LLM Economics workshop** — 1 or 2 days, trainer plan + exercise sheets: how LLMs work, tokens/cost, RAG ladder (basic → advanced → hybrid → agentic), new-generation models, agents with safety rails, token optimisation, strategy and ROI | `/api/training/course/agentic-ai-workshop` | ready |
+| — | **Payments** — Razorpay: cards, netbanking, UPI only under `UPI_LIMIT_INR` (default ₹2,000), NEFT/RTGS/IMPS via virtual accounts, webhook + signature verification, test mode without keys, tier auto-upgrade. Page at `/pay` | `/api/payments` | ready |
+| — | **uniAI website assistant** (replaces Orbi) — answers from `knowledge.yaml` about services, pricing, booking, demos, Quest; logs unanswered questions; optional LLM rephrasing. Website component in `website-patch/` | `/api/bot` | ready |
 | 2 | **Training & Mentorship** — Curriculum v2.0: 22 versioned courses, 10 tracks (incl. individual professionals), 4 certification levels, emerging-topics watchlist, staleness flags | `/api/training` | ready |
 | 3 | AI Transformation, Strategy & Roadmap — use-case prioritisation + phased roadmap | `/api/strategy` | beta |
 | 3 | AI Governance, Safety & Compliance — risk-tier classifier + controls + policy template | `/api/governance` | beta |
@@ -19,7 +23,7 @@ Everything works **without** an LLM key (rule-based, deterministic). Add a key a
 cp .env.example .env            # optionally set LLM_PROVIDER + key
 pip install -r requirements.txt
 uvicorn app.main:app --reload   # http://localhost:8000  (demo UI)  ·  /docs (Swagger)
-pytest -q                       # 10 tests
+pytest -q                       # 18 tests
 # or: docker compose up
 ```
 
@@ -60,7 +64,10 @@ Deploy this API (Railway / Render / Fly / a VPS with `docker compose up`), set `
 - `GET  /api/training/catalog` → training page; `GET /api/pricing/tiers` → pricing page
 - `POST /api/automation/roi`, `/api/strategy/roadmap`, `/api/governance/classify` → calculators
 
-## Push to GitHub (dev branch)
+## Branching, backups, deploy
+See `docs/GIT_WORKFLOW.md` (features/<name> → dev → main, automatic backup branch + tag before every merge to main) and `docs/DEPLOY.md` (api.uniaiverse.ai with Docker + Caddy, Razorpay webhook, daily news refresh).
+
+## Push to GitHub
 ```bash
 ./scripts/push_to_github.sh git@github.com:The-UniAiverse/ai-services.git sarfi/dev
 ```

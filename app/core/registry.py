@@ -26,6 +26,9 @@ SERVICES: list[ServiceSpec] = [
     ServiceSpec("governance",      "AI Governance, Safety & Compliance", "Sarfi", 3, "app.services.governance.router", "beta"),
     ServiceSpec("automation",      "AI Automation & Workflow Optimisation", "Sarfi", 4, "app.services.automation.router", "beta"),
     ServiceSpec("pricing",         "Service Tiers & Pricing", "Sarfi", 0, "app.services.pricing.router", "ready"),
+    ServiceSpec("quest",           "uniAI Quest — Interview Playground & Knowledge Hub", "Sarfi", 2, "app.services.quest.router", "ready"),
+    ServiceSpec("bot",             "uniAI website assistant", "Harsh", 0, "app.services.bot.router", "ready"),
+    ServiceSpec("payments",        "Payments (Razorpay: cards, UPI < limit, netbanking, NEFT/RTGS/IMPS)", "Sarfi", 0, "app.services.payments.router", "ready"),
 ]
 
 def load(enabled: list[str]):

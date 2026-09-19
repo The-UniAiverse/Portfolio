@@ -1,0 +1,72 @@
+# uniAI Quest — Play. Learn. Interview. Lead in AI.
+# Tiers (monthly). Prices in INR (primary, Indian payment gateway) with USD equivalents. Edit freely.
+tiers:
+  free:
+    title: Free
+    price_inr: 0
+    price_usd: 0
+    quizzes_per_day: 3
+    topics: [ai-basics, genai]
+    max_difficulty: 1
+    interview_challenges: false
+    news: headlines_only
+    mentor_hours_per_month: 0
+    features: ["3 quizzes a day on AI Basics and GenAI", "XP and level tracking", "Headlines from the curated AI news feed"]
+  bronze:
+    title: Bronze
+    price_inr: 499
+    price_usd: 7
+    quizzes_per_day: 20
+    topics: all
+    max_difficulty: 2
+    interview_challenges: false
+    news: full
+    mentor_hours_per_month: 0
+    features: ["All 9 topics up to Practitioner difficulty", "Progress dashboard and streaks", "Full curated news feed with summaries", "Learning path by interest"]
+  silver:
+    title: Silver
+    price_inr: 999
+    price_usd: 14
+    quizzes_per_day: 50
+    topics: all
+    max_difficulty: 3
+    interview_challenges: true
+    news: full
+    mentor_hours_per_month: 0
+    features: ["Everything in Bronze", "Interview-ready difficulty", "Interview challenges with model answers and 'what interviewers listen for'", "Mock interview sets", "Downloadable progress report"]
+  gold:
+    title: Gold
+    price_inr: 3999
+    price_usd: 55
+    quizzes_per_day: 100
+    topics: all
+    max_difficulty: 3
+    interview_challenges: true
+    news: full
+    mentor_hours_per_month: 2
+    features: ["Everything in Silver", "2 hours/month of dedicated mentor assistance (time mutually agreed)", "Personal interview feedback on 2 challenges", "Priority on new content"]
+  platinum:
+    title: Platinum
+    price_inr: 9999
+    price_usd: 130
+    quizzes_per_day: 1000
+    topics: all
+    max_difficulty: 3
+    interview_challenges: true
+    news: full
+    mentor_hours_per_month: 4
+    features: ["Everything in Gold", "4 hours/month mentor time incl. one full mock interview with written feedback", "Custom learning path and CV/portfolio review", "Direct chat channel for questions (48h response)"]
+
+levels:  # XP thresholds
+  - {xp: 0, title: Rookie}
+  - {xp: 100, title: Explorer}
+  - {xp: 300, title: Practitioner}
+  - {xp: 700, title: Specialist}
+  - {xp: 1500, title: Interview-Ready}
+  - {xp: 3000, title: AI Lead}
+
+xp_rules:
+  correct: {1: 10, 2: 20, 3: 35}   # by difficulty
+  perfect_quiz_bonus: 25
+  challenge_submitted: 40
+  daily_streak_bonus: 15

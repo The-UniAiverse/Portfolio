@@ -82,3 +82,45 @@ def test_course_finder_free_and_paid():
 def test_course_finder_cv_text():
     r = c.post("/api/training/course-finder", json={"cv_text": "Data engineer, 4 years. Python, SQL, Spark, Airflow, ML models with scikit-learn, MLflow.", "hours_per_week": 5}).json()
     assert r["track"]["id"] == "data_mlops"
+
+# ── v2.2: Quest, bot, payments, workshop ─────────────────────────────────────
+def test_quest_free_tier_flow():
+    t = c.get("/api/quest/topics?user_id=q1").json()
+    assert t["tier"] == "free" and any(x["locked"] for x in t["topics"]) and not next(x for x in t["topics"] if x["id"] == "ai-basics")["locked"]
+    q = c.get("/api/quest/quiz?topic=ai-basics&user_id=q1&n=5").json(); assert len(q["questions"]) == 5
+    r = c.post("/api/quest/quiz/submit", json={"user_id": "q1", "topic": "ai-basics", "answers": {x["id"]: 0 for x in q["questions"]}}).json()
+    assert r["total"] == 5 and "level" in r
+    assert c.get("/api/quest/quiz?topic=agents&user_id=q1").status_code == 402
+    assert c.get("/api/quest/challenges?user_id=q1").json()["locked"]
+
+def test_quest_daily_limit_and_upgrade():
+    for _ in range(3):
+        q = c.get("/api/quest/quiz?topic=genai&user_id=q2").json()
+        c.post("/api/quest/quiz/submit", json={"user_id": "q2", "topic": "genai", "answers": {x["id"]: 1 for x in q["questions"]}})
+    assert c.get("/api/quest/quiz?topic=genai&user_id=q2").status_code == 402
+    o = c.post("/api/payments/order", json={"product_id": "quest.silver", "customer_name": "Q", "customer_email": "q@x.io", "user_id": "q2"}).json()
+    assert o["test_mode"] and o["methods"]["upi"] is True
+    c.post("/api/payments/verify", json={"payment_id": o["payment_id"], "razorpay_order_id": o["order_id"], "razorpay_payment_id": "pay_t", "razorpay_signature": "s"})
+    assert c.get("/api/quest/progress?user_id=q2").json()["tier"] == "silver"
+    assert not c.get("/api/quest/challenges?user_id=q2").json()["locked"]
+
+def test_payment_method_rule_and_bank_transfer():
+    o = c.post("/api/payments/order", json={"product_id": "quest.gold", "customer_name": "G", "customer_email": "g@x.io"}).json()
+    assert o["methods"]["upi"] is False and o["methods"]["bank_transfer"] is True
+    b = c.post("/api/payments/bank-transfer", json={"product_id": "readiness_audit.bronze", "customer_name": "B", "customer_email": "b@x.io"}).json()
+    assert b["status"] == "awaiting_transfer" and set(b["methods"]) == {"NEFT", "RTGS", "IMPS"}
+    assert c.get(f"/api/payments/status/{b['payment_id']}").json()["status"] == "awaiting_transfer"
+
+def test_bot_answers_site_questions():
+    for msg, intent in [("how do I book an appointment", "book"), ("what is uniaiverse", "about"), ("which course is right for me", "course_finder")]:
+        r = c.post("/api/bot/chat", json={"message": msg}).json()
+        assert r["intent"] == intent and r["bot"] == "uniAI", (msg, r)
+    assert c.post("/api/bot/chat", json={"message": "weather on mars"}).json()["intent"] is None
+
+def test_admin_requires_token():
+    assert c.get("/api/quest/admin/news/queue").status_code == 401
+    assert c.post("/api/payments/admin/mark-paid/x").status_code == 401
+
+def test_workshop_in_curriculum():
+    r = c.get("/api/training/course/agentic-ai-workshop").json()
+    assert r["hours"] == 16 and "WORKSHOP.md" in r["materials"] and r["outline_markdown"].startswith("# Agentic")

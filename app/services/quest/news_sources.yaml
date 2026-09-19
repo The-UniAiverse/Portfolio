@@ -1,0 +1,10 @@
+# Curated AI news sources (RSS). New items land in 'pending' until an admin approves them.
+# Add/remove sources freely. The refresh runs from GitHub Actions daily (see .github/workflows/quest-news.yml) or on demand.
+sources:
+  - {id: anthropic, title: Anthropic News, url: "https://www.anthropic.com/rss.xml", tags: [models, safety]}
+  - {id: openai, title: OpenAI Blog, url: "https://openai.com/blog/rss.xml", tags: [models]}
+  - {id: hf, title: Hugging Face Blog, url: "https://huggingface.co/blog/feed.xml", tags: [open-weight, engineering]}
+  - {id: google, title: Google AI Blog, url: "https://blog.google/technology/ai/rss/", tags: [models, research]}
+  - {id: techcrunch, title: TechCrunch AI, url: "https://techcrunch.com/category/artificial-intelligence/feed/", tags: [industry]}
+  - {id: arxiv-cl, title: arXiv cs.CL, url: "https://rss.arxiv.org/rss/cs.CL", tags: [research]}
+max_items_per_source: 10

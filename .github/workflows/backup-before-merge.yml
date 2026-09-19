@@ -1,0 +1,19 @@
+# Standard: before anything lands on main, a dated backup branch + tag of the current main is created.
+name: backup-before-merge
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, ready_for_review]
+permissions: { contents: write }
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main, fetch-depth: 0 }
+      - name: Create backup branch and tag from main
+        run: |
+          STAMP=$(date -u +%Y%m%d-%H%M)
+          git config user.name "uniaiverse-bot"; git config user.email "bot@uniaiverse.ai"
+          git branch "backup/main-$STAMP" && git push origin "backup/main-$STAMP"
+          git tag -a "backup-$STAMP" -m "Backup of main before PR #${{ github.event.pull_request.number }}" && git push origin "backup-$STAMP"
