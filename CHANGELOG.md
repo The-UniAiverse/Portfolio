@@ -34,3 +34,10 @@ All framework, curriculum, pricing and blueprint changes are recorded here. Bump
 - Strategy, Governance and Automation promoted from beta to **end-to-end engagements**: structured intake, engines with editable YAML config, business cases / gap assessment / wave plans, PDF + Markdown reports, `/tools` page.
 - Agentic AI workshop is now a **delivery kit**: 41-slide deck built from `slides.yaml` (speaker notes), minute-by-minute facilitator guide, 7 runnable demos (offline or live), sample documents, exercise sheets, handout cards, `run_all.py` pre-flight.
 - `scripts/validate_content.py` (content integrity + demos), `scripts/new_course.py` (course pack generator), `scripts/build_slides.*`, `docs/EDITING.md`.
+
+## 2026-09-20 — v2.4
+- **Demo Hub** (`/demos`): every demo runnable in the browser, live "ask the documents" basic vs advanced RAG (your own text or samples).
+- **Discovery kit** (`/discovery`): enquiry → discovery-questions document (PDF/Word/MD) for corporate, business, university, college, domain × workshop/training/audit/consulting.
+- **Workshop editions**: corporate, business, university, college, non-technical, domain — each with deck, facilitator guide, exercises, README, built from one source (`variants.yaml`).
+- Deployment strategy with monthly cost options (`docs/DEPLOYMENT_STRATEGY.md`), backup script, Cloudflare cache rules.
+- Work split (`docs/WORK_SPLIT.md`) and plain-language guide (`docs/HOW_IT_WORKS.md`).

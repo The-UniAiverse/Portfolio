@@ -92,15 +92,16 @@ def test_quest_free_tier_flow():
     assert c.get("/api/quest/challenges?user_id=q1").json()["locked"]
 
 def test_quest_daily_limit_and_upgrade():
+    import uuid; q2 = "q2_" + uuid.uuid4().hex[:6]
     for _ in range(3):
-        q = c.get("/api/quest/quiz?topic=genai&user_id=q2").json()
-        c.post("/api/quest/quiz/submit", json={"user_id": "q2", "topic": "genai", "answers": {x["id"]: 1 for x in q["questions"]}})
-    assert c.get("/api/quest/quiz?topic=genai&user_id=q2").status_code == 402
-    o = c.post("/api/payments/order", json={"product_id": "quest.silver", "customer_name": "Q", "customer_email": "q@x.io", "user_id": "q2"}).json()
+        q = c.get(f"/api/quest/quiz?topic=genai&user_id={q2}").json()
+        c.post("/api/quest/quiz/submit", json={"user_id": q2, "topic": "genai", "answers": {x["id"]: 1 for x in q["questions"]}})
+    assert c.get(f"/api/quest/quiz?topic=genai&user_id={q2}").status_code == 402
+    o = c.post("/api/payments/order", json={"product_id": "quest.silver", "customer_name": "Q", "customer_email": "q@x.io", "user_id": q2}).json()
     assert o["test_mode"] and o["methods"]["upi"] is True
     c.post("/api/payments/verify", json={"payment_id": o["payment_id"], "razorpay_order_id": o["order_id"], "razorpay_payment_id": "pay_t", "razorpay_signature": "s"})
-    assert c.get("/api/quest/progress?user_id=q2").json()["tier"] == "silver"
-    assert not c.get("/api/quest/challenges?user_id=q2").json()["locked"]
+    assert c.get(f"/api/quest/progress?user_id={q2}").json()["tier"] == "silver"
+    assert not c.get(f"/api/quest/challenges?user_id={q2}").json()["locked"]
 
 def test_payment_method_rule_and_bank_transfer():
     o = c.post("/api/payments/order", json={"product_id": "quest.gold", "customer_name": "G", "customer_email": "g@x.io"}).json()
@@ -146,3 +147,33 @@ def test_pages_served():
 
 def test_services_not_beta():
     assert all(s["status"] == "ready" for s in c.get("/api/health").json()["services"])
+
+# ── v2.4: demo hub, discovery, variants ───────────────────────────────────────
+def test_demo_hub_lists_and_runs():
+    d = c.get("/api/demos").json(); assert len(d) >= 10 and {x["kind"] for x in d} >= {"script", "interactive", "link"}
+    r = c.post("/api/demos/run/hallucination", json={}).json(); assert r["ok"] and "hallucination" in r["output"].lower() or r["ok"]
+    r = c.post("/api/demos/run/agent", json={"variant": "injection attack"}).json(); assert r["ok"]
+    assert c.post("/api/demos/run/not-a-demo", json={}).status_code == 404
+
+def test_live_rag_basic_vs_advanced():
+    r = c.post("/api/demos/rag/ask", json={"question": "how many days to claim damaged goods"}).json()
+    assert r["basic"]["passages"] and r["advanced"]["passages"] and "48" in r["advanced"]["answer"]
+    r = c.post("/api/demos/rag/ask", json={"question": "what is the refund window", "docs_text": "## Refunds\nRefunds are processed within 14 days of approval.\n## Delivery\nStandard delivery takes 3 days."}).json()
+    assert "14" in r["advanced"]["answer"]
+
+def test_discovery_all_segments_and_services():
+    k = c.get("/api/discovery/kit").json()
+    for seg in k["segments"]:
+        for svc in k["services"]:
+            r = c.post("/api/discovery/generate", json={"client": "Test Org", "segment": seg, "service": svc}); assert r.status_code == 200, (seg, svc)
+    b = c.post("/api/discovery/generate", json={"client": "X", "segment": "corporate", "service": "workshop", "via_partner": "IndusGuru"}).json()
+    assert any("partner" in s["title"].lower() for s in b["sections"]) and c.get(b["docx_url"]).status_code == 200 and c.get(b["pdf_url"]).status_code == 200
+
+def test_workshop_variants_built():
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1] / "training-materials/agentic-ai-workshop/variants"
+    for v in ["corporate", "business", "university", "domain"]:
+        assert (root / v / f"deck-{v}.pptx").exists() and (root / v / "facilitator-guide.md").exists(), v
+
+def test_new_pages():
+    for p in ["/demos", "/discovery"]: assert c.get(p).status_code == 200

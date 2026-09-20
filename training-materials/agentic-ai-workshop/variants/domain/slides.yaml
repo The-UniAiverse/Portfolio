@@ -1,0 +1,203 @@
+deck:
+  title: AI for <Domain> Teams — no code, your documents (1 day)
+  subtitle: A working workshop — understand, build, cost, decide
+  brand: uniAIverse
+  footer: uniAIverse · AI for <Domain> Teams — no code, your documents (1 day) · v1.0
+  file: deck-domain
+slides:
+- type: title
+  title: AI for <Domain> Teams — no code, your documents (1 day)
+  subtitle: 'Non-technical domain teams: legal, healthcare admin, finance, HR, operations, retail, public sector (up to 20)'
+  notes: 'Welcome. State the promise and the rule: nothing is ''just'' anything. Mixed room: leaders decide, analysts frame, engineers build — every lab has a no-code path and a code path.'
+- type: lab
+  title: Lab 0 · The hour-one win
+  bullets:
+  - Upload 2–3 of your own documents into the instant tool
+  - Ask five questions. Then ask one thing about your company it can't know.
+  - 'Flipchart: what worked, what failed'
+  duration: 45 min
+  notes: Never start with theory. The failures on the flipchart are the curriculum — we return to them at the close of Day 2.
+- type: section
+  title: Module 2 · How it actually works
+- type: two_col
+  title: It's a prediction machine
+  left:
+  - Autocomplete that has read most of the internet
+  - Always produces a next word — that's the job
+  - No database inside. Nothing stored, nothing looked up.
+  right:
+  - So when it doesn't know, it doesn't say so
+  - It produces the most plausible continuation
+  - Fluent, confident, wrong — a hallucination
+  - 'Not a bug: the machine doing its job where that job is wrong'
+  notes: 'Phone autocomplete demo. Then the exam-hall analogy: a person who read 10,000 books, in a room with no books, asked for the number on page 247.'
+- type: demo
+  title: Demo 2 · The confident wrong answer
+  bullets:
+  - 'Closed-book: ask about your company'
+  - 'Open-book: same question with the right page on the desk'
+  - Same model. The difference is the library.
+  command: python demos/02_hallucination.py
+  notes: If a key is configured, ask live about the client's own policy. If not, the recorded exchange shows the identical pattern.
+- type: bullets
+  title: What this means in your domain
+  bullets:
+  - 'Domain-specific failure stories: the invented clause, the wrong dosage unit, the out-of-date policy.'
+  - 'Then the rule: the assistant cites or it doesn''t answer.'
+  - 'Confidentiality: what may never be uploaded, decided before the lab.'
+  notes: 'Domain-specific failure stories: the invented clause, the wrong dosage unit, the out-of-date policy. Then the rule: the assistant cites or it doesn''t answer. Confidentiality: what may never be
+    uploaded, decided before the lab.'
+- type: bullets
+  title: Context window = the desk
+  bullets:
+  - What fits on the desk when the assistant answers
+  - Why not paste everything in? Money · speed · accuracy · permissions
+  - '500-page handbook, 1,000 questions a day: ~$20,000/month pasted vs ~$300/month fetched'
+  - Fetch the right 8 pages first. That's RAG.
+  notes: The one number they'll repeat to their boss. Say it slowly.
+- type: section
+  title: Module 4 · The RAG ladder
+- type: table
+  title: Four levels — and when each is right
+  header:
+  - Level
+  - What it adds
+  - You need it when
+  - Cost / speed
+  rows:
+  - - Basic
+    - fetch, answer
+    - clean FAQ
+    - 1×
+  - - Advanced
+    - rewriting, hybrid search, reranking, contextual chunks
+    - real company documents — where most systems should live
+    - 1.1×
+  - - Hybrid
+    - several stores + a router
+    - documents AND a database AND live systems
+    - 1.3×
+  - - Agentic
+    - the model decides, checks, retries
+    - multi-step, cross-system questions
+    - 5–10×, 10× slower
+  notes: Earn your way up. An agent does not fix bad retrieval — it repeats it five times at five times the cost.
+- type: bullets
+  title: 'Where quality is won: cutting the cards'
+  bullets:
+  - Cut at headings and sections, never at word counts
+  - One idea per card, ~300–500 words, readable cold
+  - Never split a table; repeat the header row
+  - Write where it came from on top of every card — the cheapest large improvement there is
+  notes: 'Read a bare chunk aloud: ''The amount shall be recognised evenly…'' — nobody knows what it''s about. Add the prefix and it becomes findable.'
+- type: two_col
+  title: Two ways to search, then pick the best
+  left:
+  - 'Meaning search: finds ''refund'' when you ask ''money back'''
+  - Blind to exact codes, numbers, 'not'
+  - 'Exact-word search (Ctrl+F): finds ERR_GW_4471'
+  - Blind to synonyms
+  right:
+  - 'Run both, combine by rank (RRF): agreement is evidence'
+  - 'Then rerank: fetch 50, read properly, keep 5'
+  - 'Hiring: filter 500 CVs to 50, then a human reads 50 and picks 5'
+  - +10–25% answer quality for a fraction of a cent
+  notes: The reranker is the first thing to try when someone says 'our RAG is 70% accurate'.
+- type: demo
+  title: Demo 3 · Basic vs Advanced, one change at a time
+  bullets:
+  - Fixed chunks → heading chunks + prefix
+  - + hybrid search (RRF)
+  - + reranking (drops the superseded draft)
+  - Then a grounded answer, and a refusal
+  command: python demos/03_rag_basic_vs_advanced.py
+  notes: Watch the scoreboard go 3 → 5. Point at the DRAFT document being demoted by the reranker — 'old cards survive' unless you handle it.
+- type: bullets
+  title: The most important sentence in your bot
+  bullets:
+  - Answer using ONLY the documents provided.
+  - For every fact, say which document it came from.
+  - 'If the documents don''t contain the answer, say exactly: ''I could not find this in the available documents.'''
+  - It turns a lie into a report — and a report into a number on a dashboard.
+  notes: 'Leave this slide up. Count how often ''not found'' happens: that number is a direct measure of library quality.'
+- type: lab
+  title: Lab 2 · Build your grounded assistant
+  bullets:
+  - Your 10–20 documents into the tool
+  - Score 10 real questions — the 'before' number
+  - Hybrid on → re-score. Reranker on → re-score.
+  - Read five of your chunks. Out loud.
+  duration: 45 min
+  notes: 'One change at a time — enforce it. This is where the course clicks: their own score goes up because of a decision they made.'
+- type: bullets
+  title: When the answer is wrong — in this order
+  bullets:
+  - 1. Was the right page fetched? No → library problem. Chunking, search. Rewriting instructions won't help.
+  - 2. Fetched but ignored? Strengthen the instruction, send fewer cards.
+  - 3. Fetched, used, still wrong? Now it's the prompt — or the card itself is wrong.
+  - Most people start at 3. Almost every problem is at 1.
+  notes: 'Handout: the fault-finding card.'
+- type: section
+  title: Module 6 · Agents that don't run away
+- type: two_col
+  title: Vending machine vs librarian
+  left:
+  - 'What you built yesterday: press a button, one item drops'
+  - Wrong item? Nothing you can do
+  - Question → one search → answer
+  right:
+  - An agent goes to the shelf, reads, thinks 'this only answers half', goes again
+  - Think → look → read → judge → answer or try again
+  - And when it isn't in the collection, it says so
+  notes: 'The loop on the whiteboard, drawn slowly. Then the warning: ALWAYS with a limit, or it runs forever.'
+- type: bullets
+  title: The five safety rails — none optional
+  bullets:
+  - Max iterations (5–10)
+  - Max cost per run · max wall-clock
+  - 'Loop detection: same tool + same args twice → stop'
+  - A required 'I give up' path that reports what it tried
+  - Human approval for anything consequential or irreversible
+  notes: Without these, one badly-worded question can loop for twenty minutes and cost more than the month. Demo 5 hits every rail.
+- type: bullets
+  title: Human in the loop, by design
+  bullets:
+  - 'Where the human sits for their workflow: review before send, sampling, escalation.'
+  - Draft, never decide.
+  - 'Show the governance classify tool: most of their use cases are ''limited'' — transparency plus a human path.'
+  notes: 'Where the human sits for their workflow: review before send, sampling, escalation. Draft, never decide. Show the governance classify tool: most of their use cases are ''limited'' — transparency
+    plus a human path.'
+- type: bullets
+  title: When an agent is the wrong answer
+  bullets:
+  - Simple, high-volume questions where speed matters
+  - Anything a script already does reliably
+  - A poor library — the agent fails five times instead of once
+  - 'A well-tuned Advanced bot: < 1 s, fraction of a cent. An agent: ~12 s, 30× tokens — for the same answer'
+  notes: Go up a level only when you hit a wall you can name.
+- type: lab
+  title: Lab 5 · Your 90-day plan
+  bullets:
+  - 'One workflow: outcome, approach, cost range, ROI, owner, gates'
+  - RAG level and agent-or-not, with a reason
+  - Risk tier and human oversight
+  - Three minutes to present
+  duration: 40 min
+  notes: Exercise sheet page 5. Push every table to something narrow. 'Everything' is not a plan.
+- type: close
+  title: Five things to remember
+  bullets:
+  - No database inside — it predicts. That's why it invents.
+  - Fetch the right pages first. Five right beat fifty mediocre.
+  - When it's wrong, look at what it fetched before blaming the model.
+  - Agents amplify retrieval quality — good or bad. Earn your way up; cap everything.
+  - 'Cost is a design decision: cache, route, trim, tier.'
+  notes: 'Close with the two-week check: at least one plan with an owner and a date. Offer the readiness snapshot and a follow-up call.'
+- type: bullets
+  title: Your 30-day habit
+  bullets:
+  - One assistant, one test sheet, one owner.
+  - Add every wrong answer to the sheet.
+  - Show it to three colleagues.
+  - Don't expand the library yet.
+  notes: One assistant, one test sheet, one owner. Add every wrong answer to the sheet. Show it to three colleagues. Don't expand the library yet.

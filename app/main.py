@@ -53,3 +53,11 @@ def admin_page():
 @app.get("/tools", include_in_schema=False)
 def tools_page():
     return FileResponse(UI / "tools.html")
+
+@app.get("/demos", include_in_schema=False)
+def demos_page():
+    return FileResponse(UI / "demos.html")
+
+@app.get("/discovery", include_in_schema=False)
+def discovery_page():
+    return FileResponse(UI / "discovery.html")

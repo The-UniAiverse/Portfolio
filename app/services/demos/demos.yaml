@@ -1,0 +1,87 @@
+# Demo Hub registry — every runnable demo the website can show. Add a demo: one block here (+ the script). Remove: delete the block.
+# kind: script (runs a Python file, streams output) | interactive (has its own endpoint + form)
+version: "1.0"
+demos:
+  - id: tokens-cost
+    kind: script
+    title: "What does one question cost?"
+    tagline: "Tokens, input vs output, cached input — one real question costed line by line."
+    audience: [business, technical]
+    script: training-materials/agentic-ai-workshop/demos/01_tokens_and_cost.py
+    args: ["--daily", "300"]
+    used_in: [agentic-ai-workshop, llm-cost, ai-for-business]
+  - id: hallucination
+    kind: script
+    title: "The confident wrong answer"
+    tagline: "Same model, closed-book vs grounded. Watch it invent a policy, then cite the real one."
+    audience: [everyone]
+    script: training-materials/agentic-ai-workshop/demos/02_hallucination.py
+    used_in: [agentic-ai-workshop, ai-for-all, rag-nontechnical]
+  - id: rag-basic-vs-advanced
+    kind: script
+    title: "Basic vs advanced RAG — scored"
+    tagline: "Fixed chunks and dense-only search vs heading-aware chunks, hybrid search and reranking, on a 10-question test sheet."
+    audience: [business, technical]
+    script: training-materials/agentic-ai-workshop/demos/03_rag_basic_vs_advanced.py
+    used_in: [agentic-ai-workshop, genai-engineer, rag-nontechnical]
+  - id: router
+    kind: script
+    title: "The router: documents, SQL or live system?"
+    tagline: "Five questions, four routes. 'How many refunds?' goes to SQL — computed, not guessed."
+    audience: [technical]
+    script: training-materials/agentic-ai-workshop/demos/04_router.py
+    used_in: [agentic-ai-workshop, rag-advanced]
+  - id: agent
+    kind: script
+    title: "An agent that can't run away"
+    tagline: "THINK → ACT → OBSERVE with three tools, a step cap, a cost cap and a human approval gate."
+    audience: [business, technical]
+    script: training-materials/agentic-ai-workshop/demos/05_agent.py
+    variants: {"normal": [], "runaway (hits the cap)": ["--runaway"], "injection attack": ["--inject"]}
+    used_in: [agentic-ai-workshop, agentic-engineer]
+  - id: routing-economics
+    kind: script
+    title: "Routing economics"
+    tagline: "10,000 questions a day: all-simple vs all-agentic vs routed. Sort your questions first."
+    audience: [business]
+    script: training-materials/agentic-ai-workshop/demos/06_routing_economics.py
+    args: ["--per-day", "10000"]
+    used_in: [agentic-ai-workshop, ai-finops]
+  - id: roi-plan
+    kind: script
+    title: "Workflow → approach → ROI → roadmap"
+    tagline: "Three workflows through the automation and strategy engines: approach, payback, phases."
+    audience: [business]
+    script: training-materials/agentic-ai-workshop/demos/07_roi_and_plan.py
+    used_in: [agentic-ai-workshop, ai-for-business]
+  - id: ask-the-docs
+    kind: interactive
+    title: "Ask the documents (live RAG)"
+    tagline: "Type a question; see basic retrieval and advanced retrieval side by side, with the passages each one found."
+    audience: [everyone]
+    endpoint: /api/demos/rag/ask
+    used_in: [rag-nontechnical, agentic-ai-workshop, ai-for-all]
+  - id: readiness-audit
+    kind: link
+    title: "AI Readiness Audit"
+    tagline: "348-question framework, five tiers, scored PDF report."
+    audience: [business]
+    url: /
+  - id: course-finder
+    kind: link
+    title: "Course Finder"
+    tagline: "Profile or CV → recommended track and first course."
+    audience: [everyone]
+    url: /course-finder
+  - id: consulting-tools
+    kind: link
+    title: "Strategy · Governance · Automation engines"
+    tagline: "Run a full engagement on sample data and download the client report."
+    audience: [business]
+    url: /tools
+  - id: quest
+    kind: link
+    title: "uniAI Quest"
+    tagline: "Quizzes, interview challenges, XP levels."
+    audience: [everyone]
+    url: /quest

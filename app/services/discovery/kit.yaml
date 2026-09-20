@@ -1,0 +1,256 @@
+version: '1.0'
+last_reviewed: '2026-09-20'
+company:
+  name: uniAiVerse Pvt Ltd
+  gstin: 27AADCU8825H1Z0
+  address: F/N. 5, First Floor, F Building, Monika Garden View, Near Ropalas Company, Pimpri, Pune 411018
+  phone: +91 8956837601
+  email: uniaiverse@outlook.in
+  website: uniaiverse.ai
+  about: 'uniAiVerse is an AI consulting and development firm based in Pimpri, Pune, working across AI strategy and roadmaps, generative AI, NLP, MLOps, data science
+    and computer vision. Our work spans strategy, build, deployment and upskilling; training and mentorship is a core service line rather than a sideline. We build
+    the agentic and LLM systems we teach.
+
+    '
+  availability_note: 'Our delivery calendar is committed against an ongoing client engagement through August 2027, so dates are released selectively and in advance.
+    We hold indicated dates provisionally for ten working days; beyond that we need a confirmation or an advance.
+
+    '
+  standard_terms:
+  - We are GST-registered and invoice as a private limited company
+  - Delivery onsite (Pune and travel) or virtual, in English
+  - Materials, lab guides, demo code and starter kits remain usable after delivery
+  - Content is customised to the client's context before delivery
+  - Fixed component: delivery fee per day per batch plus a one-time customisation charge; variable components listed per engagement
+  - Reductions: multiple batches booked together, consecutive scheduling, client-provided environments
+segments:
+  corporate:
+    title: Corporate / Enterprise
+    tone: formal
+    batch_size: 25
+    confirms:
+    - We can deliver 1-day or 2-day hands-on workshops or multi-week cohort programmes
+    - Labs run in the client's tenant (preferred) or ours, on Google Vertex AI / Gemini, Azure OpenAI / Copilot Studio, AWS Bedrock, Databricks, Anthropic or OpenAI
+      APIs, or open-weight models
+    - Participants build working artefacts during the session; not a lecture format
+    section:
+      title: Organisation and stakeholders
+      questions:
+      - q: Which business units and functions are in scope, and who is the executive sponsor?
+        why: Determines customisation depth and whose outcomes we design for
+      - q: Is there an existing AI policy, approved tooling, or a security review process we must work within?
+        why: Governs which tools and data can be used in labs; avoids a blocked day
+      - q: Is procurement through a preferred-vendor list, an MSA, or a PO against a quote?
+        why: Shapes contracting time and invoicing
+      - q: Are there internal L&D, IT and data contacts who will own follow-through after delivery?
+        why: Post-delivery adoption depends on named owners
+  business:
+    title: SMB / Growing business
+    tone: direct
+    batch_size: 15
+    confirms:
+    - We can start with a free AI readiness snapshot and a 30-minute call, and quote within two working days
+    - Engagements are scoped to a single outcome first (one workflow, one use case, one team) and expanded on evidence
+    - No platform licences are required for a first pilot; we work with what you already have
+    section:
+      title: Business context
+      questions:
+      - q: What is the one outcome you want in the next 90 days (cost, revenue, speed, quality)?
+        why: Everything is scoped to this; without it we are guessing
+      - q: Which systems hold your customer, operations and finance data, and who administers them?
+        why: Data access is the first blocker in most small-business AI projects
+      - q: Who will own the solution day to day after we leave?
+        why: A named owner is the strongest predictor of adoption
+      - q: What budget range is realistic — under ₹2 lakh, ₹2–10 lakh, above ₹10 lakh?
+        why: We match the tier and approach to the range rather than over-scoping
+  university:
+    title: University / College
+    tone: academic
+    batch_size: 40
+    confirms:
+    - We can deliver guest lectures, 1–5 day bootcamps, semester-long electives, faculty development programmes, or hackathon mentoring
+    - Content maps to outcomes and can be aligned to NEP / AICTE / university curriculum requirements on request
+    - Student labs run on free or education-tier tools; no paid licences are required for the standard track
+    - Certificates of completion are provided; assessment rubrics available for credit-bearing formats
+    section:
+      title: Academic context
+      questions:
+      - q: Which programme and year are the students in (e.g. B.Tech CSE 3rd year, MBA 1st year, BCom, MCA)?
+        why: Sets the technical level and the lab track (code vs no-code)
+      - q: Is this a credit-bearing course, an add-on certificate, a bootcamp, or a faculty programme?
+        why: Determines assessment, hours and documentation we must supply
+      - q: How many students, and how many per lab session? Are labs in a computer lab or on students' own laptops?
+        why: Lab supervision caps at ~40 per trainer with a TA; infrastructure changes the plan
+      - q: Is there a placement or industry-readiness objective (interview preparation, portfolio projects)?
+        why: We can align the capstone and uniAI Quest challenges to placement outcomes
+      - q: Which faculty will co-deliver or continue the material, and do they need a train-the-trainer track?
+        why: Sustainability after our sessions end
+      - q: Are there institutional constraints on tools (internet access, cloud accounts, LMS integration)?
+        why: Decides whether labs run online or fully offline
+  domain:
+    title: Non-technical / Domain-specific teams
+    tone: plain
+    batch_size: 20
+    confirms:
+    - Everything is taught without code; every participant leaves with a working artefact built on their own documents
+    - Content is rebuilt around the domain's real documents, vocabulary and workflows (legal, healthcare, finance, HR, manufacturing, retail, public sector)
+    - Domain risk and compliance constraints are designed in, not bolted on
+    section:
+      title: Domain context
+      questions:
+      - q: Which domain and roles are participants from, and what do they do all day that involves documents, decisions or customers?
+        why: We rebuild every example around their actual work
+      - q: Which documents can be used in labs (policies, manuals, contracts, tickets) and which are off limits?
+        why: Real documents make the workshop land; restricted ones need substitutes prepared in advance
+      - q: Are there regulatory or confidentiality constraints (patient data, client privilege, financial records)?
+        why: Determines tool choice, hosting and what may be uploaded
+      - q: What does a good outcome look like for the team lead — time saved, fewer errors, faster answers?
+        why: Sets the success measure for the final lab
+  college:
+    title: College / Diploma Institute
+    tone: academic
+    batch_size: 60
+    confirms:
+    - We can deliver 1-day placement bootcamps, 2-day bootcamps with capstone, guest lectures, hackathon mentoring, or faculty development programmes
+    - Labs run on free tools (NotebookLM, Dify, Google Colab) — no paid licences, no installs; quizzes work on phones
+    - Batches up to 60 with two teaching assistants; larger cohorts split into parallel batches
+    - Certificates of participation (AI Aware) and a leaderboard-based assessment are included; capstone review rubric available
+    section:
+      title: Institute and placement context
+      questions:
+      - q: Which streams and years will attend (e.g. Diploma CS 3rd year, BSc IT, BCom, any stream)?
+        why: 'Sets the level: no-code for everyone, code track for volunteers'
+      - q: Is the objective placement readiness, a certificate, an add-on skills module, or awareness?
+        why: Decides quiz weighting, capstone and certificate type
+      - q: How many students, and is a computer lab available or will students use their own laptops/phones?
+        why: Batch sizing, TAs and whether labs are browser-only
+      - q: Is Wi-Fi available for 60+ simultaneous devices, and are Google / NotebookLM / GitHub reachable?
+        why: A blocked network stops the labs
+      - q: Is there a placement cell or TPO who will co-own follow-up (Quest practice, Course Finder paths)?
+        why: Outcomes need an internal owner after we leave
+      - q: 'What is the budget model: per-student fee, per-batch fee, or sponsored by the institute?'
+        why: Shapes the proposal and the certificate/assessment options
+services:
+  workshop:
+    title: AI & AI Agents workshop (1–2 days) / Agentic AI & LLM Economics
+    fixed: Trainer delivery fee per day per batch + one-time content customisation
+    variables:
+    - Platform licences and per-user entitlements, if provided by uniAiVerse
+    - Sandbox and cloud compute consumption (scales with user count and platform)
+    - Participants beyond the standard batch
+    - Second platform added as a demonstration track (adds 60–90 minutes)
+    - Travel and accommodation for onsite delivery outside Pune
+    - Co-trainer for large or mixed-level cohorts
+    sections:
+    - title: Audience and cohort
+      questions:
+      - q: How many participants in total, and how many per batch?
+        why: Hands-on support caps at about 25 per trainer; beyond that a co-trainer is added
+      - q: How many batches, over what period?
+        why: Multiple batches change the per-batch rate materially
+      - q: What is the participants' technical background — can they write code, read it, or neither?
+        why: Determines whether labs are code-first, low-code or no-code
+      - q: Mixed room (leaders, analysts, engineers) or a single role?
+        why: Mixed rooms work; the labs are split by track, not the room
+    - title: Platform
+      questions:
+      - q: Which single platform should the hands-on labs run on?
+        why: Fourteen hours split three ways produces three half-built agents; one primary platform
+      - q: What does the organisation already run for cloud and productivity (Google, Microsoft, AWS, Databricks)?
+        why: Participants should build on what they will actually have access to afterwards
+      - q: Should a second platform be covered as a demonstration only?
+        why: Adds roughly 60–90 minutes and a modest content charge
+    - title: Licences, sandbox and environment
+      questions:
+      - q: Will the client provide licences and a sandbox tenant for participants, or should uniAiVerse host?
+        why: The largest single variable in the price and the most common cause of a failed day
+      - q: Can accounts be provisioned and tested one week before delivery?
+        why: Setup on the day burns the first hour for everyone
+      - q: Is internet access unrestricted in the room, or are there proxies / blocked domains?
+        why: Cloud tools fail silently behind corporate proxies
+    - title: Dates, duration and location
+      questions:
+      - q: One day or two? Preferred dates and fallback dates?
+        why: Dates are the item with the shortest fuse (see availability note)
+      - q: Onsite or virtual? If onsite, where?
+        why: Travel and room logistics
+      - q: Consecutive days or spread?
+        why: Spread delivery loses momentum and costs more
+    - title: Content, use cases and data
+      questions:
+      - q: Which 2–3 use cases should the labs build towards?
+        why: Every lab is rebuilt around them
+      - q: Can 20 real documents be shared a week before (policies, manuals, FAQs)?
+        why: Labs on real documents land; labs on sample documents demonstrate
+      - q: Any topics to emphasise or avoid (e.g. governance, cost, specific vendors)?
+        why: Emphasis changes module timing
+  training:
+    title: Training programme / Academy (cohorts, tracks, certification)
+    fixed: Programme design fee + trainer days + mentor hours
+    variables:
+    - Number of tracks run in parallel
+    - Cohort size
+    - Mentor hours per participant
+    - Certification and assessment administration
+    - LMS or platform integration
+    sections:
+    - title: Programme scope
+      questions:
+      - q: Which tracks (AI for All, Business, Leadership, Sales, Marketing, Engineer, GenAI Engineer, Data & MLOps, Governance)?
+        why: Sets trainer profile and material set
+      - q: Cohort size and how many cohorts?
+        why: Mentorship scales with participants
+      - q: Is certification required and at which level (Aware / Practitioner / Professional / Expert)?
+        why: Adds assessment and capstone review effort
+      - q: 'Preferred rhythm: intensive weeks, weekly sessions, or self-paced with live labs?'
+        why: Retention vs momentum trade-off
+    - title: Environment and materials
+      questions:
+      - q: Is there an LMS we should publish into, or do participants use our portal?
+        why: Integration effort
+      - q: Should internal trainers be enabled (train-the-trainer)?
+        why: Sustainability after the programme
+  audit:
+    title: AI Readiness Audit
+    fixed: Audit fee per tier (Bronze–Platinum)
+    variables:
+    - Number of business units
+    - Number of interviews
+    - Evidence validation depth
+    - Industry modules
+    - Benchmark and board deck
+    sections:
+    - title: Scope
+      questions:
+      - q: Whole organisation or specific business units / functions?
+        why: Tier and interview count
+      - q: Who are the 6–25 stakeholders we would interview (leadership, IT, data, operations, risk)?
+        why: Silver and above are interview-based
+      - q: Can policies, architecture notes and AI inventories be shared under NDA for evidence validation?
+        why: Gold and Platinum validate claims against documents
+      - q: Is there a regulatory driver (audit finding, client requirement, EU AI Act / DPDP readiness)?
+        why: Shapes the governance emphasis and the deliverable format
+  consulting:
+    title: Strategy, Governance or Automation engagement
+    fixed: Engagement fee per tier (see blueprints)
+    variables:
+    - Number of use cases / systems / workflows in scope
+    - Build work by our engineering team
+    - Number of steering checkpoints
+    - Retainer after delivery
+    sections:
+    - title: Engagement scope
+      questions:
+      - q: Which of strategy & roadmap, governance & compliance, or automation is the primary need — or all three in sequence?
+        why: Sequence and tier
+      - q: Has a readiness audit been done? If not, should we start there?
+        why: The audit removes most scoping ambiguity
+      - q: How many use cases, AI systems or workflows are in scope?
+        why: The main scaling variable
+      - q: Do you want us to build (with our engineering team) or to design and hand over?
+        why: Changes team composition and price
+next_steps:
+- A 30-minute call with the client's sponsor or L&D lead covers most of this faster than email
+- On receipt of answers, firm commercials within two working days
+- Dates blocked provisionally for ten working days from indication, confirmed against an advance
+- 'The items that unblock everything else: scope, who provides the environment, and dates'

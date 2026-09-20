@@ -28,6 +28,8 @@ SERVICES: list[ServiceSpec] = [
     ServiceSpec("pricing",         "Service Tiers & Pricing", "Sarfi", 0, "app.services.pricing.router", "ready"),
     ServiceSpec("quest",           "uniAI Quest — Interview Playground & Knowledge Hub", "Sarfi", 2, "app.services.quest.router", "ready"),
     ServiceSpec("bot",             "uniAI website assistant", "Harsh", 0, "app.services.bot.router", "ready"),
+    ServiceSpec("demos",           "Demo Hub — runnable demos for the website", "Sarfi", 0, "app.services.demos.router", "ready"),
+    ServiceSpec("discovery",       "Discovery kit — enquiry → discovery questions document", "Sarfi", 0, "app.services.discovery.router", "ready"),
     ServiceSpec("payments",        "Payments (Razorpay: cards, UPI < limit, netbanking, NEFT/RTGS/IMPS)", "Sarfi", 0, "app.services.payments.router", "ready"),
 ]
 

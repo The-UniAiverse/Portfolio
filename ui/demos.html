@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Demo Hub — uniAIverse</title>
+<style>
+:root{--ink:#14213d;--paper:#fbfaf7;--line:#d9d6cf;--accent:#0f766e;--muted:#5b6170}
+*{box-sizing:border-box} body{margin:0;font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;background:var(--paper);color:var(--ink);line-height:1.5}
+header,main{max-width:900px;margin:0 auto;padding:0 20px} header{padding-top:26px} h1{margin:0;font-size:1.9rem;font-weight:600} .hint{color:var(--muted);font-size:.9rem}
+.filters{display:flex;gap:6px;margin:12px 0} .filters button{font:inherit;border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 12px;cursor:pointer} .filters button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-bottom:24px}
+.card{border:1px solid var(--line);border-radius:10px;padding:14px;background:#fff;display:flex;flex-direction:column} .card h3{margin:0 0 4px;font-size:1.05rem} .card p{margin:0 0 8px;color:var(--muted);font-size:.9rem;flex:1}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center} select,input,textarea{font:inherit;border:1px solid var(--line);border-radius:6px;padding:8px;background:#fff}
+button.primary{font:inherit;background:var(--accent);color:#fff;border:0;border-radius:6px;padding:9px 14px;cursor:pointer} a.primary{display:inline-block;text-decoration:none}
+pre{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-size:12px;line-height:1.45;overflow:auto;max-height:520px;white-space:pre-wrap}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:700px){.split{grid-template-columns:1fr}} .box{border:1px solid var(--line);border-radius:8px;padding:12px;background:#fff} .box small{color:var(--muted)}
+#live{margin:26px 0} textarea{width:100%;min-height:90px} .tag{font-size:.75rem;border:1px solid var(--line);border-radius:12px;padding:2px 8px;color:var(--muted);margin-right:4px}
+</style></head>
+<body><header><h1>Demo Hub</h1><p class="hint">Everything here runs live on our servers — the same code we teach with and consult with. Pick a demo, press Run, read the output. Nothing is a video.</p>
+<div class="filters"><button class="on" data-a="">All</button><button data-a="business">For business</button><button data-a="technical">For engineers</button></div></header>
+<main>
+<section id="live"><h2>Ask the documents — live RAG, basic vs advanced</h2>
+<p class="hint">Ask anything about the sample company policies (refunds, delivery, leave, expenses…) or paste your own text with <code>##</code> headings. Both pipelines run on the same question; compare what each one found.</p>
+<div class="row"><input id="q" style="flex:1;min-width:240px" placeholder="e.g. How many days do I have to claim damaged goods?" value="How many days do I have to claim damaged goods?"><button class="primary" id="ask">Ask both</button></div>
+<details style="margin:8px 0"><summary class="hint">Use my own text instead of the sample documents</summary><textarea id="mydocs" placeholder="## Section heading&#10;Your policy text…"></textarea></details>
+<div id="ragout"></div></section>
+<h2>Runnable demos</h2><div class="grid" id="cards"></div>
+<div id="runout"></div>
+</main>
+<script>
+const $=id=>document.getElementById(id), API=location.origin+'/api/demos'; let aud='';
+document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.filters button').forEach(x=>x.classList.remove('on'));b.classList.add('on');aud=b.dataset.a;load();});
+async function load(){ const d=await (await fetch(API+(aud?'?audience='+aud:''))).json();
+  $('cards').innerHTML=d.map(x=>`<div class="card"><h3>${x.title}</h3><p>${x.tagline}</p><div>${(x.used_in||[]).map(u=>`<span class="tag">${u}</span>`).join('')}</div><div class="row" style="margin-top:8px">${
+    x.kind==='script' ? (x.variants?`<select id="v_${x.id}">${Object.keys(x.variants).map(v=>`<option>${v}</option>`).join('')}</select>`:'')+`<button class="primary" onclick="run('${x.id}')">Run</button>`
+    : x.kind==='link' ? `<a class="primary" href="${x.url}"><button class="primary">Open</button></a>` : `<a class="primary" href="#live"><button class="primary">Try above</button></a>`}</div></div>`).join(''); }
+async function run(id){ const v=document.getElementById('v_'+id); $('runout').innerHTML=`<p class="hint">Running ${id}…</p>`; $('runout').scrollIntoView({behavior:'smooth'});
+  const r=await fetch(API+'/run/'+id,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({variant:v?v.value:null})}); const b=await r.json();
+  $('runout').innerHTML=`<h3>${b.title||id}</h3><p class="hint"><code>${b.command||''}</code> ${b.ok?'✓':'✗ '+(b.detail||'')}</p><pre>${(b.output||'')+(b.stderr||'')}</pre>`; }
+$('ask').onclick=async()=>{ $('ragout').innerHTML='<p class="hint">Retrieving…</p>'; const body={question:$('q').value, docs_text:$('mydocs').value||null};
+  const r=await fetch(API+'/rag/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); const b=await r.json(); if(!r.ok) return $('ragout').innerHTML=`<p>${JSON.stringify(b.detail)}</p>`;
+  const box=(t,x)=>`<div class="box"><b>${t}</b><br><small>${x.method}</small><p>${x.answer}</p><small>Passages found:</small>${x.passages.map(p=>`<div style="border-top:1px solid var(--line);padding:6px 0;font-size:.85rem"><b>${p.source}</b><br>${p.text}</div>`).join('')}<small>tokens in ${x.tokens_in} · out ${x.tokens_out}</small></div>`;
+  $('ragout').innerHTML=`<p class="hint">Source: ${b.source}</p><div class="split">${box('Basic RAG',b.basic)}${box('Advanced RAG',b.advanced)}</div><p class="hint">${b.note}</p>`; };
+load();
+</script></body></html>

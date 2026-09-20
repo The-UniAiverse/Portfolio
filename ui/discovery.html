@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Discovery kit — uniAIverse</title>
+<style>
+:root{--ink:#14213d;--paper:#fbfaf7;--line:#d9d6cf;--accent:#0f766e;--muted:#5b6170}
+body{margin:0;font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;background:var(--paper);color:var(--ink);line-height:1.5}
+main{max-width:720px;margin:0 auto;padding:26px 20px 80px} h1{margin:0 0 6px;font-size:1.8rem;font-weight:600} .hint{color:var(--muted);font-size:.9rem}
+label{display:block;margin:12px 0 4px;font-weight:600} input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:6px;font:inherit;background:#fff}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:560px){.row{grid-template-columns:1fr}}
+button{font:inherit;background:var(--accent);color:#fff;border:0;border-radius:6px;padding:11px 18px;cursor:pointer;margin-top:14px}
+.card{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fff;margin:16px 0} .card a{margin-right:14px;color:var(--accent)} .q{padding:6px 0;border-top:1px solid var(--line);font-size:.92rem}
+</style></head><body><main>
+<h1>Discovery kit</h1><p class="hint">An enquiry comes in → pick who they are and what they want → get the discovery-questions document (PDF, Word, Markdown) to send the same day. Questions come from <code>kit.yaml</code>; edit there to change them.</p>
+<div class="row"><div><label>Client / organisation</label><input id="client" placeholder="e.g. Fergusson College · Acme Logistics · a Big-4 firm via IndusGuru"></div><div><label>Contact (optional)</label><input id="contact"></div>
+<div><label>Who are they?</label><select id="segment"></select></div><div><label>What do they want?</label><select id="service"></select></div>
+<div><label>Via a partner? (optional)</label><input id="partner" placeholder="e.g. IndusGuru"></div></div>
+<label>Already known from the enquiry (optional)</label><textarea id="notes" rows="3" placeholder="e.g. prefers Gemini; 2 batches of 25; wants dates in November"></textarea>
+<button id="go">Generate discovery document</button> <span class="hint" id="status"></span>
+<div id="out"></div>
+</main><script>
+const $=id=>document.getElementById(id), API=location.origin+'/api/discovery';
+(async()=>{ const k=await (await fetch(API+'/kit')).json(); $('segment').innerHTML=Object.entries(k.segments).map(([id,s])=>`<option value="${id}">${s.title}</option>`).join(''); $('service').innerHTML=Object.entries(k.services).map(([id,s])=>`<option value="${id}">${s.title}</option>`).join(''); })();
+$('go').onclick=async()=>{ if(!$('client').value) return alert('Client name, please'); $('status').textContent='Assembling…';
+  const r=await fetch(API+'/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({client:$('client').value,segment:$('segment').value,service:$('service').value,via_partner:$('partner').value||null,contact_name:$('contact').value||null,notes:$('notes').value||null})});
+  const b=await r.json(); $('status').textContent=''; if(!r.ok) return $('out').innerHTML=`<p>${JSON.stringify(b.detail)}</p>`;
+  $('out').innerHTML=`<div class="card"><h3>${b.title}</h3><p>${b.question_count} questions in ${b.sections.length} sections.</p><p><a href="${b.pdf_url}">PDF</a><a href="${b.docx_url}">Word</a><a href="${b.markdown_url}">Markdown</a></p>
+  <p class="hint">What we can confirm today:</p><ul>${b.confirms.map(x=>`<li>${x}</li>`).join('')}</ul>${b.sections.map(s=>`<p><b>${s.letter}. ${s.title}</b></p>${s.questions.map((q,i)=>`<div class="q"><b>${s.letter}${i+1}</b> ${q.q}<br><span class="hint">${q.why}</span></div>`).join('')}`).join('')}</div>`; };
+</script></body></html>

@@ -15,7 +15,7 @@ class Settings:
     port: int = int(os.getenv("APP_PORT", "8000"))
     cors_origins: list[str] = _list("CORS_ORIGINS", "http://localhost:3000")
     enabled_services: list[str] = _list(
-        "ENABLED_SERVICES", "readiness_audit,training,strategy,governance,automation,pricing,quest,bot,payments"
+        "ENABLED_SERVICES", "readiness_audit,training,strategy,governance,automation,pricing,quest,bot,payments,demos,discovery"
     )
     llm_provider: str = os.getenv("LLM_PROVIDER", "none").lower()
     llm_model: str = os.getenv("LLM_MODEL", "claude-sonnet-4-6")

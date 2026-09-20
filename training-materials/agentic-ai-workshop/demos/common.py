@@ -108,13 +108,15 @@ def answer(question: str, passages: list[dict], history: str = "") -> tuple[str,
         out = llm.complete(prompt, max_tokens=300) or "(model returned nothing)"
     else:
         # OFFLINE: extractive — pick the sentence with most query terms; refuse if nothing matches.
-        best, score = None, 0
+        best, score = None, 0.0; qt = set(_terms(question)) or {question.lower()}
         for p in passages:
             body = re.sub(r"^\[From:[^\]]*\]\s*", "", p["text"]).replace("\n", " ")
             for sent in re.split(r"(?<=[.!?])\s+", body):
-                sc = sum(1 for w in _terms(question) if w in sent.lower())
-                if sc > score: best, score = (sent.strip(), p), sc
-        out = f"{best[0]} (Source: {best[1]['doc']} › {best[1]['heading']})" if best and score >= 2 else "I could not find this in the available documents."
+                st = set(_terms(sent)); hits = len(qt & st)
+                sc = hits / len(qt)
+                if hits and sc > score: best, score = (sent.strip(), p), sc
+        # answer when at least half the question's terms appear in one sentence (min 1 hit); otherwise refuse honestly
+        out = f"{best[0]} (Source: {best[1]['doc']} › {best[1]['heading']})" if best and score >= 0.5 else "I could not find this in the available documents."
     return out, tokens(prompt), tokens(out)
 
 def hr(): print("─" * 78)

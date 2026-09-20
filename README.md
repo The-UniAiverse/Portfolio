@@ -23,13 +23,13 @@ Everything works **without** an LLM key (rule-based, deterministic). Add a key a
 cp .env.example .env            # optionally set LLM_PROVIDER + key
 pip install -r requirements.txt
 uvicorn app.main:app --reload   # http://localhost:8000  (demo UI)  ·  /docs (Swagger)
-pytest -q                       # 23 tests
+pytest -q                       # 28 tests
 python scripts/validate_content.py   # every YAML, question bank, curriculum, quest, bot, pricing, and the workshop demos
 # or: docker compose up
 ```
 
 ## Demo pages
-`/` audit · `/course-finder` · `/quest` · `/pay` · `/tools` (strategy, governance, automation with PDF reports) · `/admin` · `/docs`
+`/demos` (every demo, live) · `/discovery` (enquiry → discovery document) · `/` audit · `/course-finder` · `/quest` · `/pay` · `/tools` (strategy, governance, automation with PDF reports) · `/admin` · `/docs`
 
 ## Try the audit in 10 seconds
 Open http://localhost:8000 → pick a tier (and an industry module for Silver+) → *fill with sample answers* → *Score my readiness* → download the PDF.

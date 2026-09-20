@@ -1,0 +1,234 @@
+deck:
+  title: AI, RAG & Agents — College Placement Bootcamp (1 day) or 2-day with capstone
+  subtitle: A working workshop — understand, build, cost, decide
+  brand: uniAIverse
+  footer: uniAIverse · AI, RAG & Agents — College Placement Bootcamp (1 day) or 2-day with capstone · v1.0
+  file: deck-college
+slides:
+- type: title
+  title: AI, RAG & Agents — College Placement Bootcamp (1 day) or 2-day with capstone
+  subtitle: Diploma / undergraduate students (any stream) in batches of up to 60 with two TAs; placement-focused
+  notes: 'Welcome. State the promise and the rule: nothing is ''just'' anything. Mixed room: leaders decide, analysts frame, engineers build — every lab has a no-code path and a code path.'
+- type: bullets
+  title: How the two days run
+  bullets:
+  - Day 1 AM — how it actually works (tokens, cost, models)
+  - 'Day 1 PM — the RAG ladder: basic → advanced → hybrid → agentic'
+  - Day 2 AM — agents that don't run away
+  - Day 2 PM — strategy, optimisation, ROI, your 90-day plan
+  - Five labs. Every table leaves with a bot, an agent and a costed plan.
+  notes: 'Point at the wall poster with the master analogy: the brilliant new colleague who has never worked here. Everything maps to it.'
+- type: bullets
+  title: What recruiters actually ask
+  bullets:
+  - 'Three real interview questions on screen: ''Why does a chatbot make things up?'', ''What is RAG?'', ''How would you stop an agent from running forever?'' — you will be able to answer all three by 5
+    pm.'
+  - Set up uniAI Quest on phones now; the leaderboard runs all day.
+  notes: 'Three real interview questions on screen: ''Why does a chatbot make things up?'', ''What is RAG?'', ''How would you stop an agent from running forever?'' — you will be able to answer all three
+    by 5 pm. Set up uniAI Quest on phones now; the leaderboard runs all day.'
+- type: lab
+  title: Lab 0 · The hour-one win
+  bullets:
+  - Upload 2–3 of your own documents into the instant tool
+  - Ask five questions. Then ask one thing about your company it can't know.
+  - 'Flipchart: what worked, what failed'
+  duration: 45 min
+  notes: Never start with theory. The failures on the flipchart are the curriculum — we return to them at the close of Day 2.
+- type: section
+  title: Module 2 · How it actually works
+- type: two_col
+  title: It's a prediction machine
+  left:
+  - Autocomplete that has read most of the internet
+  - Always produces a next word — that's the job
+  - No database inside. Nothing stored, nothing looked up.
+  right:
+  - So when it doesn't know, it doesn't say so
+  - It produces the most plausible continuation
+  - Fluent, confident, wrong — a hallucination
+  - 'Not a bug: the machine doing its job where that job is wrong'
+  notes: 'Phone autocomplete demo. Then the exam-hall analogy: a person who read 10,000 books, in a room with no books, asked for the number on page 247.'
+- type: demo
+  title: Demo 2 · The confident wrong answer
+  bullets:
+  - 'Closed-book: ask about your company'
+  - 'Open-book: same question with the right page on the desk'
+  - Same model. The difference is the library.
+  command: python demos/02_hallucination.py
+  notes: If a key is configured, ask live about the client's own policy. If not, the recorded exchange shows the identical pattern.
+- type: bullets
+  title: Quiz round 1 · AI basics
+  bullets:
+  - Five questions on uniAI Quest, ai-basics topic, on phones.
+  - Leaderboard on the projector.
+  - Explain the two most-missed questions.
+  notes: Five questions on uniAI Quest, ai-basics topic, on phones. Leaderboard on the projector. Explain the two most-missed questions.
+- type: table
+  title: 'Tokens: the billing unit'
+  header:
+  - Thing
+  - Rule of thumb
+  rows:
+  - - 1 token
+    - about ¾ of a word
+  - - 1 page
+    - about 700 tokens
+  - - Output
+    - costs ~5× input
+  - - Cached input
+    - ~90% off when the same prefix is sent again
+  - - Reasoning tokens
+    - billed as output — buy deliberately
+  notes: Tokenise a sentence live. The numbers move every quarter; the shape of the argument doesn't.
+- type: bullets
+  title: Context window = the desk
+  bullets:
+  - What fits on the desk when the assistant answers
+  - Why not paste everything in? Money · speed · accuracy · permissions
+  - '500-page handbook, 1,000 questions a day: ~$20,000/month pasted vs ~$300/month fetched'
+  - Fetch the right 8 pages first. That's RAG.
+  notes: The one number they'll repeat to their boss. Say it slowly.
+- type: section
+  title: Module 4 · The RAG ladder
+- type: table
+  title: Four levels — and when each is right
+  header:
+  - Level
+  - What it adds
+  - You need it when
+  - Cost / speed
+  rows:
+  - - Basic
+    - fetch, answer
+    - clean FAQ
+    - 1×
+  - - Advanced
+    - rewriting, hybrid search, reranking, contextual chunks
+    - real company documents — where most systems should live
+    - 1.1×
+  - - Hybrid
+    - several stores + a router
+    - documents AND a database AND live systems
+    - 1.3×
+  - - Agentic
+    - the model decides, checks, retries
+    - multi-step, cross-system questions
+    - 5–10×, 10× slower
+  notes: Earn your way up. An agent does not fix bad retrieval — it repeats it five times at five times the cost.
+- type: bullets
+  title: 'Where quality is won: cutting the cards'
+  bullets:
+  - Cut at headings and sections, never at word counts
+  - One idea per card, ~300–500 words, readable cold
+  - Never split a table; repeat the header row
+  - Write where it came from on top of every card — the cheapest large improvement there is
+  notes: 'Read a bare chunk aloud: ''The amount shall be recognised evenly…'' — nobody knows what it''s about. Add the prefix and it becomes findable.'
+- type: two_col
+  title: Two ways to search, then pick the best
+  left:
+  - 'Meaning search: finds ''refund'' when you ask ''money back'''
+  - Blind to exact codes, numbers, 'not'
+  - 'Exact-word search (Ctrl+F): finds ERR_GW_4471'
+  - Blind to synonyms
+  right:
+  - 'Run both, combine by rank (RRF): agreement is evidence'
+  - 'Then rerank: fetch 50, read properly, keep 5'
+  - 'Hiring: filter 500 CVs to 50, then a human reads 50 and picks 5'
+  - +10–25% answer quality for a fraction of a cent
+  notes: The reranker is the first thing to try when someone says 'our RAG is 70% accurate'.
+- type: demo
+  title: Demo 3 · Basic vs Advanced, one change at a time
+  bullets:
+  - Fixed chunks → heading chunks + prefix
+  - + hybrid search (RRF)
+  - + reranking (drops the superseded draft)
+  - Then a grounded answer, and a refusal
+  command: python demos/03_rag_basic_vs_advanced.py
+  notes: Watch the scoreboard go 3 → 5. Point at the DRAFT document being demoted by the reranker — 'old cards survive' unless you handle it.
+- type: bullets
+  title: The most important sentence in your bot
+  bullets:
+  - Answer using ONLY the documents provided.
+  - For every fact, say which document it came from.
+  - 'If the documents don''t contain the answer, say exactly: ''I could not find this in the available documents.'''
+  - It turns a lie into a report — and a report into a number on a dashboard.
+  notes: 'Leave this slide up. Count how often ''not found'' happens: that number is a direct measure of library quality.'
+- type: lab
+  title: Lab 2 · Build your grounded assistant
+  bullets:
+  - Your 10–20 documents into the tool
+  - Score 10 real questions — the 'before' number
+  - Hybrid on → re-score. Reranker on → re-score.
+  - Read five of your chunks. Out loud.
+  duration: 45 min
+  notes: 'One change at a time — enforce it. This is where the course clicks: their own score goes up because of a decision they made.'
+- type: bullets
+  title: Quiz round 2 · RAG
+  bullets:
+  - Five questions, rag topic.
+  - Then one interview challenge (rag-70) answered by a volunteer, room votes, reveal what interviewers listen for.
+  notes: Five questions, rag topic. Then one interview challenge (rag-70) answered by a volunteer, room votes, reveal what interviewers listen for.
+- type: bullets
+  title: When the answer is wrong — in this order
+  bullets:
+  - 1. Was the right page fetched? No → library problem. Chunking, search. Rewriting instructions won't help.
+  - 2. Fetched but ignored? Strengthen the instruction, send fewer cards.
+  - 3. Fetched, used, still wrong? Now it's the prompt — or the card itself is wrong.
+  - Most people start at 3. Almost every problem is at 1.
+  notes: 'Handout: the fault-finding card.'
+- type: section
+  title: Module 6 · Agents that don't run away
+- type: two_col
+  title: Vending machine vs librarian
+  left:
+  - 'What you built yesterday: press a button, one item drops'
+  - Wrong item? Nothing you can do
+  - Question → one search → answer
+  right:
+  - An agent goes to the shelf, reads, thinks 'this only answers half', goes again
+  - Think → look → read → judge → answer or try again
+  - And when it isn't in the collection, it says so
+  notes: 'The loop on the whiteboard, drawn slowly. Then the warning: ALWAYS with a limit, or it runs forever.'
+- type: bullets
+  title: The five safety rails — none optional
+  bullets:
+  - Max iterations (5–10)
+  - Max cost per run · max wall-clock
+  - 'Loop detection: same tool + same args twice → stop'
+  - A required 'I give up' path that reports what it tried
+  - Human approval for anything consequential or irreversible
+  notes: Without these, one badly-worded question can loop for twenty minutes and cost more than the month. Demo 5 hits every rail.
+- type: bullets
+  title: Quiz round 3 · Agents + your portfolio
+  bullets:
+  - Five questions, agents topic.
+  - 'Then the portfolio rule: one GitHub repo, README with a diagram, a 10-question test sheet, a cost estimate.'
+  - That repo is your interview answer.
+  - 'Show the Course Finder: paste your profile, get your path.'
+  notes: 'Five questions, agents topic. Then the portfolio rule: one GitHub repo, README with a diagram, a 10-question test sheet, a cost estimate. That repo is your interview answer. Show the Course Finder:
+    paste your profile, get your path.'
+- type: demo
+  title: Demo 5 · An agent with rails
+  bullets:
+  - 'Scenario 1: reads, checks policy, asks a human, acts'
+  - 'Scenario 2: the human says no — the agent stops with a draft'
+  - 'Scenario 3: the model repeats itself — loop detection ends it cleanly'
+  command: python demos/05_agent.py
+  notes: 'Point at the gate: issue_refund is the only tool that changes the world, and it''s the only one behind a human.'
+- type: bullets
+  title: When an agent is the wrong answer
+  bullets:
+  - Simple, high-volume questions where speed matters
+  - Anything a script already does reliably
+  - A poor library — the agent fails five times instead of once
+  - 'A well-tuned Advanced bot: < 1 s, fraction of a cent. An agent: ~12 s, 30× tokens — for the same answer'
+  notes: Go up a level only when you hit a wall you can name.
+- type: close
+  title: Five things to remember
+  bullets:
+  - No database inside — it predicts. That's why it invents.
+  - Fetch the right pages first. Five right beat fifty mediocre.
+  - When it's wrong, look at what it fetched before blaming the model.
+  - Agents amplify retrieval quality — good or bad. Earn your way up; cap everything.
+  - 'Cost is a design decision: cache, route, trim, tier.'
+  notes: 'Close with the two-week check: at least one plan with an owner and a date. Offer the readiness snapshot and a follow-up call.'
