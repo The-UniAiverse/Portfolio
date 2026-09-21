@@ -1,5 +1,7 @@
 # How everything works — the plain-English version
 
+> **v2.5:** the plain-language guide for editing, testing, shipping and going live — including the AI Delivery Framework (`/delivery`) and the working demos for all 25 courses — is **`docs/HOW_TO_PLAYBOOK.md`**. Start there.
+
 *For Sarfi. No code required to read this.*
 
 ---

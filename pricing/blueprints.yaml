@@ -203,3 +203,36 @@ services:
           - {name: Deliver, week: 3-12, activities: [all tracks, executive briefings, train-the-trainer], outputs: [certified cohorts, internal trainers]}
           - {name: Sustain, week: 13, activities: [post-assessment, 12-month content updates], outputs: [impact report]}
         deliverables: [Custom AI Academy across all tracks, Executive and board briefings, Train-the-trainer programme, Skills assessment before and after, 12 months of curriculum updates, Certificates up to AI Expert]
+
+  delivery:
+    title: AI Delivery Framework
+    methodology: "One engagement record in; twelve rule-based modules produce the tier, plan, estimates, costs, governance, security, gates and documents. Every pack is a draft until a named reviewer approves it."
+    frameworks: [uniAIverse Enterprise AI Project Delivery Framework (POC to Scale with gates G0-G4), NIST AI RMF, ISO/IEC 42001, PERT three-point estimation]
+    tiers:
+      bronze:
+        client_types: [startup, sme]
+        weeks: 1
+        team: {engagement_lead: 3 days}
+        phases:
+          - {name: Intake and size, week: 1, activities: [discovery questions, intake at /delivery, risk pre-screen], outputs: [engagement record, tier]}
+          - {name: Estimate and pack, week: 1, activities: [T-shirt estimate, LLM and project cost, pack review], outputs: [Bronze pack, G0 checklist]}
+        deliverables: [13-document Bronze pack, Effort and cost range, G0-G1 gate checklists]
+      silver:
+        client_types: [sme, mid-market, large]
+        weeks: 3
+        team: {engagement_lead: 6 days, solution_architect: 4 days, governance_specialist: 2 days}
+        phases:
+          - {name: Intake and readiness, week: 1, activities: [readiness audit, intake, data assessment], outputs: [engagement record, readiness effect]}
+          - {name: Plan and estimate, week: 2, activities: [pattern selection, PERT workshop, cost model], outputs: [delivery plan, estimate, TCO and ROI]}
+          - {name: Govern secure assemble, week: 3, activities: [governance plan, security plan, pack review], outputs: [Silver pack, gate calendar]}
+        deliverables: [21-document Silver pack, PERT estimate by role, 3-year TCO and ROI, Gate records G0-G3]
+      gold:
+        client_types: [large, enterprise, regulated]
+        weeks: 6
+        team: {engagement_lead: 12 days, solution_architect: 10 days, governance_specialist: 6 days, security_engineer: 5 days}
+        phases:
+          - {name: Programme intake, week: 1, activities: [stakeholder interviews, portfolio intake, risk pre-screen per use case], outputs: [engagement records]}
+          - {name: Plan and estimate, week: 2-3, activities: [architecture options, PERT by workstream, cost and funding model], outputs: [programme plan, estimates]}
+          - {name: Governance and security depth, week: 4-5, activities: [review-board style assessment, threat model, red-team plan], outputs: [governance plan, security plan]}
+          - {name: Steering pack, week: 6, activities: [pack assembly, steering read-out], outputs: [Gold pack, gate charter]}
+        deliverables: [26-document Gold pack, Programme estimate and funding model, Full governance and security plans, Steering-committee gate reviews G0-G4]

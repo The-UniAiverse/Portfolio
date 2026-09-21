@@ -23,8 +23,14 @@ pre{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-size:12
 <div id="ragout"></div></section>
 <h2>Runnable demos</h2><div class="grid" id="cards"></div>
 <div id="runout"></div>
+<h2 id="labs">Course labs — working demos for every course</h2>
+<p class="hint">Pick a course, run any demo. Each is the same script trainers run in the room (offline, deterministic). Output appears below the list.</p>
+<div class="row"><select id="course" style="min-width:320px"></select><span class="hint" id="courseMeta"></span></div>
+<div class="grid" id="labcards" style="margin-top:10px"></div>
+<div id="labout"></div>
 </main>
 <script>
+const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const $=id=>document.getElementById(id), API=location.origin+'/api/demos'; let aud='';
 document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.filters button').forEach(x=>x.classList.remove('on'));b.classList.add('on');aud=b.dataset.a;load();});
 async function load(){ const d=await (await fetch(API+(aud?'?audience='+aud:''))).json();
@@ -33,10 +39,17 @@ async function load(){ const d=await (await fetch(API+(aud?'?audience='+aud:''))
     : x.kind==='link' ? `<a class="primary" href="${x.url}"><button class="primary">Open</button></a>` : `<a class="primary" href="#live"><button class="primary">Try above</button></a>`}</div></div>`).join(''); }
 async function run(id){ const v=document.getElementById('v_'+id); $('runout').innerHTML=`<p class="hint">Running ${id}…</p>`; $('runout').scrollIntoView({behavior:'smooth'});
   const r=await fetch(API+'/run/'+id,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({variant:v?v.value:null})}); const b=await r.json();
-  $('runout').innerHTML=`<h3>${b.title||id}</h3><p class="hint"><code>${b.command||''}</code> ${b.ok?'✓':'✗ '+(b.detail||'')}</p><pre>${(b.output||'')+(b.stderr||'')}</pre>`; }
+  $('runout').innerHTML=`<h3>${b.title||id}</h3><p class="hint"><code>${b.command||''}</code> ${b.ok?'✓':'✗ '+(b.detail||'')}</p><pre>${esc((b.output||'')+(b.stderr||''))}</pre>`; }
+let COURSES=[];
+async function loadLabs(){ COURSES=await (await fetch(API+'/courses')).json(); $('course').innerHTML=COURSES.map(c=>`<option value="${c.id}">${esc(c.title)} (${c.demos.length})</option>`).join(''); $('course').onchange=showCourse; showCourse(); }
+function showCourse(){ const c=COURSES.find(x=>x.id===$('course').value); if(!c) return; $('courseMeta').textContent=`${c.audience} · ${c.hours} h · level ${c.level}`;
+  $('labcards').innerHTML=c.demos.map(d=>`<div class="card"><h3>${esc(d.title)}</h3><p>${esc(d.shows)}</p><div><span class="tag">module ${d.module||'—'}</span>${d.minutes?`<span class="tag">${d.minutes} min</span>`:''}</div><div class="row" style="margin-top:8px"><button class="primary" onclick="runLab('${c.id}','${d.id}')">Run</button></div></div>`).join(''); }
+async function runLab(c,d){ $('labout').innerHTML=`<p class="hint">Running ${d}… (first run of a course can take 10–20 s)</p>`; $('labout').scrollIntoView({behavior:'smooth'});
+  const r=await fetch(`${API}/run-course/${c}/${d}`,{method:'POST'}); const b=await r.json();
+  $('labout').innerHTML=`<h3>${esc(b.title||d)}</h3><p class="hint"><code>${esc(b.command||'')}</code> ${b.ok?'✓':'✗ '+esc(b.detail||'')}</p><pre>${esc((b.output||'')+(b.stderr||''))}</pre>`; }
 $('ask').onclick=async()=>{ $('ragout').innerHTML='<p class="hint">Retrieving…</p>'; const body={question:$('q').value, docs_text:$('mydocs').value||null};
   const r=await fetch(API+'/rag/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); const b=await r.json(); if(!r.ok) return $('ragout').innerHTML=`<p>${JSON.stringify(b.detail)}</p>`;
   const box=(t,x)=>`<div class="box"><b>${t}</b><br><small>${x.method}</small><p>${x.answer}</p><small>Passages found:</small>${x.passages.map(p=>`<div style="border-top:1px solid var(--line);padding:6px 0;font-size:.85rem"><b>${p.source}</b><br>${p.text}</div>`).join('')}<small>tokens in ${x.tokens_in} · out ${x.tokens_out}</small></div>`;
   $('ragout').innerHTML=`<p class="hint">Source: ${b.source}</p><div class="split">${box('Basic RAG',b.basic)}${box('Advanced RAG',b.advanced)}</div><p class="hint">${b.note}</p>`; };
-load();
+load(); loadLabs();
 </script></body></html>

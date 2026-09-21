@@ -9,6 +9,9 @@
    - Course Finder → `https://api.uniaiverse.ai/course-finder`
    - uniAI Quest → `https://api.uniaiverse.ai/quest`
    - Checkout → `https://api.uniaiverse.ai/pay?product=<id>`
+   - AI Delivery Framework (estimate + pack) → `https://api.uniaiverse.ai/delivery`
+   - Live demos and course labs → `https://api.uniaiverse.ai/demos`
+   - Course pages: `GET /api/demos/courses` lists each course's labs; `POST /api/demos/run-course/{course}/{demo}` returns the output as text — render it in a `<pre>`.
    (Or proxy these under uniaiverse.ai/tools/* with a Next.js rewrite — see `next.config.rewrites.example.js`.)
 
 ## About the ChatGPT Go account

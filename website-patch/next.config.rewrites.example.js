@@ -8,6 +8,8 @@ module.exports = {
       { source: '/tools/course-finder', destination: `${api}/course-finder` },
       { source: '/tools/quest', destination: `${api}/quest` },
       { source: '/tools/pay', destination: `${api}/pay` },
+      { source: '/tools/delivery', destination: `${api}/delivery` },
+      { source: '/tools/demos', destination: `${api}/demos` },
       { source: '/api/:path*', destination: `${api}/api/:path*` },
       { source: '/static/:path*', destination: `${api}/static/:path*` },
     ]

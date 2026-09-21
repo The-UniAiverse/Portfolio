@@ -1,0 +1,30 @@
+# Day rates per role. USD list; other currencies by conversion (same convention as pricing/tiers.yaml).
+# PLACEHOLDER RATES — Sarfi to confirm (decision D3 in the playbook). Change here; nothing else needs editing.
+version: "1.0"
+last_reviewed: "2026-09-21"
+status: "placeholder — confirm before quoting"
+currency: USD
+fx: {USD: 1.0, INR: 84.0, EUR: 0.92}
+roles:
+  engagement_lead:         {title: Engagement lead,               day_rate_usd: 900}
+  solution_architect:      {title: Solution architect,            day_rate_usd: 800}
+  ai_engineer:             {title: AI / GenAI engineer,           day_rate_usd: 650}
+  data_engineer:           {title: Data engineer,                 day_rate_usd: 550}
+  app_engineer:            {title: Application engineer,          day_rate_usd: 500}
+  qa_eval_engineer:        {title: QA and evaluation engineer,    day_rate_usd: 450}
+  mlops_security_engineer: {title: MLOps and security engineer,   day_rate_usd: 650}
+  governance_specialist:   {title: AI governance specialist,      day_rate_usd: 750}
+  change_lead:             {title: Change and training lead,      day_rate_usd: 550}
+size_multiplier_source: pricing/tiers.yaml        # company-size multiplier is read from the public pricing file
+size_multiplier_floor: 0.8                        # delivery work does not shrink as far as list-price services do
+tools_and_licences_usd: {bronze: 500, silver: 3000, gold: 12000}
+compliance_usd:                                   # DPIA, audit support, red-team exercise — by risk tier
+  minimal: 0
+  limited: 1500
+  high: 12000
+support_pct_of_build_per_year: {bronze: 0.12, silver: 0.15, gold: 0.18}
+retrain_refresh_usd_per_year: {assistant: 1000, rag: 3000, extraction: 3000, classical_ml: 8000, agent: 5000, multi_agent: 9000}
+payment_milestones:
+  bronze: [["G0 signature", 40], ["G1 POC accepted", 40], ["G2 handover", 20]]
+  silver: [["G0 signature", 20], ["G1 POC accepted", 20], ["G2 MVP accepted", 30], ["G3 production release", 30]]
+  gold:   [["G0 signature", 15], ["G1 POC accepted", 15], ["G2 MVP accepted", 25], ["G3 production release", 30], ["G4 first scale increment", 15]]

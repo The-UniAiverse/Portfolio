@@ -1,0 +1,58 @@
+# Stage gates G0–G4. Each criterion: id, text, the lowest tier that must evidence it, area, and whether missing it blocks the gate.
+version: "1.0"
+last_reviewed: "2026-09-21"
+decisions: [go, conditional_go, no_go, pivot]
+gates:
+  G0:
+    title: "G0 — Initiate → POC (commercial and initiation gate)"
+    question: "Is this a real, fundable problem AI can address?"
+    criteria:
+      - {id: G0-01, text: "Problem statement with business metric, baseline and target", tier: bronze, area: business, blocking: true}
+      - {id: G0-02, text: "Named business sponsor and product owner", tier: bronze, area: business, blocking: true}
+      - {id: G0-03, text: "Risk pre-screen done; risk tier and data classification recorded", tier: bronze, area: governance, blocking: true}
+      - {id: G0-04, text: "Sizing score and tier agreed", tier: bronze, area: delivery, blocking: false}
+      - {id: G0-05, text: "Estimate range, LLM run-cost range and commercial model accepted", tier: bronze, area: commercial, blocking: true}
+      - {id: G0-06, text: "SOW signed (after human and legal review)", tier: bronze, area: commercial, blocking: true}
+      - {id: G0-07, text: "Applicable regulations listed (DPDP, GDPR, sector rules)", tier: silver, area: governance, blocking: false}
+      - {id: G0-08, text: "Assumptions and risk register opened", tier: silver, area: delivery, blocking: false}
+      - {id: G0-09, text: "Steering committee named and meeting cadence set", tier: gold, area: governance, blocking: false}
+  G1:
+    title: "G1 — POC → Pilot / MVP"
+    question: "Is it technically feasible at all?"
+    criteria:
+      - {id: G1-01, text: "POC report: measured metric on the evaluation set vs target", tier: bronze, area: ai, blocking: true}
+      - {id: G1-02, text: "Feasibility verdict and MVP estimate (re-baselined)", tier: bronze, area: delivery, blocking: true}
+      - {id: G1-03, text: "Lawful basis for POC data confirmed; no production data outside approved environments", tier: bronze, area: governance, blocking: true}
+      - {id: G1-04, text: "Measured cost per request vs the M7 estimate", tier: bronze, area: commercial, blocking: false}
+      - {id: G1-05, text: "Evaluation plan and test-set definition approved", tier: silver, area: ai, blocking: true}
+      - {id: G1-06, text: "Environment and engineering standards in place", tier: silver, area: engineering, blocking: false}
+      - {id: G1-07, text: "Pattern selection rationale reviewed by the architect", tier: silver, area: engineering, blocking: false}
+  G2:
+    title: "G2 — Pilot / MVP → Production"
+    question: "Does it create value for real users at limited scale?"
+    criteria:
+      - {id: G2-01, text: "Working MVP used by pilot users; pilot results vs success metric", tier: bronze, area: business, blocking: true}
+      - {id: G2-02, text: "Business case updated with measured benefit and run cost", tier: bronze, area: commercial, blocking: false}
+      - {id: G2-03, text: "Evaluation results including safety and out-of-scope metrics", tier: silver, area: ai, blocking: true}
+      - {id: G2-04, text: "Threat model complete; security control plan agreed", tier: silver, area: security, blocking: true}
+      - {id: G2-05, text: "Governance gap assessment and 30/60/90 plan accepted", tier: silver, area: governance, blocking: false}
+      - {id: G2-06, text: "DPIA and model/system card drafted (where required)", tier: gold, area: governance, blocking: true}
+      - {id: G2-07, text: "Vendor and third-party model assessment complete", tier: gold, area: governance, blocking: false}
+  G3:
+    title: "G3 — Production release"
+    question: "Can it run reliably, securely and compliantly?"
+    criteria:
+      - {id: G3-01, text: "Controls implemented and tested; open HIGH findings closed or accepted by a named owner", tier: silver, area: security, blocking: true}
+      - {id: G3-02, text: "Monitoring, alerting and incident process live; alert owners named", tier: silver, area: operations, blocking: true}
+      - {id: G3-03, text: "Rollback tested; versions of model, prompt, index pinned", tier: silver, area: operations, blocking: true}
+      - {id: G3-04, text: "User training delivered; support model agreed", tier: silver, area: change, blocking: false}
+      - {id: G3-05, text: "Sign-offs recorded: business, security, governance", tier: silver, area: governance, blocking: true}
+      - {id: G3-06, text: "Operational readiness checklist and run-book accepted by the run team", tier: gold, area: operations, blocking: true}
+  G4:
+    title: "G4 — Scale (per increment)"
+    question: "Can it grow across users, regions and use cases?"
+    criteria:
+      - {id: G4-01, text: "Cost and performance baseline from production (8+ stable weeks)", tier: gold, area: operations, blocking: true}
+      - {id: G4-02, text: "Risk re-tiered for each new use, user group or region", tier: gold, area: governance, blocking: true}
+      - {id: G4-03, text: "Vendor review refreshed; model deprecation plan current", tier: gold, area: governance, blocking: false}
+      - {id: G4-04, text: "Benefits tracking reported to the steering committee", tier: gold, area: business, blocking: false}

@@ -1,0 +1,15 @@
+- {name: CV screening assistant, team_guess: limited, affects_individuals_rights: true, processes_personal_data: true}
+- {name: Website support chatbot, team_guess: minimal, interacts_with_public: true, processes_personal_data: true}
+- {name: Marketing copy generator, team_guess: minimal, generates_content: true}
+- {name: Internal policy search, team_guess: minimal}
+- {name: Driver fatigue camera, team_guess: limited, uses_biometrics_or_surveillance: true, safety_critical: true, processes_personal_data: true}
+- {name: Credit-limit recommender for SME customers, team_guess: limited, affects_individuals_rights: true, fully_automated_decisions: true, processes_personal_data: true}
+- {name: Invoice data extraction, team_guess: minimal}
+- {name: Route optimisation, team_guess: minimal}
+- {name: Employee productivity scoring from keystrokes, team_guess: limited, uses_biometrics_or_surveillance: true, affects_individuals_rights: true, processes_personal_data: true}
+- {name: Customer 'trust score' used to restrict service, team_guess: high, manipulative_or_social_scoring: true, processes_personal_data: true}
+- {name: Meeting transcription (vendor feature), team_guess: minimal, processes_personal_data: true}
+- {name: Deepfake-style CEO video for training, team_guess: minimal, generates_content: true, interacts_with_public: false}
+- {name: Claims fraud flagging, team_guess: limited, affects_individuals_rights: true, processes_personal_data: true}
+- {name: Code assistant for developers, team_guess: minimal, generates_content: true}
+- {name: Warehouse robot collision avoidance, team_guess: limited, safety_critical: true}

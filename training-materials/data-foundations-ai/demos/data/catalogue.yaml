@@ -1,0 +1,35 @@
+glossary:
+  on-time: "delivered before 23:59 local time on the promised date (ops definition, v2, agreed 2026-03)"
+datasets:
+  - name: hub_scan_events
+    owner: Ops data lead
+    steward: R. Kulkarni
+    description: One row per parcel scan at a hub
+    classification: internal
+    refresh: streaming
+    allowed_uses: [operations, analytics, ml-training]
+    quality_sla: "99% of scans within 5 min"
+  - name: shipments_curated
+    owner: Data platform
+    steward: A. Shah
+    description: One row per shipment with promised and actual delivery times
+    classification: internal
+    refresh: hourly
+    allowed_uses: [analytics, ml-training]
+    quality_sla: "null rate < 0.5% on delivery_ts"
+    upstream: [hub_scan_events, tms_orders]
+  - name: tms_orders
+    owner: TMS product owner
+    description: Orders from the transport management system
+    classification: confidential
+    refresh: 15 min
+    upstream: []
+  - name: kpi_on_time_delivery
+    owner: Head of Operations
+    steward: BI team
+    description: Daily on-time delivery percentage by region
+    classification: internal
+    refresh: daily
+    allowed_uses: [reporting]
+    quality_sla: "published by 07:00"
+    upstream: [shipments_curated]

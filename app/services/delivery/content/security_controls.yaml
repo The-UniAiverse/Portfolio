@@ -1,0 +1,33 @@
+# Security control library for AI systems, organised so a RAG chatbot and an autonomous agent do not get the same list.
+# applies: patterns (or "all"), optional conditions pii/public/write_actions. tier = lowest tier that gets the control as a PLAN item
+# (Bronze receives lower-tier items as a checklist). due = gate by which evidence is expected.
+# Threat categories follow the themes of the OWASP Top 10 for LLM Applications and ISO/IEC 27001 — verify current naming before citing in a client report.
+version: "1.0"
+last_reviewed: "2026-09-21"
+controls:
+  - {id: S01, title: "Data classification and handling rules for all AI inputs and outputs", threat: "Sensitive information disclosure", applies: all, tier: bronze, due: G0, owner: governance_specialist, evidence: "Classification record"}
+  - {id: S02, title: "Secrets in a vault/environment; none in code, prompts or logs", threat: "Credential exposure", applies: all, tier: bronze, due: G1, owner: mlops_security_engineer, evidence: "Secrets scan in CI"}
+  - {id: S03, title: "Environment separation; no production data in non-production", threat: "Data leakage", applies: all, tier: bronze, due: G1, owner: mlops_security_engineer, evidence: "Environment inventory"}
+  - {id: S04, title: "Per-user authentication and authorisation on every AI endpoint", threat: "Broken access control", applies: all, tier: bronze, due: G2, owner: app_engineer, evidence: "Access test"}
+  - {id: S05, title: "Provider data terms reviewed: retention, training use, residency", threat: "Third-party data exposure", applies: [assistant, rag, extraction, agent, multi_agent], tier: bronze, due: G1, owner: governance_specialist, evidence: "Vendor short form"}
+  - {id: S06, title: "Input policy: prompt-injection screening on user input", threat: "Prompt injection (direct)", applies: [assistant, rag, agent, multi_agent], tier: bronze, due: G2, owner: ai_engineer, evidence: "Attack-set results"}
+  - {id: S07, title: "Untrusted content wrapped as data; hidden text stripped at ingestion", threat: "Prompt injection (indirect)", applies: [rag, extraction, agent, multi_agent], tier: silver, due: G2, owner: ai_engineer, evidence: "Ingestion tests"}
+  - {id: S08, title: "Permission (ACL) filtering before retrieval, per user identity", threat: "Sensitive information disclosure", applies: [rag, multi_agent], tier: silver, due: G2, owner: data_engineer, evidence: "Two-user retrieval test"}
+  - {id: S09, title: "PII detection and redaction on inputs, logs and outputs", threat: "Personal data leakage", applies: all, when: pii, tier: bronze, due: G2, owner: data_engineer, evidence: "Redaction test report"}
+  - {id: S10, title: "Output handling: escape markup, allow-list links, never render model HTML", threat: "Insecure output handling", applies: [assistant, rag, agent, multi_agent], tier: silver, due: G2, owner: app_engineer, evidence: "Output filter tests"}
+  - {id: S11, title: "Grounding, citations and refusal path; out-of-scope tests in the eval set", threat: "Misinformation / overreliance", applies: [rag, assistant], tier: bronze, due: G1, owner: ai_engineer, evidence: "Eval results"}
+  - {id: S12, title: "Tool allow-list with typed schemas and argument validation", threat: "Excessive agency", applies: [agent, multi_agent], tier: bronze, due: G1, owner: ai_engineer, evidence: "Tool registry"}
+  - {id: S13, title: "Least-privilege scopes per tool; read-only first", threat: "Excessive agency", applies: [agent, multi_agent], tier: bronze, due: G2, owner: mlops_security_engineer, evidence: "Scope matrix"}
+  - {id: S14, title: "Human approval for write or irreversible actions; limits enforced in code", threat: "Excessive agency", applies: [agent, multi_agent], when: write_actions, tier: bronze, due: G2, owner: ai_engineer, evidence: "Approval log"}
+  - {id: S15, title: "Step, cost and loop caps; kill switch; full action log", threat: "Unbounded consumption / runaway agent", applies: [agent, multi_agent], tier: bronze, due: G2, owner: ai_engineer, evidence: "Red-team drill results"}
+  - {id: S16, title: "MCP servers and plugins vetted, version-pinned, publisher verified", threat: "Supply chain", applies: [agent, multi_agent], tier: silver, due: G2, owner: mlops_security_engineer, evidence: "Vetting checklist"}
+  - {id: S17, title: "Per-user and per-team budgets, rate limits, max tokens, cost alerts", threat: "Unbounded consumption (denial of wallet)", applies: [assistant, rag, extraction, agent, multi_agent], tier: silver, due: G3, owner: mlops_security_engineer, evidence: "Budget config + alert test"}
+  - {id: S18, title: "Training/ingestion data provenance; upload review; quarantine of new sources", threat: "Data and model poisoning", applies: [rag, classical_ml, extraction, multi_agent], tier: silver, due: G2, owner: data_engineer, evidence: "Provenance metadata"}
+  - {id: S19, title: "Model, prompt, index and embedding versions pinned; change triggers evals", threat: "Uncontrolled change", applies: all, tier: silver, due: G3, owner: mlops_security_engineer, evidence: "Stack manifest"}
+  - {id: S20, title: "Logging and audit trail of inputs, outputs, tool calls and decisions with retention rules", threat: "Non-repudiation / audit", applies: all, tier: silver, due: G3, owner: mlops_security_engineer, evidence: "Log samples"}
+  - {id: S21, title: "Adversarial prompt test set run before each release", threat: "Regression of defences", applies: [assistant, rag, agent, multi_agent], tier: silver, due: G2, owner: qa_eval_engineer, evidence: "Attack success rate"}
+  - {id: S22, title: "Incident response outline for AI failures (wrong answer, leak, runaway action)", threat: "Slow or no response", applies: all, tier: silver, due: G3, owner: engagement_lead, evidence: "Run-book"}
+  - {id: S23, title: "Fairness, robustness and subgroup testing of model decisions", threat: "Harmful or biased outcomes", applies: [classical_ml, extraction], tier: silver, due: G2, owner: qa_eval_engineer, evidence: "Subgroup report"}
+  - {id: S24, title: "Red-team exercise and penetration test scope agreed and executed", threat: "Unknown weaknesses", applies: all, tier: gold, due: G3, owner: mlops_security_engineer, evidence: "Red-team report"}
+  - {id: S25, title: "Full vendor and third-party model assessment: residency, SLA, deprecation, fallback", threat: "Third-party dependency", applies: all, tier: gold, due: G2, owner: governance_specialist, evidence: "Vendor assessment"}
+  - {id: S26, title: "Public-facing abuse controls: bot protection, content moderation, transparency notice", threat: "Abuse of public endpoint", applies: all, when: public, tier: bronze, due: G3, owner: app_engineer, evidence: "Abuse test + UI notice"}

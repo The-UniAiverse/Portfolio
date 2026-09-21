@@ -41,3 +41,18 @@ All framework, curriculum, pricing and blueprint changes are recorded here. Bump
 - **Workshop editions**: corporate, business, university, college, non-technical, domain — each with deck, facilitator guide, exercises, README, built from one source (`variants.yaml`).
 - Deployment strategy with monthly cost options (`docs/DEPLOYMENT_STRATEGY.md`), backup script, Cloudflare cache rules.
 - Work split (`docs/WORK_SPLIT.md`) and plain-language guide (`docs/HOW_IT_WORKS.md`).
+
+## 2026-09-21 — v2.5
+### Training — every course now has a working kit
+- `training-materials/labkit/`: shared pure-Python toolkit (ML from scratch, data quality/PII/drift, evals and judge, agent runtime with six caps, security controls and attack library, registry/gateway/SLO, ROI/TCO/PERT, text extraction and claim checks). Offline and deterministic; uses a real model when an LLM key is set.
+- 108 demos across 24 courses (the workshop already had 7). Several call the real strategy, readiness and governance engines.
+- `scripts/build_course_kits.py` generates README, facilitator guide, exercises, handout and `run_all.py` per course from demo headers + `curriculum.yaml`; hand-written files are never overwritten. `scripts/new_course.py` follows the same convention.
+- Demo Hub: `GET /api/demos/courses`, `POST /api/demos/run-course/{course}/{demo}`; "Course labs" section on `/demos`.
+### AI Delivery Framework 1.0 (`app/services/delivery/`)
+- Twelve modules behind `/api/delivery/*` and the `/delivery` page; content in eight versioned YAML files; every pack stamped with engine version + content hash; overrides need a reason; prohibited uses stop with no pack; stored engagements, versions and gate records behind `X-Admin-Token`.
+- Added to `pricing/tiers.yaml`, `pricing/blueprints.yaml` and the bot knowledge.
+- Rate card and LLM prices are PLACEHOLDERS and every pack says so until they are confirmed.
+### Engineering
+- Fixed: `requirements.txt` lacked `email-validator` (via `pydantic[email]`) and `python-docx` — fresh installs, CI and Docker builds failed.
+- Fixed: tests wrote to the real database and failed after a few runs per day; `tests/conftest.py` now isolates them. 28 → 71 tests.
+- CI: secrets scan, full content + demo validation, kit freshness check, Docker build + health smoke test. Deploy waits for `/api/health` and rolls back if unhealthy. `.dockerignore` added; container `HEALTHCHECK` added. API version string is now 2.5.0.

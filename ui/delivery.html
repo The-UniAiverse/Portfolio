@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI Delivery Framework — uniAIverse</title>
+<style>
+:root{--ink:#14213d;--paper:#fbfaf7;--line:#d9d6cf;--accent:#0f766e;--muted:#5b6170;--warn:#b45309;--bronze:#a16207;--silver:#64748b;--gold:#ca8a04}
+*{box-sizing:border-box} body{margin:0;font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;background:var(--paper);color:var(--ink);line-height:1.5}
+header,main{max-width:980px;margin:0 auto;padding:0 20px} header{padding-top:26px} h1{margin:0;font-size:1.8rem;font-weight:600} h2{font-size:1.15rem;margin:0 0 8px} h3{font-size:1rem;margin:14px 0 6px}
+.hint{color:var(--muted);font-size:.9rem} .card{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fff;margin:14px 0}
+label{display:block;font-size:.85rem;color:var(--muted);margin-top:8px} input[type=text],input[type=number],select,textarea{width:100%;font:inherit;font-size:.95rem;border:1px solid var(--line);border-radius:6px;padding:7px 9px;background:#fff}
+textarea{min-height:60px} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px 16px} .checks label{display:flex;gap:8px;align-items:flex-start;color:var(--ink);font-size:.92rem}
+button{font:inherit;border-radius:6px;padding:10px 16px;cursor:pointer} .primary{background:var(--accent);color:#fff;border:0} .ghost{background:#fff;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:.86rem} th,td{border-bottom:1px solid var(--line);padding:5px 6px;text-align:left;vertical-align:top} th{color:var(--muted);font-weight:600} td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px} .tile{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fff} .tile b{display:block;font-size:1.25rem} .tile span{font-size:.8rem;color:var(--muted)}
+.badge{display:inline-block;color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;text-transform:capitalize} .bronze{background:var(--bronze)} .silver{background:var(--silver)} .gold{background:var(--gold)}
+.warnbox{border-left:4px solid var(--warn);background:#fff7ed;padding:8px 12px;margin:10px 0;font-size:.9rem} .links a{margin-right:14px;color:var(--accent)} details{margin:8px 0} summary{cursor:pointer;color:var(--accent)}
+.overflow{overflow-x:auto} pre{white-space:pre-wrap;font-size:.8rem}
+</style></head>
+<body><header><h1>AI Delivery Framework</h1>
+<p class="hint">One intake in — tier, delivery plan, effort estimate, LLM run cost, project cost, governance plan, security plan, gate checklists and the full document pack out. Every figure is computed by rules you can read in <code>app/services/delivery/content/</code>; every pack is a draft until a named person approves it.</p></header>
+<main>
+<div class="card"><h2>1 · The engagement</h2>
+<p><button class="ghost" data-s="bronze">Load Bronze sample</button> <button class="ghost" data-s="silver">Load Silver sample</button> <button class="ghost" data-s="gold">Load Gold sample</button> <span class="hint">— then change anything.</span></p>
+<div class="grid">
+<div><label>Client</label><input type="text" id="client"></div><div><label>Project name</label><input type="text" id="project"></div>
+<div><label>Industry</label><input type="text" id="industry"></div><div><label>Company size (sets the rate multiplier)</label><select id="company_size"><option>professional</option><option>startup</option><option>small</option><option selected>medium</option><option>large</option><option>enterprise</option></select></div>
+<div><label>Sponsor</label><input type="text" id="sponsor"></div><div><label>Product owner</label><input type="text" id="product_owner"></div></div>
+<label>The problem, in the client's words</label><textarea id="problem"></textarea>
+<div class="grid"><div><label>Success metric</label><input type="text" id="success_metric"></div><div><label>Baseline today</label><input type="text" id="baseline"></div><div><label>Target</label><input type="text" id="target"></div></div>
+<div class="grid"><div><label>In scope (one per line)</label><textarea id="in_scope"></textarea></div><div><label>Out of scope (one per line)</label><textarea id="out_of_scope"></textarea></div></div></div>
+
+<div class="card"><h2>2 · Size it — eight questions decide Bronze, Silver or Gold</h2><div class="grid" id="dims"></div><p class="hint" id="livescore"></p></div>
+
+<div class="card"><h2>3 · What kind of solution, and how big</h2>
+<div class="grid"><div><label>Solution pattern</label><select id="pattern"><option value="">Let the engine choose</option></select></div><div><label>Target stage</label><select id="target_stage"><option>poc</option><option>mvp</option><option selected>production</option><option>scale</option></select></div>
+<div><label>Use cases</label><input type="number" id="use_cases" min="1" value="1"></div><div><label>System integrations</label><input type="number" id="integrations" min="0" value="2"></div><div><label>Data sources</label><input type="number" id="data_sources" min="0" value="3"></div>
+<div><label>Readiness score (from the audit, optional)</label><input type="number" id="readiness_score" min="0" max="100"></div></div>
+<div class="grid checks" style="margin-top:8px"><label><input type="checkbox" id="answer_in_documents"> The answer lives in documents</label><label><input type="checkbox" id="needs_actions_in_systems"> It must take actions in systems</label><label><input type="checkbox" id="structured_prediction"> It predicts a number or a class from tables</label><label><input type="checkbox" id="extract_from_documents"> It extracts fields from documents</label></div></div>
+
+<div class="card"><h2>4 · Risk pre-screen</h2><p class="hint">These can raise the tier or stop the engagement whatever the score says.</p>
+<div class="grid checks"><label><input type="checkbox" id="affects_individuals_rights"> Affects people's rights, money, jobs or access</label><label><input type="checkbox" id="uses_biometrics_or_surveillance"> Biometrics or surveillance</label><label><input type="checkbox" id="safety_critical"> Safety-critical</label><label><input type="checkbox" id="interacts_with_public"> Talks to the public</label><label><input type="checkbox" id="generates_content" checked> Generates content</label><label><input type="checkbox" id="processes_personal_data"> Processes personal data</label><label><input type="checkbox" id="fully_automated_decisions"> Fully automated decisions</label><label><input type="checkbox" id="manipulative_or_social_scoring"> Manipulation or social scoring</label><label><input type="checkbox" id="writes_to_production_systems"> Agent writes to production systems</label></div>
+<label>Jurisdictions (comma-separated)</label><input type="text" id="jurisdictions" value="India (DPDP)"></div>
+
+<div class="card"><h2>5 · Volumes and money</h2><div class="grid">
+<div><label>AI requests per day</label><input type="number" id="requests_per_day" value="1000" min="0"></div><div><label>Model class</label><select id="model"></select></div>
+<div><label>Share a router can send to the cheap model (0–1)</label><input type="number" id="cheap_route_share" value="0" min="0" max="1" step="0.05"></div><div><label>Monthly growth %</label><input type="number" id="monthly_growth_pct" value="2" min="0" max="20" step="0.5"></div>
+<div><label>Expected annual benefit (USD)</label><input type="number" id="annual_benefit_usd" value="0" min="0"></div><div><label>Quote currency</label><select id="currency"><option>USD</option><option>INR</option><option>EUR</option><option>GBP</option></select></div></div>
+<details><summary>Override an engine decision (always with a reason — it is printed in the pack)</summary><div class="grid"><div><label>What</label><select id="ov_field"><option value="">—</option><option>tier</option><option>contingency_pct</option><option>pattern</option><option>effort_factor</option></select></div><div><label>New value</label><input type="text" id="ov_value"></div><div><label>Reason</label><input type="text" id="ov_reason"></div><div><label>By</label><input type="text" id="ov_by" value="delivery lead"></div></div></details></div>
+
+<p><button class="primary" id="run">Run the framework</button> <button class="ghost" id="pack">Build the document pack (PDF · Word · Markdown)</button> <span class="hint" id="status"></span></p>
+<div id="out"></div>
+
+<div class="card"><h2>Saved engagements and gate reviews <span class="hint">(admin token)</span></h2>
+<div class="grid"><div><label>Admin token</label><input type="text" id="token" placeholder="the ADMIN_TOKEN from .env"></div><div><label>Engagement id (blank = create new)</label><input type="text" id="eid" placeholder="ENG-…"></div></div>
+<p><button class="ghost" id="save">Save this intake as a version</button> <button class="ghost" id="list">List engagements</button> <button class="ghost" id="gatesbtn">Open gate checklists</button></p><div id="saved"></div></div>
+<details><summary>Show the intake as JSON (what the website or a script would POST)</summary><pre id="json"></pre></details>
+</main>
+<script>
+const $=id=>document.getElementById(id); const esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const TEXT=['client','project','industry','sponsor','product_owner','problem','success_metric','baseline','target'], NUM=['use_cases','integrations','data_sources','requests_per_day','cheap_route_share','monthly_growth_pct','annual_benefit_usd'],
+ BOOL=['answer_in_documents','needs_actions_in_systems','structured_prediction','extract_from_documents','affects_individuals_rights','uses_biometrics_or_surveillance','safety_critical','interacts_with_public','generates_content','processes_personal_data','fully_automated_decisions','manipulative_or_social_scoring','writes_to_production_systems'], SEL=['company_size','target_stage','model','currency','pattern'];
+let CFG=null;
+async function init(){ CFG=await (await fetch('/api/delivery/config')).json();
+  $('dims').innerHTML=CFG.dimensions.map(d=>`<div><label>${esc(d.title)}</label><select data-dim="${d.id}">${d.options.map((o,i)=>`<option value="${i+1}">${esc(o)}</option>`).join('')}</select></div>`).join('');
+  $('model').innerHTML=Object.entries(CFG.models).map(([k,v])=>`<option value="${k}" ${k==='mid'?'selected':''}>${esc(v)}</option>`).join('');
+  $('pattern').innerHTML+=Object.entries(CFG.patterns).map(([k,v])=>`<option value="${k}">${esc(v.title)}</option>`).join('');
+  document.querySelectorAll('[data-dim]').forEach(s=>s.onchange=live); await load('silver'); }
+function live(){ const s=[...document.querySelectorAll('[data-dim]')].reduce((a,x)=>a+ +x.value,0); const b=CFG.bands; const t=Object.keys(b).find(k=>s>=b[k][0]&&s<=b[k][1]); $('livescore').innerHTML=`Score <b>${s}</b> of 24 → <span class="badge ${t}">${t}</span> before risk floors are applied.`; }
+function collect(){ const o={}; TEXT.forEach(k=>o[k]=$(k).value.trim()); NUM.forEach(k=>o[k]=+$(k).value||0); BOOL.forEach(k=>o[k]=$(k).checked); SEL.forEach(k=>o[k]=$(k).value);
+  if(!o.pattern) o.pattern=null; o.use_cases=Math.max(1,o.use_cases); o.in_scope=$('in_scope').value.split('\n').map(s=>s.trim()).filter(Boolean); o.out_of_scope=$('out_of_scope').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  o.jurisdictions=$('jurisdictions').value.split(',').map(s=>s.trim()).filter(Boolean); o.readiness_score=$('readiness_score').value===''?null:+$('readiness_score').value;
+  o.sizing={}; document.querySelectorAll('[data-dim]').forEach(s=>o.sizing[s.dataset.dim]=+s.value);
+  o.overrides=$('ov_field').value&&$('ov_reason').value.trim().length>=5?[{field:$('ov_field').value,value:isNaN(+$('ov_value').value)?$('ov_value').value:+$('ov_value').value,reason:$('ov_reason').value,by:$('ov_by').value}]:[];
+  $('json').textContent=JSON.stringify(o,null,2); return o; }
+async function load(t){ const s=await (await fetch('/api/delivery/sample?tier='+t)).json(); TEXT.forEach(k=>$(k).value=s[k]??''); NUM.forEach(k=>$(k).value=s[k]??0); BOOL.forEach(k=>$(k).checked=!!s[k]); SEL.forEach(k=>{ if(s[k]!=null) $(k).value=s[k]; else if(k==='pattern') $(k).value=''; });
+  $('in_scope').value=(s.in_scope||[]).join('\n'); $('out_of_scope').value=(s.out_of_scope||[]).join('\n'); $('jurisdictions').value=(s.jurisdictions||[]).join(', '); $('readiness_score').value=s.readiness_score??'';
+  document.querySelectorAll('[data-dim]').forEach(x=>x.value=s.sizing[x.dataset.dim]||1); $('ov_field').value=''; live(); collect(); $('out').innerHTML=''; }
+document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>load(b.dataset.s));
+const money=(v,c)=>new Intl.NumberFormat('en-US',{style:'currency',currency:c||'USD',maximumFractionDigits:0}).format(v||0);
+const tbl=(h,rows,num=[])=>`<div class="overflow"><table><tr>${h.map((x,i)=>`<th class="${num.includes(i)?'n':''}">${esc(x)}</th>`).join('')}</tr>${rows.map(r=>`<tr>${r.map((x,i)=>`<td class="${num.includes(i)?'n':''}">${esc(x)}</td>`).join('')}</tr>`).join('')}</table></div>`;
+async function post(path,body,headers={}){ const r=await fetch('/api/delivery/'+path,{method:'POST',headers:{'Content-Type':'application/json',...headers},body:JSON.stringify(body)}); const j=await r.json(); if(!r.ok) throw new Error(typeof j.detail==='string'?j.detail:JSON.stringify(j.detail)); return j; }
+function render(R){ if(R.stop){ return `<div class="card"><h2>STOP</h2><div class="warnbox">${esc(R.decline_note||R.reason||'The risk pre-screen found a prohibited practice. Do not proceed; escalate.')}</div></div>`; }
+  const cur=R.project_cost.currency, E=R.estimate, P=R.project_cost, L=R.llm_cost, inc=R.deliverables.filter(d=>d.included);
+  return `<div class="card"><h2>Result — <span class="badge ${R.tier}">${R.tier}</span> <span class="hint">score ${R.sizing.score}/24${R.sizing.floors_applied.length?' · raised by: '+esc(R.sizing.floors_applied.join('; ')):''}</span></h2>
+  <p class="hint">${esc(R.status)}</p>${(R.stale_content||[]).map(s=>`<div class="warnbox">${esc(s)}</div>`).join('')}${(R.overrides||[]).map(o=>`<div class="warnbox">Override: ${esc(o.field)} → ${esc(o.value)} — ${esc(o.reason)} (${esc(o.by)})</div>`).join('')}
+  <div class="tiles"><div class="tile"><b>${esc(R.plan.pattern_title.split('(')[0])}</b><span>solution pattern</span></div><div class="tile"><b>${E.total_days}</b><span>person-days incl. ${E.contingency_pct}% contingency</span></div><div class="tile"><b>${R.plan.duration_weeks.join('–')} wk</b><span>duration</span></div>
+  <div class="tile"><b>${money(P.build_range[0],cur)} – ${money(P.build_range[1],cur)}</b><span>build range (expected ${money(P.build_expected,cur)})</span></div><div class="tile"><b>${money(P.run_monthly.total,cur)}</b><span>run cost per month</span></div><div class="tile"><b>${esc(R.governance.risk_tier)}</b><span>risk tier · ${R.governance.controls_total} governance + ${R.security.controls.length} security controls</span></div></div>
+  <p><b>Why this pattern:</b> ${esc(R.plan.pattern_rationale)} <b>Readiness:</b> ${esc(R.readiness.level)} — ${esc(R.readiness.effect)}</p>
+  <h3>Phases and gates</h3>${tbl(['Stage','Weeks','Commercial model','Exit gate','Estimate accuracy'],R.plan.phases.map(p=>[p.stage,p.weeks,p.commercial_model,p.exit_gate,p.estimate_accuracy]))}
+  <h3>Effort by workstream (${esc(E.method)})</h3>${tbl(['Workstream','Optimistic','Likely','Pessimistic','Expected','Driver'],E.workstreams.map(w=>[w.workstream,w.optimistic,w.likely,w.pessimistic,w.expected,w.driver]),[1,2,3,4])}
+  <p class="hint">Expected ${E.expected_days} days · 80% range ${E.range_80.join('–')} · risk profile ${esc(E.risk_profile)} (${esc((E.risk_profile_reasons||[]).join(', ')||'no raising factors')}) → contingency ${E.contingency_pct}% = ${E.contingency_days} days.</p>
+  <h3>LLM run cost</h3>${L.applicable?`<p>${esc(L.model)} · <b>$${L.per_request}</b> per request · expected <b>$${L.monthly_expected.toLocaleString()}</b>/month</p>${tbl(['Scenario','Requests/day','Monthly $','Annual $'],L.scenarios.map(s=>[s.scenario,s.requests_per_day,s.monthly,s.annual]),[1,2,3])}${tbl(['Cost control','Monthly saving $','Status'],L.controls.map(c=>[c.control,c.monthly_saving,c.status]),[1])}<p class="hint">Rates verified ${esc(L.rates_verified)}. ${esc(L.note)}</p>`:`<p class="hint">${esc(L.note||'Not applicable to this pattern.')}</p>`}
+  <h3>Project cost</h3>${tbl(['Line','Amount','Source'],P.build_lines.map(l=>[l.line,money(l.amount,cur),l.source]),[1])}<p>3-year TCO <b>${money(P.tco_3y,cur)}</b> · ROI ${P.roi?.roi_3y_pct??'—'}% · payback ${P.roi?.payback_months??'—'} months · rate card: <i>${esc(P.rate_card_status)}</i></p>
+  ${tbl(['Milestone','%','Amount'],P.milestones.map(m=>[m.milestone,m.pct,money(m.amount,cur)]),[1,2])}
+  <h3>Governance and security</h3><p>${esc(R.governance.oversight)} <span class="hint">${esc(R.governance.disclaimer)}</span></p>
+  <details><summary>${R.governance.controls_total} governance controls</summary>${tbl(['Id','Control','NIST','ISO 42001','Evidence'],R.governance.controls.map(c=>[c.id,c.control,c.nist,c.iso42001,c.evidence]))}</details>
+  <details><summary>${R.security.controls.length} security controls, by gate</summary>${tbl(['Id','Control','Threat','Due','Owner'],R.security.controls.map(c=>[c.id,c.control,c.threat,c.due,c.owner]))}</details>
+  <h3>Documents in this tier's pack (${inc.length} of ${R.deliverables.length})</h3>${tbl(['#','Deliverable','Stage','Depth'],inc.map(d=>[d.n,d.title,d.stage,d.depth]))}
+  <p class="hint">Engine ${esc(R.stamp.engine)} · content ${esc(R.stamp.content_hash)} · ${esc(R.stamp.generated)}</p></div>`; }
+$('run').onclick=async()=>{ $('status').textContent='Running twelve modules…'; try{ $('out').innerHTML=render(await post('run',collect())); $('status').textContent=''; }catch(e){ $('status').textContent='Error: '+e.message; } };
+$('pack').onclick=async()=>{ $('status').textContent='Building the pack…'; try{ const p=await post('pack',collect()); if(p.stop){ $('out').innerHTML=render(p); $('status').textContent=''; return; }
+  $('out').innerHTML=`<div class="card"><h2>Document pack — <span class="badge ${p.tier}">${p.tier}</span> · ${p.documents} documents</h2><p class="links"><a href="${p.pdf_url}">Download PDF</a><a href="${p.docx_url}">Word (editable)</a><a href="${p.md_url}">Markdown</a><a href="${p.json_url}">JSON</a></p><p class="hint">${esc(p.status)}</p>${(p.stale_content||[]).map(s=>`<div class="warnbox">${esc(s)}</div>`).join('')}</div>`+$('out').innerHTML; $('status').textContent=''; }catch(e){ $('status').textContent='Error: '+e.message; } };
+const H=()=>({'X-Admin-Token':$('token').value.trim()});
+$('save').onclick=async()=>{ try{ const q=$('eid').value.trim()?'?engagement_id='+encodeURIComponent($('eid').value.trim()):''; const r=await post('intake'+q,collect(),H()); $('eid').value=r.engagement_id; $('saved').innerHTML=`<p>Saved <b>${r.engagement_id}</b> version ${r.version}.</p>`; }catch(e){ $('saved').innerHTML=`<div class="warnbox">${esc(e.message)}</div>`; } };
+$('list').onclick=async()=>{ const r=await fetch('/api/delivery/engagements',{headers:H()}); const j=await r.json(); $('saved').innerHTML=r.ok?tbl(['Id','Client','Project','Tier','Version','Last gate','Numbers out of date?'],j.map(x=>[x.id,x.client,x.project,x.tier,x.version,x.last_gate,x.stale?'YES — re-save':'no'])):`<div class="warnbox">${esc(j.detail)}</div>`; };
+$('gatesbtn').onclick=async()=>{ const id=$('eid').value.trim(); if(!id) return $('saved').innerHTML='<div class="warnbox">Enter or save an engagement id first.</div>'; const r=await fetch('/api/delivery/gates/'+id,{headers:H()}); const g=await r.json(); if(!r.ok) return $('saved').innerHTML=`<div class="warnbox">${esc(g.detail)}</div>`;
+  $('saved').innerHTML=Object.entries(g.checklists).map(([k,c])=>`<details><summary><b>${esc(c.title)}</b> — ${esc(c.question)}</summary>${c.criteria.map(x=>`<label style="display:flex;gap:8px;color:var(--ink)"><input type="checkbox" data-gate="${k}" value="${x.id}"> ${esc(x.id)} ${esc(x.text)} ${x.blocking?'<b>(blocking)</b>':''}</label>`).join('')}
+   <div class="grid"><div><label>Decided by</label><input type="text" id="by_${k}"></div><div><label>Conditions (required for a 'go' with blocking items open)</label><input type="text" id="cond_${k}"></div><div><label>Decision</label><select id="dec_${k}"><option value="">engine's recommendation</option><option>go</option><option>conditional_go</option><option>no_go</option><option>pivot</option></select></div></div><p><button class="ghost" onclick="gate('${k}')">Record ${k} review</button></p></details>`).join('')+`<h3>Recorded reviews</h3>`+tbl(['Gate','Decision','Engine said','Decided by','Missing'],g.records.map(x=>[x.gate,x.decision,x.recommendation,x.decided_by,(x.missing||[]).join(', ')])); };
+async function gate(k){ const met=[...document.querySelectorAll(`[data-gate="${k}"]:checked`)].map(x=>x.value); try{ const r=await post(`gates/${$('eid').value.trim()}/${k}`,{met,decided_by:$('by_'+k).value||'unnamed',conditions:$('cond_'+k).value,decision:$('dec_'+k).value||null},H()); alert(`${k}: ${r.decision} (engine: ${r.engine_recommendation}) — ${r.met}/${r.total} criteria met`); $('gatesbtn').click(); }catch(e){ alert(e.message); } }
+document.querySelector('main').addEventListener('change',()=>{ try{collect()}catch(e){} }); init();
+</script></body></html>

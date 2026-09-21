@@ -1,0 +1,50 @@
+# AI Delivery Framework — sizing, tiers and risk floors. Edit freely; run scripts/validate_content.py afterwards.
+version: "1.0"
+last_reviewed: "2026-09-21"
+bands: {bronze: [8, 12], silver: [13, 18], gold: [19, 24]}
+dimensions:            # each scores 1, 2 or 3 — the labels are what the user sees
+  - {id: org_size,        title: Organisation size,        options: ["Under 50 people", "50 to 1,000", "Over 1,000"]}
+  - {id: use_cases,       title: Number of use cases,      options: ["1", "2 to 4", "5 or more"]}
+  - {id: users,           title: Users of the solution,    options: ["Under 100", "100 to 5,000", "Over 5,000 or public-facing"]}
+  - {id: data_sensitivity, title: Data sensitivity,        options: ["Public or internal", "Confidential or personal", "Regulated or special-category"]}
+  - {id: integrations,    title: Integrations,             options: ["0 to 2", "3 to 5", "6 or more"]}
+  - {id: autonomy,        title: Solution autonomy,        options: ["Assistive, human decides", "Recommends, human approves", "Agent takes actions in systems"]}
+  - {id: regulatory,      title: Regulatory footprint,     options: ["One country, no sector rules", "One regime (e.g. DPDP or GDPR)", "Multiple regimes or a regulated sector"]}
+  - {id: end_state,       title: Target end state,         options: ["POC or MVP", "Production", "Scale across units or regions"]}
+risk_floors:
+  - {id: prohibited,     when: "risk tier is prohibited",                        effect: "STOP — decline note only, no pack"}
+  - {id: high_impact,    when: "risk tier is high",                              effect: "governance and security run at Gold depth; DPIA, model card and vendor review added"}
+  - {id: regulated_data, when: "data sensitivity scores 3",                      effect: "minimum tier Silver"}
+  - {id: write_agent,    when: "an agent writes to production systems",          effect: "minimum tier Silver; agentic controls added"}
+tiers:
+  bronze:
+    label: Bronze (small)
+    for: "Startup, small business or a single department; 1 use case; Initiate → POC → light MVP"
+    estimation: tshirt
+    gates: [G0, G1, G2]
+    gate_formality: "Checklist signed by delivery lead and sponsor"
+    governance_depth: "Risk tier, baseline controls, short policy"
+    security_depth: "Checklist and data classification"
+    team: {engagement_lead: 0.2, ai_engineer: 1.0, app_engineer: 0.5}
+  silver:
+    label: Silver (medium)
+    for: "SME to large company, one business unit; 2–4 use cases; Initiate → Production"
+    estimation: pert
+    gates: [G0, G1, G2, G3]
+    gate_formality: "Gate review meeting with a written record"
+    governance_depth: "Controls mapped to risk tier, gap assessment, 30/60/90 plan"
+    security_depth: "Threat model per use case and control plan"
+    team: {engagement_lead: 0.4, solution_architect: 0.5, ai_engineer: 1.5, data_engineer: 1.0, app_engineer: 1.0, qa_eval_engineer: 0.5, mlops_security_engineer: 0.5}
+  gold:
+    label: Gold (high)
+    for: "Large or enterprise, regulated or multi-unit; 5+ use cases or a platform; Initiate → Scale and Operate"
+    estimation: pert_analogous
+    gates: [G0, G1, G2, G3, G4]
+    gate_formality: "Steering committee, evidence pack, risk sign-off"
+    governance_depth: "Full framework mapping (EU AI Act, NIST AI RMF, ISO 42001, DPDP/GDPR), DPIA, model cards, evidence log"
+    security_depth: "Threat model, red-team plan, vendor review, incident run-book"
+    team: {engagement_lead: 0.6, solution_architect: 1.0, ai_engineer: 3.0, data_engineer: 2.0, app_engineer: 2.0, qa_eval_engineer: 1.0, mlops_security_engineer: 1.0, governance_specialist: 0.5, change_lead: 0.5}
+contingency:             # [low%, high%] by risk profile
+  low: [10, 15]
+  medium: [15, 25]
+  high: [25, 40]

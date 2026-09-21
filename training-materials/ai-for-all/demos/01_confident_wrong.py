@@ -1,4 +1,6 @@
 """AI for All · Demo 1 — the confident wrong answer, then the same question with the right page (5 min).
+Shows: the same question answered closed-book (a confident invention) and then grounded on the real policy with a citation
+Lab: Ask your own AI tool one question about your company it cannot know. Write down what it said. Then give it the document and ask again.
 Run: python demos/01_confident_wrong.py"""
 import sys; from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "agentic-ai-workshop" / "demos"))

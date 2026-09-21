@@ -1,0 +1,22 @@
+project: Shipment-status assistant
+sponsor: Head of Customer Service
+risk_tier: limited
+evidence:
+  problem_statement: true
+  business_case: true
+  named_owner: true
+  data_access_agreed: true
+  eval_set_defined: true
+  success_metric_baseline: true
+  architecture_doc: true
+  threat_model: false
+  cost_model: true
+  poc_results_vs_target: true
+  test_report: true
+  model_or_prompt_versioned: true
+  monitoring_live: false
+  runbook: false
+  governance_review_signed: false
+  user_training_done: false
+  handover_accepted: false
+  benefits_tracking: false

@@ -1,0 +1,15 @@
+# LLM price list, USD per 1M tokens. PLACEHOLDER CLASSES — verify against provider price pages every quarter and update `verified`.
+# The engine flags this file as stale when `verified` is more than 100 days old.
+version: "1.0"
+verified: "2026-09-21"
+source_note: "Class-level placeholder rates consistent with training-materials/llm-cost/cost_calculator.py. Add named models under `models:` after checking the provider's price page."
+models:
+  cheap:       {title: "Small / fast model class",   in: 0.25,  out: 1.25,  cached_in: 0.03, provider: generic}
+  mid:         {title: "Mid-tier model class",       in: 3.00,  out: 15.00, cached_in: 0.30, provider: generic}
+  flagship:    {title: "Flagship model class",       in: 15.00, out: 75.00, cached_in: 1.50, provider: generic}
+  self_hosted: {title: "Self-hosted open-weight (GPU rental; tokens free, infra fixed)", in: 0.0, out: 0.0, cached_in: 0.0, provider: self, fixed_monthly_usd: 2200}
+embeddings_per_1m_tokens: 0.10
+vector_store_monthly_usd: {bronze: 25, silver: 120, gold: 600}
+eval_runs_monthly_usd: {bronze: 10, silver: 60, gold: 250}
+overheads: {retries_pct: 3, guardrail_calls_pct: 8}
+scenarios: {low: 0.5, expected: 1.0, high: 2.0}          # multipliers on requests per day

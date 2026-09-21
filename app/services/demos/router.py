@@ -41,6 +41,47 @@ def run(demo_id: str, req: RunReq | None = None):
     return {"id": demo_id, "title": d["title"], "command": f"python {script.name} {' '.join(args)}".strip(),
             "ok": r.returncode == 0, "output": r.stdout[-12000:], "stderr": r.stderr[-2000:] if r.returncode else ""}
 
+# ── Course labs: every training course's demos, discovered from disk (no registry to maintain) ─────────────────────────
+import re
+MAT = ROOT / "training-materials"
+_NAME = re.compile(r"^[0-9]{2}_[a-z0-9_]+\.py$")
+
+def _course_index() -> dict:
+    cur = yaml.safe_load((MAT / "curriculum.yaml").read_text()); out = {}
+    for c in cur["courses"]:
+        d = MAT / c["folder"] / "demos"
+        if c["folder"] == "agentic-ai-workshop" or not d.is_dir(): continue
+        demos = []
+        for p in sorted(d.glob("[0-9][0-9]_*.py")):
+            if not _NAME.match(p.name): continue
+            m = re.match(r'\s*"""(.*?)"""', p.read_text(), re.S); doc = (m.group(1) if m else p.stem).strip(); first = doc.splitlines()[0]
+            t = re.search(r"Demo\s+\d+\s+—\s+(.*?)(?:\s+\((\d+)\s*min\))?(?:\s+·\s+Module\s+([\w+]+))?\s*$", first)
+            shows = re.search(r"^Shows:\s*(.+)$", doc, re.M)
+            demos.append({"id": p.stem, "file": p.name, "title": t.group(1) if t else first, "minutes": int(t.group(2)) if t and t.group(2) else None,
+                          "module": t.group(3) if t else None, "shows": shows.group(1) if shows else ""})
+        if demos: out[c["id"]] = {"id": c["id"], "folder": c["folder"], "title": c["title"], "audience": c["audience"], "hours": c["hours"], "level": c["level"], "demos": demos}
+    return out
+
+@router.get("/courses")
+def course_labs():
+    """Every course with runnable demos. The website can render this as a catalogue; each demo runs via POST /run-course/{course}/{demo}."""
+    return list(_course_index().values())
+
+@router.post("/run-course/{course_id}/{demo_id}")
+def run_course_demo(course_id: str, demo_id: str):
+    """Runs one course demo server-side. Safe by construction: the script must be one that discovery found on disk
+    (NN_name.py inside that course's demos folder) — no paths, arguments or shell from the caller."""
+    c = _course_index().get(course_id)
+    d = next((x for x in (c or {}).get("demos", []) if x["id"] == demo_id), None)
+    if not d: raise HTTPException(404, "unknown course or demo")
+    folder = MAT / c["folder"] / "demos"
+    try:
+        r = subprocess.run([sys.executable, d["file"]], cwd=folder, stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=120)
+    except subprocess.TimeoutExpired:
+        raise HTTPException(504, "demo timed out")
+    return {"course": course_id, "id": demo_id, "title": d["title"], "command": f"python demos/{d['file']}", "ok": r.returncode == 0,
+            "output": r.stdout[-16000:], "stderr": r.stderr[-2000:] if r.returncode else ""}
+
 class Ask(BaseModel):
     question: str = Field(..., min_length=3, max_length=300)
     docs_text: str | None = Field(None, description="paste your own document text (use ## headings) instead of the sample docs")

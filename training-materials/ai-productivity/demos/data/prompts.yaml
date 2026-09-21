@@ -1,0 +1,10 @@
+- name: Weekly status
+  prompt: "You are my chief of staff. From these notes: {notes} write Done/Next/Risks as bullets under 12 words. Flag any number not in the notes."
+- name: Reply in my voice
+  prompt: "Context: reply to a customer for a logistics firm. Email: {email}. Format: under 120 words, warm, one clear next step. Do not invent dates or prices."
+- name: Meeting actions
+  prompt: "Extract owner | action | due as a table from {transcript}. If a date was not said write 'not stated'."
+- name: Summarise this
+  prompt: "Summarise this."
+- name: Research brief
+  prompt: "You are a research analyst. Topic: {topic}. Give 5 bullets with a source link for each and mark anything you are unsure about."

@@ -1,0 +1,111 @@
+# The 26 deliverables and which tier receives which depth (lite = 1–2 pages, full = complete template, "" = not in the standard pack).
+# `risk_added: true` items are added to ANY tier when the high-impact risk floor triggers. Static wording used inside documents is under `library:`.
+version: "1.0"
+last_reviewed: "2026-09-21"
+catalogue:
+  - {n: 1,  id: discovery_questions, title: Discovery questions document,                   stage: Initiate,   source: uniAIverse, bronze: full, silver: full, gold: full}
+  - {n: 2,  id: sizing_sheet,        title: Sizing and tier score sheet,                    stage: Initiate,   source: New,   bronze: full, silver: full, gold: full}
+  - {n: 3,  id: use_case_canvas,     title: AI use-case canvas,                             stage: Initiate,   source: "01",  bronze: lite, silver: full, gold: full}
+  - {n: 4,  id: brd,                 title: Business requirements document (BRD),           stage: Initiate,   source: "01",  bronze: lite, silver: full, gold: full}
+  - {n: 5,  id: feasibility_note,    title: AI feasibility and data readiness note,         stage: Initiate,   source: "01",  bronze: lite, silver: full, gold: full}
+  - {n: 6,  id: readiness_report,    title: Readiness audit report (reference),             stage: Initiate,   source: uniAIverse, bronze: full, silver: full, gold: full}
+  - {n: 7,  id: effort_estimate,     title: Effort estimate sheet,                          stage: Initiate,   source: "02",  bronze: full, silver: full, gold: full}
+  - {n: 8,  id: llm_cost_model,      title: LLM run-cost model,                             stage: Initiate,   source: New,   bronze: full, silver: full, gold: full}
+  - {n: 9,  id: project_cost,        title: Project cost and TCO summary,                   stage: Initiate,   source: "02",  bronze: full, silver: full, gold: full}
+  - {n: 10, id: sow,                 title: Statement of work (SOW) — draft for legal review, stage: Initiate, source: "02",  bronze: lite, silver: full, gold: full}
+  - {n: 11, id: raid,                title: Assumptions and risk register,                  stage: Initiate,   source: "02",  bronze: "",   silver: full, gold: full}
+  - {n: 12, id: delivery_plan,       title: Delivery approach and phase plan,               stage: Initiate,   source: "03, 04", bronze: "", silver: full, gold: full}
+  - {n: 13, id: pattern_rationale,   title: "Pattern selection rationale (ML, RAG, agentic, MCP)", stage: Initiate, source: "08", bronze: "", silver: full, gold: full}
+  - {n: 14, id: risk_controls,       title: Risk tier and required controls,                stage: Initiate,   source: "07",  bronze: lite, silver: full, gold: full}
+  - {n: 15, id: governance_gap,      title: Governance gap assessment and 30/60/90 plan,    stage: Initiate,   source: "07",  bronze: "",   silver: full, gold: full}
+  - {n: 16, id: rai_policy,          title: Responsible AI policy draft,                    stage: Initiate,   source: "07",  bronze: "",   silver: full, gold: full}
+  - {n: 17, id: security_plan,       title: Security plan and threat model,                 stage: Initiate,   source: "05, 07, 08", bronze: lite, silver: full, gold: full}
+  - {n: 18, id: gate_checklists,     title: Gate checklists and review records,             stage: Every gate, source: "03",  bronze: lite, silver: full, gold: full}
+  - {n: 19, id: evaluation_plan,     title: Evaluation plan and test set definition,        stage: POC,        source: "04, 08", bronze: "", silver: full, gold: full}
+  - {n: 20, id: engineering_standards, title: Environment and engineering standards,        stage: POC,        source: "05",  bronze: "",   silver: full, gold: full}
+  - {n: 21, id: dpia,                title: Data protection impact assessment (DPIA) — working draft, stage: MVP, source: "07", bronze: "", silver: "", gold: full, risk_added: true}
+  - {n: 22, id: model_card,          title: Model card or system card,                      stage: MVP,        source: "07",  bronze: "",   silver: "",   gold: full, risk_added: true}
+  - {n: 23, id: vendor_assessment,   title: Vendor and third-party model assessment,        stage: MVP,        source: "07",  bronze: "",   silver: "",   gold: full, risk_added: true}
+  - {n: 24, id: deployment_monitoring, title: Deployment and monitoring plan,               stage: Production, source: "06",  bronze: "",   silver: full, gold: full}
+  - {n: 25, id: ops_readiness,       title: Operational readiness checklist and run-book,   stage: Production, source: "06",  bronze: "",   silver: "",   gold: full}
+  - {n: 26, id: exec_readout,        title: Executive read-out and RACI,                    stage: Handover,   source: "00",  bronze: "",   silver: "",   gold: full}
+library:
+  discovery:
+    - {area: "Business", q: "What decision or task should get faster, cheaper or better — and how is it measured today?", why: "Sets the success metric and baseline"}
+    - {area: "Business", q: "Who is the sponsor, who is the product owner, and who can stop the project?", why: "G0 requires named owners"}
+    - {area: "Users", q: "Who will use it, how many, how often, and in which language(s)?", why: "Drives sizing, volume and LLM cost"}
+    - {area: "Data", q: "Where does the answer live today — documents, systems, people's heads?", why: "Decides the AI pattern"}
+    - {area: "Data", q: "What class of data is involved (public, internal, confidential, personal, regulated)?", why: "Sets risk floors and controls"}
+    - {area: "Data", q: "Do labelled examples or known right answers exist to test against?", why: "No evaluation set, no POC"}
+    - {area: "Systems", q: "Which systems must it read from or write to? Who owns each?", why: "Integration count drives effort"}
+    - {area: "Systems", q: "Should it take actions, or only recommend? Which actions are irreversible?", why: "Agent autonomy sets security depth"}
+    - {area: "Risk", q: "Does any output affect a person's rights, money, health or employment?", why: "High-impact tier triggers Gold-depth governance"}
+    - {area: "Risk", q: "Which countries and regulators apply? Any sector rules?", why: "Regulatory checks at G0"}
+    - {area: "Platform", q: "Which cloud, which approved AI providers, who provides environments?", why: "Environment and vendor review"}
+    - {area: "Commercial", q: "Budget range, target dates, preferred commercial model per phase?", why: "Shapes the phase plan and SOW"}
+    - {area: "Change", q: "Who will run it after go-live? What training do users need?", why: "Handover and adoption"}
+  raid:
+    - {type: Assumption, item: "Client provides timely access to data owners and systems", owner: Client sponsor, response: "Named in SOW as a dependency; delays move dates"}
+    - {type: Assumption, item: "An evaluation set of agreed size exists or will be labelled by client SMEs by POC week 1", owner: Product owner, response: "Labelling effort shown separately"}
+    - {type: Assumption, item: "LLM provider prices as per llm_rates.yaml on the verification date", owner: Delivery lead, response: "Re-verify at each gate"}
+    - {type: Risk, item: "Data quality lower than assumed", owner: Data engineer, response: "Data profiling in POC; contingency; foundation sprint if readiness is low"}
+    - {type: Risk, item: "Feasibility unproven until POC metric is measured", owner: AI engineer, response: "G1 go/no-go with stop rule"}
+    - {type: Risk, item: "Scope growth through additional use cases", owner: Engagement lead, response: "Change requests priced per use case"}
+    - {type: Risk, item: "User adoption lower than the business case assumes", owner: Sponsor, response: "Champions, training, adoption tracked weekly in pilot"}
+    - {type: Dependency, item: "Security and legal review slots at G2 and G3", owner: Client, response: "Booked at G0"}
+    - {type: Issue, item: "(none open at initiation)", owner: "—", response: "—"}
+  raci:
+    - {activity: "Business outcome and benefit tracking", sponsor: A, product_owner: R, delivery_lead: C, ai_team: I, security_gov: I}
+    - {activity: "Requirements and evaluation set", sponsor: I, product_owner: A, delivery_lead: R, ai_team: R, security_gov: C}
+    - {activity: "Solution design and build", sponsor: I, product_owner: C, delivery_lead: A, ai_team: R, security_gov: C}
+    - {activity: "Risk tier, controls and sign-off", sponsor: A, product_owner: C, delivery_lead: R, ai_team: C, security_gov: R}
+    - {activity: "Gate decisions", sponsor: A, product_owner: R, delivery_lead: R, ai_team: C, security_gov: C}
+    - {activity: "Run, monitor and improve", sponsor: I, product_owner: A, delivery_lead: C, ai_team: R, security_gov: C}
+  engineering_standards:
+    - "Three environments (dev, test, prod); production data never in dev without masking"
+    - "Everything in git: code, prompts, evaluation sets, infrastructure definitions"
+    - "Config-driven behaviour; secrets only in the environment or a vault"
+    - "CI on every merge: lint, unit tests, schema tests, evaluation gate, secrets scan, container build"
+    - "Pinned versions for model, embedding model, prompt and index; a change triggers the evaluation suite"
+    - "Typed interfaces to every LLM call: schema validation, retries with backoff, human queue for failures"
+    - "Structured logs with request id, user, tokens, cost, latency, sources used"
+    - "Branching: feature branches → dev → main; backup branch before every merge to main"
+  monitoring:
+    - {signal: "Quality", metric: "thumbs-down rate, sampled correctness, refusal ('not found') rate", alert: "spike vs 4-week baseline", owner: Product owner}
+    - {signal: "Drift", metric: "input and score drift (PSI), retrieval hit rate", alert: "PSI > 0.25 or hit rate −10%", owner: AI engineer}
+    - {signal: "Cost", metric: "cost per request, per resolved task, per team", alert: "+40% per request or forecast > budget", owner: Engagement lead}
+    - {signal: "Reliability", metric: "availability, p95 latency, error rate (SLO burn)", alert: "burn ≥ 2× ticket, ≥ 14× page", owner: MLOps engineer}
+    - {signal: "Security", metric: "blocked inputs, PII redactions, attack success rate", alert: "any HIGH finding; spike in blocks", owner: Security}
+  dpia:
+    - "Describe the processing: purpose, data categories, data subjects, recipients, retention"
+    - "Necessity and proportionality: could the purpose be met with less data or no personal data?"
+    - "Lawful basis (DPDP consent/legitimate use; GDPR Art. 6/9) and transparency notice"
+    - "Risks to individuals: inaccuracy, unfair outcomes, disclosure, loss of control, automated decisions"
+    - "Measures: minimisation, redaction, access control, human oversight, contestability, retention limits"
+    - "Processor and transfer arrangements with the model provider"
+    - "Residual risk, DPO opinion, sign-off and review date"
+  model_card:
+    - "Name, version, owner, date"
+    - "Intended use and out-of-scope uses"
+    - "Model(s), prompts, data sources and index versions (stack manifest)"
+    - "Evaluation data, metrics and results, including subgroup and safety results"
+    - "Known limitations and failure modes; what the user sees when it fails"
+    - "Human oversight design and escalation path"
+    - "Monitoring, retraining / refresh triggers, retirement plan"
+  vendor:
+    - {check: "Data use", question: "Is customer data used for training? Retention period? Deletion on request?"}
+    - {check: "Residency", question: "Where is data processed and stored? Region options?"}
+    - {check: "Security", question: "Certifications (ISO 27001, SOC 2), sub-processors, incident notification"}
+    - {check: "Service", question: "SLA, rate limits, support, status history"}
+    - {check: "Change", question: "Model deprecation notice period, version pinning, breaking-change policy"}
+    - {check: "Exit", question: "Fallback model, portability of prompts/embeddings, contract exit terms"}
+  runbook:
+    - "Service overview, owners, escalation contacts and hours"
+    - "How to deploy, roll back and switch model/prompt versions"
+    - "Alerts: what each means and the first action"
+    - "Known failure modes and fixes"
+    - "Kill switch and credential revocation procedure"
+    - "Backup, restore and data deletion procedure"
+    - "Monthly operations review agenda: quality, cost, incidents, changes"
+  sow_sections: ["Background and objectives", "Scope and deliverables", "Out of scope", "Approach and phases", "Stage gates and acceptance", "Timeline", "Team and responsibilities", "Client dependencies", "Assumptions", "Commercials and payment milestones",
+                 "Change control", "Data protection and confidentiality", "Intellectual property", "Governance and reporting", "Termination and exit"]

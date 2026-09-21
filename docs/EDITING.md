@@ -16,6 +16,18 @@ Everything a consultant or trainer changes lives in YAML or Markdown, not code. 
 | Run demos on a **client's documents** | drop `.md` files into `demos/sample_docs/` (use `##` headings) | — |
 | Add a **demo** | new `NN_name.py` in `demos/`; it runs in order automatically | — |
 | Edit **facilitator run-sheet / exercises / handouts** | `facilitator-guide.md`, `exercises.md`, `handouts/*.md` | — |
+| Change a **course demo** (any course) | `training-materials/<course>/demos/NN_name.py` — plain Python; the data it uses is at the top of the file or in `demos/data/` | `python demos/run_all.py` in that course → `ALL DEMOS OK`, then `python scripts/build_course_kits.py` |
+| Add a **course demo** | copy a neighbour to the next number; keep the 4-line header (`Course · Demo N — Title (min) · Module m`, `Shows:`, `Lab:`, `Run:`) and end with `say("…")` | same as above — it appears in the guide, exercises, `/demos` and the API by itself |
+| Change a demo's **timing, lab text or closing line** | the header and the last `say("…")` line of that demo | `python scripts/build_course_kits.py` rewrites README, facilitator guide, exercises, handout |
+| **Hand-write** a course guide instead of the generated one | delete the first line (`<!-- GENERATED … -->`) of that file | the generator never touches it again |
+| Change shared demo machinery (models, metrics, agent caps, security checks) | `training-materials/labkit/*.py` | `python scripts/validate_content.py` runs every course |
+| Delivery Framework — **day rates, FX, milestones, support %** | `app/services/delivery/content/rate_card.yaml` (set `status:` to `confirmed` once real) | validate; stored engagements show "numbers out of date" until re-saved |
+| Delivery Framework — **LLM prices** | `…/content/llm_rates.yaml` → `models:`; update `verified:` to today | the engine warns when `verified` is over 100 days old |
+| Delivery Framework — **tier questions, score bands, risk floors, contingency %** | `…/content/tiers.yaml` | bands must cover 8–24 exactly once (validated); update `tests/test_delivery.py` on purpose |
+| Delivery Framework — **effort per workstream, stage weeks, role split** | `…/content/wbs.yaml` | golden tests will tell you what moved |
+| Delivery Framework — **which document goes in which tier**, document wording | `…/content/deliverables.yaml` (`bronze/silver/gold: lite | full | ""`, wording under `library:`) | Bronze 13 / Silver 21 / Gold 26 is tested — change the test if you mean it |
+| Delivery Framework — **gate criteria** | `…/content/gates.yaml` (`blocking: true` = cannot be waived without written conditions) | — |
+| Delivery Framework — **security controls**, **solution patterns / token profiles** | `…/content/security_controls.yaml`, `…/content/patterns.yaml` | — |
 | Change **Course Finder** logic (which profile → which track) | `app/services/training/course_finder.py` → `KEYWORDS` and `_choose_track` | tests |
 | Add a **Quest quiz question** | `app/services/quest/question_bank.yaml` → under the topic: `q`, `options`, `answer` (index), `d` (1-3), `why`, `tags` | validate (checks duplicates and ranges) |
 | Add a **Quest topic** | same file → new topic block with `id`, `title`, `emoji`, `blurb`, `questions` | free tier topics list in `quest_tiers.yaml` |
@@ -34,7 +46,7 @@ Everything a consultant or trainer changes lives in YAML or Markdown, not code. 
 | Add a whole **new service** | folder `app/services/<id>/router.py` + one line in `app/core/registry.py`; reports via `app.core.report` | tests |
 
 ## Demo pages (all served by the API, no build step)
-`/` readiness audit · `/course-finder` · `/quest` · `/pay` · `/tools` (strategy, governance, automation) · `/admin` · `/docs` (Swagger for every endpoint)
+`/` readiness audit · `/course-finder` · `/quest` · `/pay` · `/tools` (strategy, governance, automation) · `/delivery` (AI Delivery Framework) · `/demos` (workshop demos + labs for all 25 courses) · `/discovery` · `/admin` · `/docs` (Swagger for every endpoint)
 
 ## Rules of the house
 - Content changes bump `version` and `last_reviewed` in the file you touched and get a line in `CHANGELOG.md`.

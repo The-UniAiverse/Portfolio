@@ -1,0 +1,6 @@
+PROPOSAL — Agentic AI Customer Service Transformation for Acme Logistics
+We will deploy a revolutionary, fully autonomous agentic AI platform that answers all customer queries with 100% accuracy.
+Scope: chatbot on website and WhatsApp, integration with the TMS, 12-week delivery in a single phase.
+Our cutting-edge platform uses the latest large language models. The team: 1 project manager, 3 engineers.
+Commercials: fixed price USD 180,000 payable 50% in advance. Annual platform licence USD 60,000.
+Support: email support during business hours. All platform components remain the property of the vendor.

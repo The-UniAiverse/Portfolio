@@ -1,4 +1,6 @@
 """AI for All · Demo 2 — weak prompt vs strong prompt on the same document (5 min).
+Shows: a weak prompt and a strong prompt on the same document — role, audience, format and 'keep every number' change the result
+Lab: Take one real task. Write the weak prompt you would normally type, then the strong one. Compare the outputs side by side.
 Run: python demos/02_prompt_before_after.py [path/to/document.txt]"""
 import sys; from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "agentic-ai-workshop" / "demos"))

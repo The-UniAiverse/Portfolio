@@ -71,6 +71,8 @@ Two people, one product. The rule: **each capability has exactly one owner.** Th
 `/api/training/course-finder` — Course Finder
 `/api/readiness_audit/questionnaire?tier=free` · `/api/readiness_audit/run` — free snapshot
 `/api/demos` · `/api/demos/run/{id}` · `/api/demos/rag/ask` — Demo section
+`/api/demos/courses` · `/api/demos/run-course/{course}/{demo}` — a runnable lab catalogue for every course page (108 demos; the server only runs scripts it discovered itself)
+`/api/delivery/config` · `/api/delivery/sample?tier=` · `/api/delivery/run` · `/api/delivery/pack` · `/api/delivery/file/{name}` — AI Delivery Framework (public, no storage). `/api/delivery/intake`, `/engagements`, `/gates/*` need `X-Admin-Token` and are for the internal page only — never call them from the public site.
 `/api/quest/*` — Playground quizzes and challenges
 `/api/bot/config` · `/api/bot/chat` — uniAI assistant
 `/api/payments/catalog` · `/api/payments/order` · `/api/payments/verify` — checkout

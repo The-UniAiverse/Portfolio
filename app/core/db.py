@@ -20,6 +20,11 @@ CREATE TABLE IF NOT EXISTS mentor_requests (id INTEGER PRIMARY KEY AUTOINCREMENT
   preferred_slots TEXT, status TEXT DEFAULT 'requested', created_at REAL);
 CREATE TABLE IF NOT EXISTS payments (id TEXT PRIMARY KEY, provider TEXT, order_id TEXT, product_id TEXT, amount INTEGER, currency TEXT,
   method_rule TEXT, status TEXT, customer TEXT, user_id TEXT, created_at REAL, paid_at REAL, raw TEXT);
+CREATE TABLE IF NOT EXISTS delivery_engagements (id TEXT PRIMARY KEY, client TEXT, project TEXT, tier TEXT, version INTEGER DEFAULT 1,
+  content_hash TEXT, intake TEXT, result TEXT, created_at REAL, updated_at REAL);
+CREATE TABLE IF NOT EXISTS delivery_versions (id INTEGER PRIMARY KEY AUTOINCREMENT, engagement_id TEXT, version INTEGER, content_hash TEXT, intake TEXT, summary TEXT, created_at REAL);
+CREATE TABLE IF NOT EXISTS delivery_gate_records (id INTEGER PRIMARY KEY AUTOINCREMENT, engagement_id TEXT, gate TEXT, decision TEXT, recommendation TEXT,
+  met TEXT, missing TEXT, evidence TEXT, attendees TEXT, decided_by TEXT, conditions TEXT, risks_carried TEXT, created_at REAL);
 CREATE TABLE IF NOT EXISTS bot_log (id INTEGER PRIMARY KEY AUTOINCREMENT, session TEXT, question TEXT, intent TEXT, answered INTEGER, created_at REAL);
 """
 

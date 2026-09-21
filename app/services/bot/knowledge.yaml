@@ -111,6 +111,11 @@ intents:
     answer: "uniAI Quest includes a curated AI news feed — every item is reviewed and approved by our team before it appears, so it stays signal, not noise. Headlines are free; summaries are in Bronze and above."
     link: {label: "AI news feed", url: "{api}/api/quest/news"}
 
+  - id: delivery
+    triggers: [delivery framework, estimate, estimation, how much will it cost, project cost, scope, sow, statement of work, how long will it take, llm cost, poc to production]
+    answer: "The AI Delivery Framework turns one intake into a sized engagement: Bronze, Silver or Gold tier, a phased plan from POC to production with gates, an effort estimate, LLM run cost, project cost and TCO, a governance plan, a security plan and the document pack in PDF and Word. Figures are rule-based and a person reviews every pack before it reaches you."
+    link: {label: "Try the Delivery Framework", url: "{api}/delivery"}
+
   - id: thanks
     triggers: [thanks, thank you, great, cool, ok, bye]
     answer: "Anytime. If you want a human, book a call or email {contact_email}."

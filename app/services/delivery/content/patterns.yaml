@@ -1,0 +1,71 @@
+# AI solution patterns — selection rules, architecture, risks, evaluation.
+# effort_factor scales the AI and application workstreams; data_factor scales data engineering (an assistant needs little, a predictive model a lot).
+version: "1.0"
+last_reviewed: "2026-09-21"
+patterns:
+  assistant:
+    title: Prompted assistant (no retrieval)
+    choose_when: "The answer is language work on text the user supplies: drafting, summarising, rewriting, classifying."
+    effort_factor: 0.7
+    data_factor: 0.2
+    components: [LLM API, prompt library, output checks, usage logging]
+    key_risks: [Hallucinated facts when users ask for knowledge it was never given, Sensitive data pasted by users]
+    evaluation: "Rubric-scored sample of 50 real tasks; human spot checks weekly"
+    tokens: {system: 800, context: 0, history: 600, question: 150, answer: 350, steps: 1}
+    infra_monthly_usd: {bronze: 40, silver: 150, gold: 500}
+    reuse: ["ai-productivity and ai-for-all course demos for user training"]
+  rag:
+    title: Grounded assistant on your documents (RAG)
+    choose_when: "The answer lives in documents or knowledge bases that change, and must be cited."
+    effort_factor: 1.0
+    data_factor: 1.0
+    components: [Ingestion and cleaning, Chunking with contextual prefix, Hybrid search + reranking, Grounded generation with citations and refusal, Evaluation set, ACL filtering]
+    key_risks: [Poor source documents, Retrieval misses presented confidently, Permission leakage across users, Indirect prompt injection via documents]
+    evaluation: "Golden set (≥50 queries: typical, paraphrase, multi-document, out-of-scope, adversarial); recall@k, correctness, faithfulness, refusal correctness; CI gate"
+    tokens: {system: 1000, context: 2500, history: 1500, question: 100, answer: 400, steps: 1}
+    infra_monthly_usd: {bronze: 120, silver: 450, gold: 1600}
+    reuse: ["Demo Hub RAG pipeline (/api/demos/rag/ask)", "rag, genai-engineer and ai-evals course labs"]
+  extraction:
+    title: Document extraction and classification
+    choose_when: "Fields or labels must be pulled from invoices, forms, emails or contracts into a system."
+    effort_factor: 0.9
+    data_factor: 0.8
+    components: [Document intake and OCR, Schema-driven extraction, Validation rules, Human review queue for low confidence, System integration]
+    key_risks: [Silent field errors, Layout drift from new suppliers, Personal data in documents]
+    evaluation: "Field-level precision/recall on 200 labelled documents; straight-through rate; review-queue size"
+    tokens: {system: 700, context: 2600, history: 0, question: 50, answer: 300, steps: 1}
+    infra_monthly_usd: {bronze: 100, silver: 400, gold: 1400}
+    reuse: ["Automation engine (/api/automation/analyse) for wave planning and ROI"]
+  classical_ml:
+    title: Predictive model on tabular data (classical ML)
+    choose_when: "You need a score or forecast from structured history: churn, demand, risk, anomaly."
+    effort_factor: 1.1
+    data_factor: 1.3
+    components: [Feature pipeline with validation, Model training and calibration, Registry and promotion gates, Serving API, Drift monitoring]
+    key_risks: [Leakage, Label delay, Drift, Unfair outcomes across groups]
+    evaluation: "Time-aware split; business-weighted metric; calibration; subgroup rates; champion/challenger"
+    tokens: {system: 0, context: 0, history: 0, question: 0, answer: 0, steps: 0}
+    infra_monthly_usd: {bronze: 150, silver: 600, gold: 2200}
+    reuse: ["ai-engineer and mlops course labs (registry, drift, canary)"]
+  agent:
+    title: Agent with tools (takes actions)
+    choose_when: "The task needs several steps across systems and an action at the end — and the actions are reversible or approved by a person."
+    effort_factor: 1.4
+    data_factor: 0.7
+    components: [Tool registry with typed schemas, Orchestration loop with step/cost caps, Human approval for write actions, Action log and kill switch, Trajectory evaluation]
+    key_risks: [Excessive agency, Runaway cost, Injection through tool results, Irreversible actions]
+    evaluation: "Trajectory tests (right tools, right order, no forbidden actions), cost per task, red-team drills"
+    tokens: {system: 3000, context: 3500, history: 1500, question: 100, answer: 700, steps: 6}
+    infra_monthly_usd: {bronze: 200, silver: 800, gold: 2800}
+    reuse: ["agentic-engineer and ai-security-builders course labs", "Workshop agent demo"]
+  multi_agent:
+    title: Multi-agent or platform (supervisor and workers, MCP servers)
+    choose_when: "Work is truly parallel, contexts do not fit one window, or workers need different permissions. Earn it with a single agent that already works."
+    effort_factor: 1.8
+    data_factor: 1.0
+    components: [Supervisor and worker agents, MCP servers vetted and pinned, Shared memory with retention rules, Gateway with budgets and attribution, Full observability]
+    key_risks: [Token and latency multiplication, Conflicting worker outputs, Supply-chain risk from MCP servers, Hard to evaluate]
+    evaluation: "Per-agent trajectory suites plus end-to-end task success; cost per task budget; conflict-rate metric"
+    tokens: {system: 4000, context: 4000, history: 2000, question: 100, answer: 900, steps: 14}
+    infra_monthly_usd: {bronze: 300, silver: 1200, gold: 4500}
+    reuse: ["mlops gateway lab", "agentic-engineer supervisor/worker lab"]

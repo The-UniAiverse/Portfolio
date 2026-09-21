@@ -1,6 +1,6 @@
-currency_note: 'USD list prices, indicative, excluding taxes. INR ≈ USD × 84; EUR ≈ USD × 0.92. Positioning: boutique
-  specialist — Big-4 equivalents typically run 3-8× these figures. size_multiplier scales scope; ''professional''
-  = individual. Enterprise engagements quoted after discovery.'
+currency_note: 'USD list prices, indicative, excluding taxes. INR ≈ USD × 84; EUR ≈ USD × 0.92. Positioning: boutique specialist
+  — Big-4 equivalents typically run 3-8× these figures. size_multiplier scales scope; ''professional'' = individual. Enterprise
+  engagements quoted after discovery.'
 size_multiplier:
   professional: 0.35
   startup: 0.8
@@ -197,3 +197,30 @@ services:
         - Automation centre-of-excellence set-up
         - Reusable automation platform and templates
         - Ongoing pipeline of automations with quarterly reviews
+  delivery:
+    title: AI Delivery Framework — scoping, estimation and delivery pack
+    tiers:
+      bronze:
+        price_usd: 2500
+        duration: 1 week
+        includes:
+        - Intake workshop and sizing (one use case, POC to MVP)
+        - T-shirt effort estimate, LLM run-cost estimate and project cost range
+        - Risk tier, baseline governance and security controls
+        - 13-document Bronze pack (PDF, Word) with G0–G1 gate checklists
+      silver:
+        price_usd: 9000
+        duration: 2-3 weeks
+        includes:
+        - Everything in Bronze
+        - PERT estimate by workstream and role, 3-year TCO and ROI
+        - Governance plan mapped to NIST AI RMF / ISO 42001, security plan by gate
+        - 21-document Silver pack, gate reviews G0–G3 facilitated and recorded
+      gold:
+        price_usd: 24000
+        duration: 4-6 weeks
+        includes:
+        - Everything in Silver
+        - Programme-level plan across use cases with scale stage (G4)
+        - Full governance and security depth for high-impact or regulated systems
+        - 26-document Gold pack, steering-committee gate reviews, quarterly re-baseline

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Add a course in one command. Creates the folder pack and appends the curriculum entry.
 Usage: python scripts/new_course.py <id> "<title>" --hours 8 --level 2 --audience "..." --track business [--tiers bronze,silver,gold,platinum]
-Then: edit training-materials/<id>/{COURSE.md,slides/slides.md,facilitator-guide.md,exercises.md}, run scripts/build_slides.py --pdf, commit."""
+Then: edit curriculum.yaml (modules, labs), slides/slides.md and demos/NN_*.py; run scripts/build_course_kits.py <id> to regenerate the guide, exercises, handout and run_all.py; commit."""
 from __future__ import annotations
 import argparse, datetime
 from pathlib import Path
@@ -28,6 +28,17 @@ d = MAT / a.id; (d / "slides").mkdir(parents=True, exist_ok=True); (d / "demos")
 (d / "COURSE.md").write_text(f"# {a.title}\n\nOne-paragraph pitch. Who it's for, what they leave with.\n\nSee `facilitator-guide.md`, `slides/slides.md`, `exercises.md`, `demos/`.\n")
 (d / "facilitator-guide.md").write_text(f"# Facilitator Guide — {a.title}\n\n**Before:** logins, printouts, run demos.\n\n| Time | Slide | Segment | What you do and say |\n|---|---|---|---|\n| 00:00 | 1 | Welcome | |\n| 00:10 | 3 | Module 1 | |\n\n## If short on time\n\n## What can go wrong\n")
 (d / "exercises.md").write_text(f"# {a.title} — Exercise Sheets\n\n## Lab 1\n\n## Lab 2\n")
-(d / "demos" / "README.md").write_text("Put runnable demos here. Convention: `NN_name.py`, each with a docstring saying which module it belongs to and the exact command. Add a `run_all.sh` that dry-runs them.\n")
+(d / "demos" / "01_first_demo.py").write_text(f'''"""{a.title} · Demo 1 — Replace this title (10 min) · Module 1
+Shows: one sentence — what the room will see
+Lab: one or two sentences — what participants then do themselves
+Run: python 01_first_demo.py
+"""
+import sys, pathlib; sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2])); from labkit import *
+banner("{a.title} · Demo 1 — Replace this title")
+table(["Thing", "Value"], [["replace", "me"]])
+say("Replace with the one sentence the room should remember.")
+''')
 import subprocess, sys; subprocess.run([sys.executable, str(ROOT / "scripts/build_slides.py")])
+for f in ("facilitator-guide.md", "exercises.md"): (d / f).unlink()          # let the kit generator own these until you take them over by hand
+subprocess.run([sys.executable, str(ROOT / "scripts/build_course_kits.py"), a.id])
 print(f"created training-materials/{a.id}/ and curriculum entry (status: draft). Edit, then set status: active.")
