@@ -15,7 +15,7 @@ Version 2.5 adds two things.
 | **Working demos for all 25 courses** | 108 runnable demos, plus a facilitator guide, exercise sheet, handout and pre-flight check for every course. They run with no internet and no API key. | `training-materials/<course>/` · page `/demos` |
 | **AI Delivery Framework** | Fill one form about a client project. Get the tier (Bronze, Silver, Gold), plan, effort estimate, LLM cost, project cost, governance plan, security plan, gate checklists and the document pack in PDF and Word. | page `/delivery` |
 
-**What was tested:** 71 automated tests pass. Every demo in every course runs. The Delivery Framework produces 13, 21 and 26 documents for Bronze, Silver and Gold, and opens as real PDF and Word files.
+**What was tested:** 71 automated tests pass, also on a clean install from the commit on a fresh machine. Every demo in every course runs. The Delivery Framework produces 13, 21 and 26 documents for Bronze, Silver and Gold, and opens as real PDF and Word files.
 
 **What was not tested here:** the Docker build (no Docker in the build sandbox — GitHub checks it on your first push) and a real deployment to your server.
 
@@ -121,7 +121,7 @@ After **any** edit run `python scripts/validate_content.py`. It must end with `A
 
 **B. Update LLM prices (every quarter).** Open `llm_rates.yaml`. Under `models:` change `in`, `out`, `cached_in` (US dollars per million tokens) from the provider's price page. Set `verified:` to today. Do the same in `training-materials/llm-cost/cost_calculator.py` → `RATES` so the classroom matches.
 
-**C. Move a document into Bronze.** Open `deliverables.yaml`, find the line, change `bronze: ""` to `bronze: lite`. Run `pytest -q`. One test fails and says Bronze now has 14 documents, not 13. That is the safety net working. Open `tests/test_delivery.py`, change `("bronze", 13,` to `("bronze", 14,`, run again. Green.
+**C. Move a document into Bronze.** Open `deliverables.yaml`, find the line, change `bronze: ""` to `bronze: lite`. Run `pytest -q`. One test fails and says Bronze now has 14 documents, not 13. That is the safety net working. Open `tests/test_delivery.py` and change `("bronze", 13,` to `("bronze", 14,`; do the same for the Bronze line in `scripts/validate_content.py`. Run both checks again. Green.
 
 **D. Add a gate criterion.** Open `gates.yaml`, copy a line under the gate, give it the next id (for example `G1-07`), write the text, choose `blocking: true` or `false`. Validate.
 
@@ -245,7 +245,7 @@ Point DNS `api.uniaiverse.ai` at the server's IP. HTTPS arrives by itself. Open 
 | Word | Plain meaning |
 |---|---|
 | Engine / API | The program on the server that does the work |
-| Tier | Bronze, Silver, Gold: how deep the engagement and its documents go |
+| Tier | Bronze (13 documents, gates G0–G2), Silver (21, G0–G3), Gold (26, G0–G4): how deep the engagement goes |
 | Gate (G0–G4) | A checkpoint where someone decides go, conditional go or no-go on evidence |
 | PERT | An estimate from three numbers: optimistic, likely, pessimistic |
 | Contingency | Days added for what nobody can foresee, sized by risk |

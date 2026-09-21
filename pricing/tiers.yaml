@@ -207,7 +207,7 @@ services:
         - Intake workshop and sizing (one use case, POC to MVP)
         - T-shirt effort estimate, LLM run-cost estimate and project cost range
         - Risk tier, baseline governance and security controls
-        - 13-document Bronze pack (PDF, Word) with G0–G1 gate checklists
+        - 13-document Bronze pack (PDF, Word) with G0–G2 gate checklists
       silver:
         price_usd: 9000
         duration: 2-3 weeks

@@ -216,7 +216,7 @@ services:
         phases:
           - {name: Intake and size, week: 1, activities: [discovery questions, intake at /delivery, risk pre-screen], outputs: [engagement record, tier]}
           - {name: Estimate and pack, week: 1, activities: [T-shirt estimate, LLM and project cost, pack review], outputs: [Bronze pack, G0 checklist]}
-        deliverables: [13-document Bronze pack, Effort and cost range, G0-G1 gate checklists]
+        deliverables: [13-document Bronze pack, Effort and cost range, G0-G2 gate checklists]
       silver:
         client_types: [sme, mid-market, large]
         weeks: 3
