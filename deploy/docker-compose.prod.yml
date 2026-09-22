@@ -5,6 +5,12 @@ services:
     env_file: ../.env
     volumes: ["../outputs:/srv/outputs"]
     expose: ["8000"]
+  worker:                       # v2.6: provisions tenant environments and runs the nightly expiry; shares the database volume with the API
+    build: ..
+    restart: unless-stopped
+    env_file: ../.env
+    volumes: ["../outputs:/srv/outputs"]
+    command: ["python", "scripts/provision_worker.py"]
   caddy:
     image: caddy:2
     restart: unless-stopped

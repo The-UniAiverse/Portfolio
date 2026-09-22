@@ -31,6 +31,7 @@ SERVICES: list[ServiceSpec] = [
     ServiceSpec("demos",           "Demo Hub — runnable demos for the website", "Sarfi", 0, "app.services.demos.router", "ready"),
     ServiceSpec("discovery",       "Discovery kit — enquiry → discovery questions document", "Sarfi", 0, "app.services.discovery.router", "ready"),
     ServiceSpec("delivery",        "AI Delivery Framework — tiered estimates, costs, governance, security, gates and document packs", "Sarfi", 1, "app.services.delivery.router", "ready"),
+    ServiceSpec("platform",        "Control plane — tenants, approval, plans as resource profiles, entitlements, quotas, provisioning", "Sarfi", 0, "app.services.platform.router", "ready"),
     ServiceSpec("payments",        "Payments (Razorpay: cards, UPI < limit, netbanking, NEFT/RTGS/IMPS)", "Sarfi", 0, "app.services.payments.router", "ready"),
 ]
 

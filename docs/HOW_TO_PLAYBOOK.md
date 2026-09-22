@@ -1,6 +1,6 @@
 # uniAIverse — How-To Playbook (edit, test, ship, go live)
 
-*For Sarfi. No coding knowledge needed. Version 2.5 · 21 September 2026.*
+*For Sarfi. No coding knowledge needed. Version 2.6 · 22 September 2026. The control plane (approval, plans, quotas, provisioning, cost) has its own guide: `docs/PLATFORM_PLAYBOOK.md`.*
 
 ---
 
@@ -54,6 +54,8 @@ In `.env`, set `ADMIN_TOKEN=` to a long random phrase. You need it to save engag
 | `/quest` | Quizzes and challenges | College sessions, practice |
 | `/pay` | Checkout | Linked from service pages |
 | `/admin` | Approvals, unanswered bot questions, bank transfers | Ten minutes a day |
+| **`/platform`** | **Control plane: access requests, tenants, quotas, provisioning, cost model (new in 2.6)** | **Every time a request or payment arrives** |
+| **`/register`** | **Public: request access, see plans, check a request (new in 2.6)** | **Link it from the website** |
 | `/docs` | Every endpoint | When Harsh or Sahil ask what the engine can do |
 
 ---

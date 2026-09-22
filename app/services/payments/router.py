@@ -27,6 +27,11 @@ def _catalog() -> dict:
         for tid, t in s["tiers"].items():
             if t["price_usd"]:
                 items[f"{sid}.{tid}"] = {"title": f"{s['title']} — {tid.title()}", "amount_usd": t["price_usd"], "amount_inr": round(t["price_usd"] * 84), "kind": "service"}
+    if "platform" in settings.enabled_services:
+        plans = yaml.safe_load((settings.materials_dir.parent / "app/services/platform/content/plans.yaml").read_text())["plans"]
+        for pid, p in plans.items():
+            items[f"platform.{pid}"] = {"title": f"{p['title']} — monthly platform fee", "amount_inr": p["platform_fee_inr"], "amount_usd": round(p["platform_fee_inr"] / 84), "kind": "subscription", "note": f"+ infrastructure ₹{p['infra_estimate_inr']:,}/month at cost + 15% (invoiced) · setup ₹{p['setup_fee_inr']:,} once"}
+            items[f"platform.{pid}.setup"] = {"title": f"{p['title']} — one-time setup", "amount_inr": p["setup_fee_inr"], "amount_usd": round(p["setup_fee_inr"] / 84), "kind": "service"}
     return items
 
 def method_rule(amount_inr: int) -> dict:
@@ -47,6 +52,7 @@ class OrderRequest(BaseModel):
     customer_name: str
     customer_email: EmailStr
     user_id: str | None = Field(None, description="Quest user id to upgrade on payment")
+    tenant_id: str | None = Field(None, description="Platform tenant (TEN-…) waiting for payment — provisioned on success")
 
 @router.post("/order")
 def create_order(o: OrderRequest):
@@ -66,7 +72,7 @@ def create_order(o: OrderRequest):
     with db.conn() as c:
         c.execute("INSERT INTO payments (id, provider, order_id, product_id, amount, currency, method_rule, status, customer, user_id, created_at, raw) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
                   (pid, "razorpay", order_id, o.product_id, minor, o.currency, json.dumps(rule), "created",
-                   json.dumps({"name": o.customer_name, "email": o.customer_email}), o.user_id, db.now(), "{}"))
+                   json.dumps({"name": o.customer_name, "email": o.customer_email, "tenant_id": o.tenant_id}), o.user_id, db.now(), "{}"))
     hide = [] if rule["upi"] else [{"method": "upi"}]
     return {"payment_id": pid, "order_id": order_id, "amount": minor, "currency": o.currency, "title": p["title"],
             "key_id": settings.razorpay_key_id or "rzp_test_PLACEHOLDER", "test_mode": not _live(), "methods": rule,
@@ -84,6 +90,9 @@ def _grant(pid: str):
     p = _catalog().get(row["product_id"], {})
     if p.get("grants_tier") and row["user_id"]:
         db.set_tier(row["user_id"], p["grants_tier"], json.loads(row["customer"]).get("email"))
+    if row["product_id"].startswith("platform.") and "platform" in settings.enabled_services:        # v2.6: paid plan → provisioning job (background)
+        from app.services.platform import engine as _pe
+        cust = json.loads(row["customer"]); _pe.on_payment(cust.get("tenant_id"), cust.get("email"), row["product_id"]); _pe.run_jobs()
 
 @router.post("/verify")
 def verify(v: Verify):

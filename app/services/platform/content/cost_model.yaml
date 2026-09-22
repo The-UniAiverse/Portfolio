@@ -1,0 +1,45 @@
+# Infrastructure and unit-cost rate card used by the cost model (GET /api/platform/cost-model and scripts/cost_report.py).
+# INR per month unless stated. PLACEHOLDERS from public list prices Sept 2026 — re-check quarterly; every figure here is an assumption, not a quote.
+version: "1.0"
+last_reviewed: "2026-09-22"
+fx_usd_inr: 84
+fixed:                                     # the control plane + free sandbox, paid by uniAIverse whether or not anyone buys
+  control_plane_vps:      {inr: 1700,  note: "2 vCPU / 4 GB VPS for the API, admin, sandbox"}
+  cloudflare:             {inr: 0,     note: "free plan: DNS, HTTPS, caching, basic WAF"}
+  vercel_website:         {inr: 0,     note: "Hobby; Pro (~₹1,700) once traffic or team seats need it"}
+  object_storage_backups: {inr: 100,   note: "R2/B2 ~50 GB"}
+  domain_email:           {inr: 300,   note: "domain, transactional email (Resend/SES) at launch volume"}
+  monitoring_uptime:      {inr: 0,     note: "UptimeRobot free + logs on the box; Grafana Cloud free"}
+  llm_bot_and_narratives: {inr: 800,   note: "optional polish for bot answers and report narratives"}
+  free_sandbox_pool:      {inr: 2000,  note: "monthly cap on free demo/LLM spend — the sandbox stops serving when it is spent"}
+  razorpay_fixed:         {inr: 0,     note: "no fixed fee; ~2% + GST per transaction (variable, below)"}
+per_tenant:                                # what ONE tenant of each plan costs uniAIverse at the plan's full quota
+  bronze:
+    compute:   {inr: 1200,  note: "shared-isolated slice of the customer host (1/4 of a 4 vCPU / 8 GB box)"}
+    database:  {inr: 0,     note: "schema on the shared Postgres (SQLite today)"}
+    vector:    {inr: 300,   note: "namespace on shared pgvector/Qdrant"}
+    storage:   {inr: 40,    note: "10 GB object storage"}
+    llm:       {inr: 1950,  note: "1,500 queries × ₹1.30 (mid-tier RAG request)"}
+    support:   {inr: 2000,  note: "~2 hours/month engineer time at ₹1,000/hour"}
+  silver:
+    compute:   {inr: 4500,  note: "dedicated 4 vCPU / 8 GB VM"}
+    database:  {inr: 1500,  note: "managed Postgres small"}
+    vector:    {inr: 1500,  note: "dedicated collection, 10 GB"}
+    storage:   {inr: 200,   note: "50 GB"}
+    llm:       {inr: 8500,  note: "5,000 queries: 70% RAG ₹1.30, 20% advanced ₹4, 10% agent ₹12"}
+    support:   {inr: 6000,  note: "~6 hours/month"}
+  gold:
+    compute:   {inr: 14000, note: "dedicated 8 vCPU / 32 GB, private network"}
+    database:  {inr: 4000,  note: "managed Postgres with replica"}
+    vector:    {inr: 5000,  note: "dedicated vector DB, 100 GB"}
+    storage:   {inr: 2000,  note: "500 GB"}
+    llm:       {inr: 45000, note: "25,000 queries at the Silver mix"}
+    gpu:       {inr: 0,     note: "0 by default; +₹25,000–1,50,000 when open-weight models are hosted (A10/L4 ~₹60–120/hour × hours)"}
+    support:   {inr: 20000, note: "~20 hours/month incl. named engineer"}
+variable:
+  razorpay_pct: 2.36                        # 2% + 18% GST on the fee
+  infra_markup_pct: 15                      # infrastructure is passed through at cost + 15%
+  llm_query_cost_inr: {simple: 0.15, rag: 1.30, advanced: 4.00, agent: 12.00}
+people:                                     # not in gross margin; shown so the P&L is honest
+  founder_time_hours_per_month: 60
+  hourly_opportunity_cost_inr: 2500

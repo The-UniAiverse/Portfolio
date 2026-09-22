@@ -1,0 +1,26 @@
+# Every guarded thing in the product is a capability. Services ask the entitlement engine "may tenant T do C for U units?".
+# units = how much of monthly_queries one call consumes. approx_cost_inr = what it costs uniAIverse (from pricing/cost_model.yaml classes).
+version: "1.0"
+capabilities:
+  demo.run:           {title: Run a workshop or course demo,            units: 1,  approx_cost_inr: 0.05, guards: ["/api/demos/run/*", "/api/demos/run-course/*"]}
+  demo.rag_preloaded: {title: Ask the preloaded demo documents,         units: 1,  approx_cost_inr: 1.30, guards: ["/api/demos/rag/ask"]}
+  rag.basic:          {title: Grounded Q&A on the tenant's documents,    units: 1,  approx_cost_inr: 1.30}
+  rag.advanced:       {title: Hybrid, graph and agentic retrieval,       units: 3,  approx_cost_inr: 4.00}
+  agent.run:          {title: Run an agent with tools,                   units: 10, approx_cost_inr: 12.00}
+  file.upload:        {title: Upload documents into a knowledge base,    units: 0,  approx_cost_inr: 0.20}
+  kb.create:          {title: Create a knowledge base,                   units: 0,  approx_cost_inr: 0}
+  doc.generate:       {title: Generate PDF/Word deliverables,            units: 5,  approx_cost_inr: 0.50, guards: ["/api/delivery/pack", "/api/discovery/generate"]}
+  delivery.pack:      {title: AI Delivery Framework pack,                units: 5,  approx_cost_inr: 0.50, guards: ["/api/delivery/pack"]}
+  tools.reports:      {title: Strategy, governance, automation reports,  units: 5,  approx_cost_inr: 0.50, guards: ["/api/strategy/roadmap", "/api/governance/assess", "/api/automation/assess"]}
+  audit.free:         {title: Free readiness snapshot,                   units: 1,  approx_cost_inr: 0.10}
+  audit.paid:         {title: Paid readiness audit tiers,                units: 5,  approx_cost_inr: 0.50}
+  quest.free:         {title: Quest free tier,                           units: 0,  approx_cost_inr: 0.01}
+  course_finder:      {title: Course finder,                             units: 0,  approx_cost_inr: 0.01}
+  bot:                {title: Website assistant,                         units: 0,  approx_cost_inr: 0.05}
+  evals:              {title: Evaluation runs on a golden set,           units: 20, approx_cost_inr: 25.00}
+  api.keys:           {title: Programmatic API keys,                     units: 0,  approx_cost_inr: 0}
+  integrations.optional: {title: Standard integrations,                 units: 0,  approx_cost_inr: 0}
+  integrations.custom:   {title: Custom integrations,                   units: 0,  approx_cost_inr: 0}
+  voice:              {title: Voice interfaces,                          units: 5,  approx_cost_inr: 6.00}
+  workspace:          {title: Persistent workspace,                     units: 0,  approx_cost_inr: 0}
+  sso:                {title: Single sign-on,                            units: 0,  approx_cost_inr: 0}

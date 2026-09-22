@@ -28,6 +28,10 @@ Everything a consultant or trainer changes lives in YAML or Markdown, not code. 
 | Delivery Framework — **which document goes in which tier**, document wording | `…/content/deliverables.yaml` (`bronze/silver/gold: lite | full | ""`, wording under `library:`) | Bronze 13 / Silver 21 / Gold 26 is tested — change the test if you mean it |
 | Delivery Framework — **gate criteria** | `…/content/gates.yaml` (`blocking: true` = cannot be waived without written conditions) | — |
 | Delivery Framework — **security controls**, **solution patterns / token profiles** | `…/content/security_controls.yaml`, `…/content/patterns.yaml` | — |
+| Platform **plans, quotas, fees, capabilities per plan, state machine** | `app/services/platform/content/plans.yaml` | tests in `tests/test_platform.py` check quotas by number |
+| Platform **capabilities and which URLs they guard** | `…/content/capabilities.yaml` | — |
+| **Cost model** (rate card, markup, fees) | `…/content/cost_model.yaml` | `python scripts/cost_report.py` regenerates `docs/COST_ANALYSIS.md` (CI checks) |
+| Turn entitlement **enforcement** on | `.env` → `ENTITLEMENTS_MODE=enforce` | restart; website must send `X-Tenant-Key` |
 | Change **Course Finder** logic (which profile → which track) | `app/services/training/course_finder.py` → `KEYWORDS` and `_choose_track` | tests |
 | Add a **Quest quiz question** | `app/services/quest/question_bank.yaml` → under the topic: `q`, `options`, `answer` (index), `d` (1-3), `why`, `tags` | validate (checks duplicates and ranges) |
 | Add a **Quest topic** | same file → new topic block with `id`, `title`, `emoji`, `blurb`, `questions` | free tier topics list in `quest_tiers.yaml` |

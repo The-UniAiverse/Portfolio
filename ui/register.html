@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Request access — uniAIverse</title>
+<style>
+:root{--ink:#14213d;--paper:#fbfaf7;--line:#d9d6cf;--accent:#0f766e;--muted:#5b6170}*{box-sizing:border-box}
+body{margin:0;font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;background:var(--paper);color:var(--ink);line-height:1.5}header,main{max-width:760px;margin:0 auto;padding:0 20px}header{padding-top:26px}h1{margin:0;font-size:1.8rem;font-weight:600}
+.hint{color:var(--muted);font-size:.9rem}.card{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fff;margin:14px 0}label{display:block;font-size:.85rem;color:var(--muted);margin-top:8px}
+input,select,textarea{width:100%;font:inherit;border:1px solid var(--line);border-radius:6px;padding:8px 9px;background:#fff}textarea{min-height:80px}button{font:inherit;background:var(--accent);color:#fff;border:0;border-radius:6px;padding:10px 16px;cursor:pointer}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.plan{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fff;font-size:.86rem}.plan b{display:block;font-size:1rem}.ok{border-left:4px solid var(--accent);background:#f0fdfa;padding:10px 12px}
+</style></head><body><header><h1>Request access</h1><p class="hint">Access is approved by a person, not granted by a form. The free sandbox is small and shared; paid plans get their own allocated environment after payment.</p></header>
+<main><div class="card"><div class="plans" id="plans"></div></div>
+<div class="card"><label>Organisation</label><input id="organisation"><label>Your name</label><input id="contact_name"><label>Work email</label><input id="contact_email" type="email">
+<label>Plan</label><select id="requested_plan"><option value="free">Free sandbox</option><option value="bronze">Bronze</option><option value="silver">Silver</option><option value="gold">Gold</option></select>
+<label>What do you want to do? (an admin reads this)</label><textarea id="purpose"></textarea><p><button id="go">Request access</button> <span class="hint" id="s"></span></p><div id="out"></div></div>
+<div class="card"><h3 style="margin:0 0 6px">Check a request</h3><label>Request id</label><input id="tid" placeholder="TEN-…"><label>Email used</label><input id="temail"><p><button id="chk">Check status</button></p><div id="st"></div></div></main>
+<script>
+const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+fetch('/api/platform/plans').then(r=>r.json()).then(p=>{const f=p.free_sandbox.per_user;$('plans').innerHTML=`<div class="plan"><b>Free sandbox</b>approval required · ${f.monthly_queries} queries/month · demos only · no uploads</div>`+Object.entries(p.plans).map(([k,v])=>`<div class="plan"><b>${esc(v.title)}</b>₹${v.platform_fee_inr.toLocaleString('en-IN')}/month + infrastructure ≈ ₹${v.infra_estimate_inr.toLocaleString('en-IN')}<br>${v.users} users · ${v.monthly_queries.toLocaleString('en-IN')} queries · ${v.storage_gb} GB · ${esc(v.sla)}</div>`).join('')+`<p class="hint" style="grid-column:1/-1;margin:4px 0 0">${esc(p.status)}</p>`;});
+$('go').onclick=async()=>{const b={};['organisation','contact_name','contact_email','requested_plan','purpose'].forEach(k=>b[k]=$(k).value.trim());$('s').textContent='Sending…';const r=await fetch('/api/platform/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});const j=await r.json();$('s').textContent='';
+ $('out').innerHTML=r.ok?`<div class="ok">Request <b>${esc(j.tenant_id)}</b> is <b>${esc(j.state)}</b>. ${esc(j.note)} Keep the id to check status below.</div>`:`<div class="ok" style="border-color:#b45309">${esc(typeof j.detail==='string'?j.detail:JSON.stringify(j.detail))}</div>`;};
+$('chk').onclick=async()=>{const r=await fetch(`/api/platform/status/${encodeURIComponent($('tid').value.trim())}?email=${encodeURIComponent($('temail').value.trim())}`);const j=await r.json();$('st').innerHTML=r.ok?`<div class="ok">${esc(j.tenant_id)}: <b>${esc(j.state)}</b> (${esc(j.plan)}) — ${esc(j.next)}</div>`:`<div class="ok" style="border-color:#b45309">${esc(j.detail)}</div>`;};
+</script></body></html>

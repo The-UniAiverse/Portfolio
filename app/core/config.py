@@ -15,7 +15,7 @@ class Settings:
     port: int = int(os.getenv("APP_PORT", "8000"))
     cors_origins: list[str] = _list("CORS_ORIGINS", "http://localhost:3000")
     enabled_services: list[str] = _list(
-        "ENABLED_SERVICES", "readiness_audit,training,strategy,governance,automation,pricing,quest,bot,payments,demos,discovery,delivery"
+        "ENABLED_SERVICES", "readiness_audit,training,strategy,governance,automation,pricing,quest,bot,payments,demos,discovery,delivery,platform"
     )
     llm_provider: str = os.getenv("LLM_PROVIDER", "none").lower()
     llm_model: str = os.getenv("LLM_MODEL", "claude-sonnet-4-6")
@@ -30,6 +30,9 @@ class Settings:
     razorpay_webhook_secret: str | None = os.getenv("RAZORPAY_WEBHOOK_SECRET") or None
     upi_limit_inr: int = int(os.getenv("UPI_LIMIT_INR", "2000"))
     bank_details: str = os.getenv("BANK_TRANSFER_DETAILS", "")
+    # Entitlements: off = no checks · log = check, record usage, always allow (default) · enforce = deny beyond plan/quota
+    tenants_dir: str = os.getenv("TENANTS_DIR", "outputs/tenants")
+    entitlements_mode: str = os.getenv("ENTITLEMENTS_MODE", "log").lower()
     outputs_dir: Path = ROOT / "outputs"
     materials_dir: Path = ROOT / "training-materials"
     pricing_dir: Path = ROOT / "pricing"

@@ -56,3 +56,12 @@ All framework, curriculum, pricing and blueprint changes are recorded here. Bump
 - Fixed: `requirements.txt` lacked `email-validator` (via `pydantic[email]`) and `python-docx` — fresh installs, CI and Docker builds failed.
 - Fixed: tests wrote to the real database and failed after a few runs per day; `tests/conftest.py` now isolates them. 28 → 71 tests.
 - CI: secrets scan, full content + demo validation, kit freshness check, Docker build + health smoke test. Deploy waits for `/api/health` and rolls back if unhealthy. `.dockerignore` added; container `HEALTHCHECK` added. API version string is now 2.5.0.
+
+## 2026-09-22 — v2.6
+### Control plane (`app/services/platform/`, `/platform`, `/register`)
+- Tenant model with ten states and an enforced state machine; approval before entitlement; plans as resource profiles (`plans.yaml`); capability catalogue with URL guards (`capabilities.yaml`).
+- Entitlement engine (`engine.check`) and HTTP middleware with `ENTITLEMENTS_MODE=off|log|enforce` (default `log`); anonymous visitors draw from the free sandbox pool; `FREE CAPACITY EXHAUSTED` when the pool is spent.
+- Provisioning as background jobs (`run_jobs`, `worker` container, `scripts/provision_worker.py`), idempotent, with audit trail; Razorpay `platform.*` products provision on verified payment; `tenant_id` on orders; bank-transfer "mark paid".
+- Admin console: requests, approvals, sandbox pool, tenant dashboards, limit and capability changes with a reason and no redeploy, state moves, cost model.
+- Cost model (`cost_model.yaml`, `GET /api/platform/cost-model`, `scripts/cost_report.py` → `docs/COST_ANALYSIS.md`), `docs/PLATFORM.md`, `docs/GO_TO_MARKET.md`, `docs/GAPS.md`.
+- 78 tests. Everything from v2.5 unchanged and still passing.

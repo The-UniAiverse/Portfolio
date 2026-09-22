@@ -9,6 +9,8 @@
    - Course Finder → `https://api.uniaiverse.ai/course-finder`
    - uniAI Quest → `https://api.uniaiverse.ai/quest`
    - Checkout → `https://api.uniaiverse.ai/pay?product=<id>`
+   - Request access / price page → `https://api.uniaiverse.ai/register` (plans from `GET /api/platform/plans`)
+   - After sign-in: send `X-Tenant-Key` on every API call; `GET /api/platform/me` returns capabilities and remaining quota; a 402 means "not in plan / quota reached" — show the upgrade link it returns.
    - AI Delivery Framework (estimate + pack) → `https://api.uniaiverse.ai/delivery`
    - Live demos and course labs → `https://api.uniaiverse.ai/demos`
    - Course pages: `GET /api/demos/courses` lists each course's labs; `POST /api/demos/run-course/{course}/{demo}` returns the output as text — render it in a `<pre>`.

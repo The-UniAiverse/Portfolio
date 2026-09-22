@@ -18,6 +18,8 @@ jobs:
         run: pytest -q
       - name: Content + every course demo
         run: python scripts/validate_content.py
+      - name: Cost analysis document matches the cost model
+        run: python scripts/cost_report.py && git diff --exit-code -- docs/COST_ANALYSIS.md || (echo 'Run python scripts/cost_report.py and commit.' && exit 1)
       - name: Generated course kits are up to date
         run: python scripts/build_course_kits.py && git diff --exit-code -- training-materials || (echo "Run python scripts/build_course_kits.py and commit the result." && exit 1)
   docker:

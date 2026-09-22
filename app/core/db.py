@@ -25,6 +25,13 @@ CREATE TABLE IF NOT EXISTS delivery_engagements (id TEXT PRIMARY KEY, client TEX
 CREATE TABLE IF NOT EXISTS delivery_versions (id INTEGER PRIMARY KEY AUTOINCREMENT, engagement_id TEXT, version INTEGER, content_hash TEXT, intake TEXT, summary TEXT, created_at REAL);
 CREATE TABLE IF NOT EXISTS delivery_gate_records (id INTEGER PRIMARY KEY AUTOINCREMENT, engagement_id TEXT, gate TEXT, decision TEXT, recommendation TEXT,
   met TEXT, missing TEXT, evidence TEXT, attendees TEXT, decided_by TEXT, conditions TEXT, risks_carried TEXT, created_at REAL);
+CREATE TABLE IF NOT EXISTS tenants (id TEXT PRIMARY KEY, name TEXT, contact_email TEXT, contact_name TEXT, plan TEXT, state TEXT, requested_plan TEXT, purpose TEXT,
+  key_hash TEXT, limits TEXT, environment TEXT, created_at REAL, updated_at REAL, activated_at REAL, expires_at REAL);
+CREATE TABLE IF NOT EXISTS tenant_users (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id TEXT, email TEXT, role TEXT, created_at REAL);
+CREATE TABLE IF NOT EXISTS tenant_usage (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id TEXT, month TEXT, day TEXT, capability TEXT, units INTEGER, cost_inr REAL, allowed INTEGER, reason TEXT, created_at REAL);
+CREATE TABLE IF NOT EXISTS provisioning_jobs (id TEXT PRIMARY KEY, tenant_id TEXT, status TEXT, steps TEXT, error TEXT, created_at REAL, finished_at REAL);
+CREATE TABLE IF NOT EXISTS platform_audit (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id TEXT, actor TEXT, action TEXT, detail TEXT, created_at REAL);
+CREATE TABLE IF NOT EXISTS platform_settings (key TEXT PRIMARY KEY, value TEXT);
 CREATE TABLE IF NOT EXISTS bot_log (id INTEGER PRIMARY KEY AUTOINCREMENT, session TEXT, question TEXT, intent TEXT, answered INTEGER, created_at REAL);
 """
 

@@ -77,6 +77,7 @@ Two people, one product. The rule: **each capability has exactly one owner.** Th
 `/api/bot/config` · `/api/bot/chat` — uniAI assistant
 `/api/payments/catalog` · `/api/payments/order` · `/api/payments/verify` — checkout
 `/api/discovery/generate` — internal, for enquiries
+`/api/platform/plans` · `POST /api/platform/register` · `/api/platform/status/{id}?email=` — price page and access requests (public). After sign-in send `X-Tenant-Key` on every call; read `/api/platform/me` for what the user may do and how much is left. Never call `/api/platform/requests|approve|tenants|...` from the website (admin token).
 
 Full reference: `https://api.uniaiverse.ai/docs`
 

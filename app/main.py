@@ -1,3 +1,5 @@
+from fastapi import Request
+from fastapi.responses import JSONResponse
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -20,6 +22,22 @@ LOADED = []
 for spec, router in registry.load(settings.enabled_services):
     app.include_router(router, prefix=f"/api/{spec.id}", tags=[spec.title])
     LOADED.append(spec)
+
+@app.middleware("http")
+async def entitlements(request: Request, call_next):
+    """Feature exists ≠ user may use it. Guarded paths (capabilities.yaml `guards`) are checked against the caller's plan and quota.
+    ENTITLEMENTS_MODE: off = skip · log = check + record, always allow · enforce = deny with 402/401 when the plan or quota says no."""
+    mode = settings.entitlements_mode
+    if mode != "off" and "platform" in settings.enabled_services and request.method == "POST":
+        from app.services.platform import engine as _pe
+        cap = _pe.guarded_capability(request.url.path)
+        if cap:
+            key = request.headers.get("x-tenant-key"); tenant = _pe.by_key(key) if key else None
+            if key and not tenant and mode == "enforce": return JSONResponse({"detail": "unknown tenant key"}, status_code=401)
+            r = _pe.check(tenant, cap)
+            if mode == "enforce" and not r["allowed"]: return JSONResponse({"detail": r["reason"], "capability": cap, "plan": r.get("plan", "public"), "upgrade": f"{settings.public_url}/register"}, status_code=402)
+            response = await call_next(request); response.headers["X-Entitlement"] = f"{cap}; {'allowed' if r['allowed'] else 'denied-logged'}; remaining={r.get('remaining', 0)}"; return response
+    return await call_next(request)
 
 @app.get("/api/health")
 def health():
@@ -65,3 +83,8 @@ def discovery_page():
 @app.get("/delivery", include_in_schema=False)
 def delivery_page():
     return FileResponse(UI / "delivery.html")
+
+@app.get("/platform", include_in_schema=False)
+def platform_page(): return FileResponse(UI / "platform.html")
+@app.get("/register", include_in_schema=False)
+def register_page(): return FileResponse(UI / "register.html")

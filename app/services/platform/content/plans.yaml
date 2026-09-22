@@ -1,0 +1,104 @@
+# Plans are RESOURCE PROFILES, not marketing labels. Plan → entitlements → quotas → cost.
+# Money is INR per month unless stated. PLACEHOLDER commercial values — Sarfi confirms before the price page goes live.
+version: "1.0"
+last_reviewed: "2026-09-22"
+currency: INR
+free_sandbox:
+  id: free
+  title: Free sandbox (approval required)
+  description: A very small, shared, stateless slice. uniAIverse bears the cost; the pool is capped so a crowd cannot spend more than the budget.
+  approval_required: true
+  pool:                      # the WHOLE free tier shares this pool; when it is exhausted nobody free gets served until next month
+    monthly_queries: 2000
+    monthly_budget_inr: 2000
+    max_approved_users: 200
+  per_user:
+    users: 1
+    monthly_queries: 10
+    daily_queries: 3
+    concurrency: 1
+    max_context_tokens: 2000
+    storage_gb: 0
+    vector_gb: 0
+    knowledge_bases: 0
+    agent_max_tool_calls: 0
+    monthly_spend_limit_inr: 0
+  capabilities: [demo.run, demo.rag_preloaded, quest.free, audit.free, course_finder, bot]
+  denied: [file.upload, kb.create, doc.generate, agent.run, voice, workspace, api.keys]
+plans:
+  bronze:
+    title: Bronze platform
+    for: Startups and SMEs, one team, one or two use cases
+    platform_fee_inr: 15000
+    setup_fee_inr: 25000
+    infra_estimate_inr: 6000          # shared-isolated slice, billed at cost + 15%
+    infra_billing: shared-isolated slice on the uniAIverse customer host
+    users: 5
+    concurrency: 2
+    monthly_queries: 1500
+    max_context_tokens: 8000
+    storage_gb: 10
+    vector_gb: 2
+    knowledge_bases: 1
+    agent_max_tool_calls: 5
+    doc_generation_per_month: 20
+    gpu: shared quota (API models only)
+    isolation: {db: shared-host, schema-per-tenant, vector: namespace, storage: prefix}
+    monthly_spend_limit_inr: 10000
+    sla: standard (business hours, next-day)
+    capabilities: [demo.run, demo.rag_preloaded, rag.basic, file.upload, kb.create, doc.generate, delivery.pack, tools.reports, audit.paid, api.keys]
+  silver:
+    title: Silver platform
+    for: Mid-market and one business unit of a large company; 2–4 use cases
+    platform_fee_inr: 45000
+    setup_fee_inr: 75000
+    infra_estimate_inr: 20000
+    infra_billing: dedicated compute for the tenant, billed at cost + 15%
+    users: 25
+    concurrency: 5
+    monthly_queries: 5000
+    max_context_tokens: 16000
+    storage_gb: 50
+    vector_gb: 10
+    knowledge_bases: 5
+    agent_max_tool_calls: 10
+    doc_generation_per_month: 200
+    gpu: shared-reserved (API models; open-weight on request)
+    isolation: {db: dedicated, vector: dedicated-collection, storage: bucket}
+    monthly_spend_limit_inr: 30000
+    sla: enhanced (99.5%, 4-hour response)
+    capabilities: [demo.run, demo.rag_preloaded, rag.basic, rag.advanced, agent.run, file.upload, kb.create, doc.generate, delivery.pack, tools.reports, audit.paid, evals, api.keys, integrations.optional]
+  gold:
+    title: Gold platform
+    for: Enterprise, regulated, multi-team programmes
+    platform_fee_inr: 120000
+    setup_fee_inr: 200000
+    infra_estimate_inr: 60000          # dedicated; GPU adds 25,000–1,50,000 depending on model and hours
+    infra_billing: dedicated or reserved capacity (uniAIverse-managed, customer cloud or on-prem), billed at cost + 15%
+    users: 100
+    concurrency: 20
+    monthly_queries: 25000
+    max_context_tokens: 32000
+    storage_gb: 500
+    vector_gb: 100
+    knowledge_bases: 25
+    agent_max_tool_calls: 25
+    doc_generation_per_month: 2000
+    gpu: dedicated or reserved
+    isolation: {db: dedicated, vector: dedicated, storage: dedicated, network: private}
+    monthly_spend_limit_inr: 150000
+    sla: contractual (99.9%, 1-hour response, named engineer)
+    capabilities: [demo.run, demo.rag_preloaded, rag.basic, rag.advanced, agent.run, file.upload, kb.create, doc.generate, delivery.pack, tools.reports, audit.paid, evals, api.keys, integrations.custom, voice, workspace, sso]
+states: [PENDING, APPROVED, REJECTED, PAYMENT_PENDING, PROVISIONING, ACTIVE, SUSPENDED, QUOTA_EXCEEDED, EXPIRED, CANCELLED]
+transitions:           # from: [to...]  — anything else is refused and audited
+  PENDING: [APPROVED, REJECTED]
+  APPROVED: [PAYMENT_PENDING, PROVISIONING, REJECTED, CANCELLED]      # free plan skips payment → PROVISIONING
+  REJECTED: [PENDING]
+  PAYMENT_PENDING: [PROVISIONING, CANCELLED, EXPIRED]
+  PROVISIONING: [ACTIVE, PAYMENT_PENDING]                              # a failed job returns to PAYMENT_PENDING with the error in the audit log
+  ACTIVE: [SUSPENDED, QUOTA_EXCEEDED, EXPIRED, CANCELLED]
+  SUSPENDED: [ACTIVE, CANCELLED]
+  QUOTA_EXCEEDED: [ACTIVE, SUSPENDED]
+  EXPIRED: [PAYMENT_PENDING, CANCELLED]
+  CANCELLED: []
+serving_states: [ACTIVE]                       # only these get resources
