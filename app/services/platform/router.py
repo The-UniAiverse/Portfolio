@@ -6,6 +6,14 @@ from app.core import db
 from app.core.config import settings
 from . import engine
 from .schemas import Register, Approve, Limits, Check
+from . import gateway
+from pydantic import BaseModel, Field
+class Completion(BaseModel):
+    prompt: str = Field(..., min_length=1, max_length=40000); max_tokens: int | None = Field(None, ge=1, le=4000); model_class: str | None = None; purpose: str = ""
+class NewCohort(BaseModel):
+    name: str = Field(..., min_length=2); track: str = "ai"; contact_email: str; starts: str; ends: str; seats: int | None = Field(None, ge=1, le=100); created_by: str = "admin"
+class Learners(BaseModel):
+    emails: list[str]; by: str = "admin"
 
 router = APIRouter()
 def _admin(token):
@@ -119,3 +127,43 @@ def cost_model(bronze: int = 4, silver: int = 2, gold: int = 0, x_admin_token: s
 def audit(limit: int = 100, x_admin_token: str | None = Header(None)):
     _admin(x_admin_token)
     with db.conn() as c: return [dict(r) for r in c.execute("SELECT * FROM platform_audit ORDER BY id DESC LIMIT ?", (limit,)).fetchall()]
+
+# ── LLM gateway and cohorts (v2.6.1) ───────────────────────────────────────────────────────────────────────────────────
+@router.post("/llm/complete")
+def llm_complete(c: Completion, x_tenant_key: str | None = Header(None), x_user_email: str | None = Header(None)):
+    """One metered model call. Always needs a tenant key (it spends money); classroom keys also need X-User-Email of an enrolled learner."""
+    t = _tenant(x_tenant_key)
+    if not t: raise HTTPException(401, "X-Tenant-Key required")
+    code, body = gateway.complete(t, x_user_email, c.prompt, c.max_tokens, c.model_class, c.purpose)
+    if code != 200: raise HTTPException(code, body["detail"])
+    return body
+@router.get("/llm/usage")
+def llm_usage(x_tenant_key: str | None = Header(None)):
+    t = _tenant(x_tenant_key)
+    if not t: raise HTTPException(401, "X-Tenant-Key required")
+    return engine.llm_rollup(t["id"])
+@router.get("/registries")
+def registries():
+    """Tool, model, provider, agent and track registries — the versioned source of truth for what is approved to use."""
+    return {k: engine.content(f"registries/{k}") for k in ("tools", "models", "providers", "agents", "tracks")} | {"token_policy": engine.content("token_policy"), "student_prerequisites": engine.content("student_prerequisites")}
+@router.get("/corporate-prerequisites")
+def corporate_prerequisites(x_admin_token: str | None = Header(None)):
+    _admin(x_admin_token); return engine.content("corporate_prerequisites")
+@router.post("/cohorts")
+def cohorts_create(n: NewCohort, x_admin_token: str | None = Header(None)):
+    _admin(x_admin_token); return engine.create_cohort(n.name, n.track, n.contact_email, n.starts, n.ends, n.seats, n.created_by)
+@router.post("/cohorts/{tenant_id}/learners")
+def cohorts_learners(tenant_id: str, l: Learners, x_admin_token: str | None = Header(None)):
+    _admin(x_admin_token)
+    try: return engine.add_learners(tenant_id, l.emails, l.by)
+    except KeyError: raise HTTPException(404, "cohort not found")
+@router.get("/tenants/{tenant_id}/llm")
+def tenant_llm(tenant_id: str, month: str | None = None, x_admin_token: str | None = Header(None)):
+    _admin(x_admin_token)
+    try: return engine.llm_rollup(tenant_id, month)
+    except KeyError: raise HTTPException(404, "tenant not found")
+@router.post("/llm/global-cap")
+def global_cap(cap_inr: float, x_admin_token: str | None = Header(None)):
+    _admin(x_admin_token)
+    with db.conn() as c: c.execute("INSERT OR REPLACE INTO platform_settings (key, value) VALUES ('llm_global_cap_inr', ?)", (str(cap_inr),))
+    engine.audit(None, "admin", "llm_global_cap", str(cap_inr)); return {"llm_global_cap_inr": cap_inr}

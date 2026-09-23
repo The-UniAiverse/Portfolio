@@ -10,7 +10,7 @@ from .core import registry
 
 app = FastAPI(
     title="uniAIverse AI Services API",
-    version="2.5.0",
+    version="2.6.1",
     description="Backend for AI Readiness Audit, Training, Strategy, Governance and Automation services.",
 )
 app.add_middleware(

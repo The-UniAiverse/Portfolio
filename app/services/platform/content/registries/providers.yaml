@@ -1,0 +1,8 @@
+# Provider registry. One place to say which providers are approved, their policy facts and where the hard caps live.
+version: "1.0"
+last_reviewed: "2026-09-24"
+providers:
+  anthropic: {status: approved, env_key: ANTHROPIC_API_KEY, console_spend_cap: "set a monthly cap in the Anthropic console before issuing any classroom key", data_policy: "API data not used for training by default (verify current terms)", residency: "US by default", owner: Sarfi}
+  openai:    {status: approved, env_key: OPENAI_API_KEY,    console_spend_cap: "set a monthly budget + notification in platform.openai.com", data_policy: "API data not used for training by default (verify current terms)", residency: "US by default", owner: Sarfi}
+  local:     {status: approved, env_key: null, console_spend_cap: "n/a", data_policy: "on the learner's laptop", residency: "local", owner: Sachin, note: "3–8B open-weight models via Ollama for learners without a subscription"}
+  azure_openai: {status: evaluating, env_key: null, note: "only when a corporate customer already has it; their key, their tenant", owner: Sarfi}

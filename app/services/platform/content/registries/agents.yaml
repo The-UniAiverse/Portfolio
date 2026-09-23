@@ -1,0 +1,7 @@
+# Agent registry: every agent that can run anywhere (class, demo, customer) with its permissions and caps. Nothing runs unless listed as approved.
+version: "1.0"
+last_reviewed: "2026-09-24"
+agents:
+  - {id: lead-qualifier-demo, name: Lead qualification demo agent, status: approved, where: [classroom, demo], tools: [lookup_company, score_lead, check_crm_duplicate, assign_owner], writes: false, caps: {max_steps: 6, max_cost_usd: 0.05}, source: training-materials/ai-sales-agents/demos/02_lead_qualification_agent.py, owner: Sarfi}
+  - {id: refund-agent-demo,   name: Refund eligibility demo agent,   status: approved, where: [classroom, demo], tools: [get_shipment, search_policy, create_refund_request], writes: false, caps: {max_steps: 5, max_cost_usd: 0.05}, source: training-materials/genai-engineer/demos/07_router_simple_rag_agent.py, owner: Sarfi}
+  - {id: customer-agent-runtime, name: Customer agent execution service, status: sandbox, where: [], note: "GAPS #8 — not deployed; built inside the first paid pilot that needs it", owner: Sarfi}

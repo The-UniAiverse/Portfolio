@@ -1,4 +1,6 @@
-# Website patch — apply to `The-UniAiverse/Portfolio` (branch `features/sarfi`)
+# Website patch
+
+**Positioning (2026-09-24):** the public site sells AI: readiness audit, demos, AI services, AI consulting, workshops, the AI platform. One "Training & Mentorship" page lists three tracks — AI, DevOps, Development / SDE — with DevOps and Development described as parts of cohorts, not as separate service pages. Immediate pages: readiness audit, demos, cohort one-page offer, AI services, AI consulting, workshops, training & mentorship, contact, legal (terms, privacy, refund, student terms). Tracks come from `GET /api/platform/registries` → `tracks`; show only `status: final` as offerings. — apply to `The-UniAiverse/Portfolio` (branch `features/sarfi`)
 
 1. `components/UniAIBot.tsx` → copy into `components/`. Delete `components/OrbiBot.tsx`.
 2. `app/layout.tsx`: replace `import OrbiBot from '@/components/OrbiBot'` with `import UniAIBot from '@/components/UniAIBot'` and `<OrbiBot />` with `<UniAIBot />`.

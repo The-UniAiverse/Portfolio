@@ -1,0 +1,14 @@
+# Internal AI/tooling budget by role. INR/month at ≈ ₹84/USD. PLACEHOLDERS to verify at purchase; tiers differ by role on purpose.
+version: "1.0"
+last_reviewed: "2026-09-24"
+tools:
+  - {tool: Claude Max (or Pro if Max is not justified in month 1), user: Sarfi, purpose: "AI content, consulting deliverables, agentic coding on the repo", tier: Max 5x, monthly_inr: 8400, annual_inr: 100800, mandatory: true}
+  - {tool: ChatGPT Plus, user: Sarfi, purpose: "second model family for judge calibration and demos", tier: Plus, monthly_inr: 1700, annual_inr: 20400, mandatory: false}
+  - {tool: Claude Pro, user: Sachin, purpose: "infra scripts, runbooks, incident help", tier: Pro, monthly_inr: 1700, annual_inr: 20400, mandatory: true}
+  - {tool: GitHub Copilot Pro, user: Harsh, purpose: "day-to-day coding assistant", tier: Pro (free if verified student), monthly_inr: 840, annual_inr: 10080, mandatory: true}
+  - {tool: Claude Pro, user: Harsh, purpose: "learning, code review explanations", tier: Pro, monthly_inr: 1700, annual_inr: 20400, mandatory: false}
+  - {tool: GitHub Team, user: all, purpose: "private repos, Actions minutes, branch protection", tier: Team (3 seats), monthly_inr: 1000, annual_inr: 12000, mandatory: false, note: "Free plan is enough until Actions minutes run out"}
+  - {tool: Docker Desktop, user: all, purpose: local containers, tier: Personal (free under 250 staff), monthly_inr: 0, annual_inr: 0, mandatory: true}
+  - {tool: Bitwarden, user: all, purpose: shared secrets vault, tier: Free / Teams, monthly_inr: 0, annual_inr: 0, mandatory: true}
+  - {tool: Google Workspace or Zoho Mail, user: all, purpose: "company email, Meet for cohorts", tier: Starter ×3, monthly_inr: 1950, annual_inr: 23400, mandatory: true}
+totals: {mandatory_monthly_inr: 13890, optional_monthly_inr: 4400}

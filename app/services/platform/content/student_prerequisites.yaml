@@ -1,0 +1,16 @@
+# Student onboarding prerequisites — one checklist per track, checked at enrolment and again in the week-0 setup session.
+version: "1.0"
+last_reviewed: "2026-09-24"
+common:
+  hardware: {minimum: "laptop, 8 GB RAM, 20 GB free disk, 64-bit OS from the last 5 years", recommended: "16 GB RAM for local models", no_laptop: "pair up, or use the shared cloud VM Sachin provides for the day"}
+  software: [Python 3.12, Git, VS Code, a modern browser (Chrome/Edge/Firefox), Docker Desktop (AI Engineer and DevOps tracks only)]
+  accounts: [GitHub account (2FA on), Google account for Meet and Classroom, a personal AI account (Claude or ChatGPT, free tier is acceptable)]
+  internet: "stable 5 Mbps; sessions are not recorded for offline viewing until the recording policy is signed"
+  ai_access: "offline labs need nothing; live labs use the cohort gateway key; building uses your own subscription or free tier + Ollama"
+  deployment_accounts: [GitHub (Actions and Pages), one free-tier host — Vercel, Render or Fly; students apply for the GitHub Student Developer Pack]
+  rules: ["No employer, customer or personal data of others in any classroom tool or key", "Keys are personal to the cohort and expire with it", "Attendance and assignments are tracked and shown to you"]
+tracks:
+  ai_at_work: {extra_software: [], extra_accounts: [], prerequisites: "none; bring one real weekly task"}
+  ai_engineer: {extra_software: [Docker Desktop], extra_accounts: [free-tier host], prerequisites: "basic Python; run training-materials/ai-engineer/demos/run_all.py before week 1"}
+  devops: {extra_software: [Docker Desktop, an SSH client], extra_accounts: [a free-tier cloud account], prerequisites: "comfort with a terminal", owner: Sachin, status: draft}
+  development: {extra_software: [language runtime to be decided], extra_accounts: [GitHub Copilot student], prerequisites: "none", owner: Harsh, status: draft}

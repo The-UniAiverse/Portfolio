@@ -1,3 +1,5 @@
+> **Team and positioning (2026-09-24).** Sarfi: AI, AI architecture, consulting, content, product, commercial. Sachin: DevOps, deployment, infrastructure. Harsh: intern — development / SDE, programming, software engineering; his curriculum is a draft. Public business = AI (services, consulting, readiness, assessments, workshops, demos, platform). Training & Mentorship = AI (Sarfi) + DevOps (Sachin) + Development (Harsh); DevOps and Development are **not** standalone public service pages yet. Sachin now owns the server, deploy, backups and monitoring sections below; Harsh owns the website build.
+
 # uniAIverse — who builds what
 
 *20 September 2026 · working agreement between Sarfi and Harsh*

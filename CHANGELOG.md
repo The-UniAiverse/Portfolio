@@ -65,3 +65,12 @@ All framework, curriculum, pricing and blueprint changes are recorded here. Bump
 - Admin console: requests, approvals, sandbox pool, tenant dashboards, limit and capability changes with a reason and no redeploy, state moves, cost model.
 - Cost model (`cost_model.yaml`, `GET /api/platform/cost-model`, `scripts/cost_report.py` → `docs/COST_ANALYSIS.md`), `docs/PLATFORM.md`, `docs/GO_TO_MARKET.md`, `docs/GAPS.md`.
 - 78 tests. Everything from v2.5 unchanged and still passing.
+
+## 2026-09-24 — v2.6.1
+- **LLM gateway** `POST /api/platform/llm/complete`: tenant key → learner email → cohort plan → entitlement → per-user daily/cohort caps → cohort budget → platform-wide cap → rate limit → provider (model class from the registry) → real token metering → cost → audit. Hard stops answer 402. Offline stub meters at list price so quotas behave without a key. `GET /api/platform/llm/usage`, admin `GET /tenants/{id}/llm`, `POST /llm/global-cap`. New table `llm_calls`.
+- **Cohorts as tenants**: `POST /api/platform/cohorts` (admin), `POST /cohorts/{id}/learners`; classroom plan in `plans.yaml → classroom.cohort` (not sold on the price page, not in the payment catalogue); keys expire with the cohort.
+- **Registries** (`content/registries/`): tools, models (classes → provider model ids + INR prices), providers, agents, tracks. `GET /api/platform/registries`.
+- **Operating content**: `token_policy.yaml` (hybrid decision, caps, alerts, override, abuse controls), `student_prerequisites.yaml`, `corporate_prerequisites.yaml` (+ `docs/templates/CORPORATE_PREREQUISITES_TEMPLATE.md`, admin endpoint), `team_tooling.yaml`, `procurement.yaml`.
+- **Positioning and team**: Sarfi / Sachin (DevOps) / Harsh (intern, development); DevOps and Development are not standalone public offerings; `training-materials/tracks/` scaffold. Docs updated (WORK_SPLIT, website-patch, GAPS phases, EDITING).
+- **Master Founder Operating Playbook**: `docs/MASTER_PLAYBOOK.md`.
+- 84 tests. All v2.5 and v2.6 behaviour unchanged.

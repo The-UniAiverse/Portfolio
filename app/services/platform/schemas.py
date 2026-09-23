@@ -19,6 +19,7 @@ class Limits(BaseModel):
     users: int | None = None; concurrency: int | None = None; monthly_queries: int | None = None; daily_queries: int | None = None
     max_context_tokens: int | None = None; storage_gb: float | None = None; vector_gb: float | None = None; knowledge_bases: int | None = None
     agent_max_tool_calls: int | None = None; doc_generation_per_month: int | None = None; monthly_spend_limit_inr: float | None = None
+    per_user_daily_queries: int | None = None; per_user_cohort_queries: int | None = None; per_user_spend_limit_inr: float | None = None; max_output_tokens: int | None = None
     capabilities_add: list[str] = Field(default_factory=list); capabilities_remove: list[str] = Field(default_factory=list)
     reason: str = Field(..., min_length=5); by: str = "admin"
 

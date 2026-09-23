@@ -1,0 +1,11 @@
+# Model registry. Classes decouple courses and plans from vendor names: a lab says 'mid', this file says what 'mid' is today.
+# Prices are INR per million tokens (USD list price × fx). PLACEHOLDERS — verify on the provider price page; put the date in `verified`.
+version: "1.0"
+verified: "2026-09-24"
+fx_usd_inr: 84
+classes:
+  cheap:    {anthropic: claude-haiku-4-5-20251001, openai: gpt-4o-mini, local: llama3.1:8b, in_inr_per_m: 21,   out_inr_per_m: 105,  status: approved, use: "exercises, extraction, classroom default"}
+  mid:      {anthropic: claude-sonnet-4-6,          openai: gpt-4o,      local: null,        in_inr_per_m: 252,  out_inr_per_m: 1260, status: approved, use: "RAG answers, report narratives, mentor demos"}
+  flagship: {anthropic: claude-opus-4-6,            openai: gpt-4o,      local: null,        in_inr_per_m: 1260, out_inr_per_m: 6300, status: restricted, use: "mentor-only demos and paid pilots; never a classroom default"}
+retired: []
+change_process: "docs/MASTER_PLAYBOOK.md → Model change process"

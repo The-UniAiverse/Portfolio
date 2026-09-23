@@ -90,6 +90,35 @@ plans:
     sla: contractual (99.9%, 1-hour response, named engineer)
     capabilities: [demo.run, demo.rag_preloaded, rag.basic, rag.advanced, agent.run, file.upload, kb.create, doc.generate, delivery.pack, tools.reports, audit.paid, evals, api.keys, integrations.custom, voice, workspace, sso]
 states: [PENDING, APPROVED, REJECTED, PAYMENT_PENDING, PROVISIONING, ACTIVE, SUSPENDED, QUOTA_EXCEEDED, EXPIRED, CANCELLED]
+# Classroom plan (v2.6.1): a cohort is a tenant. Learners are tenant_users. Caps are per learner AND per cohort. Not sold on the price page.
+classroom:
+  cohort:
+    title: Training cohort (classroom token pool)
+    for: One cohort of learners; created by an admin, never self-registered
+    classroom: true
+    platform_fee_inr: 0
+    setup_fee_inr: 0
+    infra_estimate_inr: 0
+    users: 25
+    concurrency: 5
+    monthly_queries: 3000                  # cohort cap on calls through the gateway
+    max_context_tokens: 6000
+    max_output_tokens: 800
+    storage_gb: 0
+    vector_gb: 0
+    knowledge_bases: 0
+    agent_max_tool_calls: 5
+    doc_generation_per_month: 0
+    monthly_spend_limit_inr: 20000         # cohort hard stop (the "reserve"); alert at 70%
+    per_user_daily_queries: 40
+    per_user_cohort_queries: 400
+    per_user_spend_limit_inr: 500
+    default_model_class: cheap             # learners get the cheap model unless the lab says otherwise
+    allowed_model_classes: [cheap, mid]
+    expires_days: 45                       # key dies with the cohort; rotate every cohort
+    capabilities: [demo.run, demo.rag_preloaded, llm.complete, quest.free, course_finder, bot]
+    denied: [file.upload, kb.create, doc.generate, voice, workspace, api.keys]
+
 transitions:           # from: [to...]  — anything else is refused and audited
   PENDING: [APPROVED, REJECTED]
   APPROVED: [PAYMENT_PENDING, PROVISIONING, REJECTED, CANCELLED]      # free plan skips payment → PROVISIONING

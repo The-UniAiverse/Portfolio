@@ -18,6 +18,9 @@ Working, deployable code for Sarfi's service portfolio (per *AI Services — Rol
 
 Everything works **without** an LLM key (rule-based, deterministic). Add a key and narratives are AI-written.
 
+## New in v2.6.1
+- **LLM gateway and cohorts**: metered, capped classroom access (`/api/platform/llm/*`, `/api/platform/cohorts`), registries for tools/models/providers/agents/tracks, student and corporate prerequisites, team tooling and procurement as data. **Start here: `docs/MASTER_PLAYBOOK.md`.**
+
 ## New in v2.6
 - **Control plane** — `/platform` (admin) and `/register` (public): approval before access, plans as resource profiles, entitlement engine with `ENTITLEMENTS_MODE`, quotas and a capped free sandbox, background provisioning with a worker container, cost model. Docs: `docs/PLATFORM.md`, `docs/COST_ANALYSIS.md`, `docs/GO_TO_MARKET.md`, `docs/GAPS.md`.
 

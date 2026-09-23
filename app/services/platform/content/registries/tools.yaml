@@ -1,0 +1,12 @@
+# AI tool registry: everything a learner, mentor or customer is told to use. Status drives what the playbook and prerequisites say.
+version: "1.0"
+last_reviewed: "2026-09-24"
+statuses: [discovered, evaluating, sandbox, approved, restricted, retired]
+tools:
+  - {id: claude-app,     name: Claude (app),           status: approved,  category: assistant, users: [learners, mentors], cost: "free tier; Pro ≈ USD 20/month", data: "personal account; no customer data", owner: Sarfi}
+  - {id: chatgpt-app,    name: ChatGPT (app),          status: approved,  category: assistant, users: [learners, mentors], cost: "free tier; Plus ≈ USD 20/month", data: "personal account; no customer data", owner: Sarfi}
+  - {id: claude-code,    name: Claude Code,            status: approved,  category: agentic-coding, users: [mentors, learners-byo], cost: "included in Pro/Max within limits", data: "never on customer repos without a written OK", owner: Sarfi}
+  - {id: github-copilot, name: GitHub Copilot,         status: approved,  category: agentic-coding, users: [Harsh, learners-byo], cost: "free for verified students; Pro ≈ USD 10/month", data: "personal repos only in class", owner: Harsh}
+  - {id: cursor,         name: Cursor,                 status: evaluating, category: agentic-coding, users: [], cost: "Pro ≈ USD 20/month", owner: Harsh}
+  - {id: ollama,         name: Ollama (local models),  status: approved,  category: local-runtime, users: [learners], cost: free, data: local, owner: Sachin}
+  - {id: uav-gateway,    name: uniAIverse LLM gateway, status: approved,  category: classroom-pool, users: [learners, mentors], cost: "metered from the cohort pool", data: "classroom only; no customer data", owner: Sarfi}

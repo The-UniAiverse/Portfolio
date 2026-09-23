@@ -24,3 +24,9 @@ capabilities:
   voice:              {title: Voice interfaces,                          units: 5,  approx_cost_inr: 6.00}
   workspace:          {title: Persistent workspace,                     units: 0,  approx_cost_inr: 0}
   sso:                {title: Single sign-on,                            units: 0,  approx_cost_inr: 0}
+  llm.complete:
+    title: One model call through the uniAIverse LLM gateway
+    units: 1
+    approx_cost_inr: 1.0
+    guards: []                     # the gateway meters itself with real token counts; no path guard needed
+    plans: [cohort, bronze, silver, gold]

@@ -18,3 +18,14 @@ Ordered by what unblocks revenue first. Effort is engineering days for one exper
 | 12 | The `/platform` and `/register` pages were syntax-checked and their APIs tested; nobody has clicked through them in a browser yet | Same as `/delivery` in v2.5 | 0.5 | Sarfi |
 
 Not gaps, decisions still open (D1–D8 in the Delivery playbook): day rates, LLM prices, whether Bronze runs on the control-plane host or a separate customer host, GPU policy.
+
+## Phase classification (2026-09-24)
+
+| Phase | Items |
+|---|---|
+| **Now** (before first revenue) | deploy in `log` mode · Razorpay KYC started, bank transfer + GST invoice for early customers · Terms/Privacy/Refund/Student terms · price list and one-page offers · CRM sheet · partnership agreement · procurement rows marked "required now" |
+| **Before first cohort** | LLM gateway (done in v2.6.1) · cohort created and learners enrolled · provider console cap set · transactional email for keys and receipts · student prerequisites sent at enrolment · Google Classroom + Meet + WhatsApp set up · certificate template · analytics |
+| **Before first corporate workshop** | corporate prerequisite record filled · NDA template · workshop pass-through line for AI usage · uptime alert on |
+| **Before production customer data** | customer sign-in with tenant key (#1) · tenant-scoped RAG (#2) · real dedicated host for Silver/Gold (#4) · per-IP rate limit on public demos (#7) · DPA + SLA · key rotation and access-revocation runbook · `ENTITLEMENTS_MODE=enforce` |
+| **Later** | Postgres/pgvector (#5) · measured provider cost (#6) · agent execution service (#8) · infra invoicing automation (#9) · Slack/email alerts (#11) |
+| **Scale later** | redundancy, managed DB, GPU, enterprise monitoring — each tied to the trigger in `procurement.yaml` |

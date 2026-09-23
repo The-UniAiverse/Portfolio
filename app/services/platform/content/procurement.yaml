@@ -1,0 +1,30 @@
+# Master procurement table. Status: owned | free | one_time | monthly | usage | not_yet | on_trigger. INR. PLACEHOLDER prices — verify at purchase.
+version: "1.0"
+last_reviewed: "2026-09-24"
+items:
+  - {item: Domain uniaiverse.ai, owner: Sarfi, purpose: all, provider: existing registrar, status: owned, one_time: 0, monthly: 0, usage: 0, required_now: true, trigger: "renew 2027", notes: "paid until 2027; do NOT buy another"}
+  - {item: Cloudflare DNS/HTTPS/WAF, owner: Sachin, purpose: edge, provider: Cloudflare Free, status: free, monthly: 0, required_now: true, trigger: now}
+  - {item: Control-plane VPS 2 vCPU/4 GB, owner: Sachin, purpose: "api, worker, caddy, sandbox", provider: "DigitalOcean/Linode/Vultr (India region)", status: monthly, monthly: 1700, required_now: true, trigger: "day of first deploy"}
+  - {item: Customer host 4 vCPU/8 GB, owner: Sachin, purpose: Bronze slices, provider: same, status: on_trigger, monthly: 4200, required_now: false, trigger: "first paying Bronze tenant (pass-through at cost + 15%)"}
+  - {item: VPC/private networking, owner: Sachin, purpose: isolation, provider: cloud, status: on_trigger, monthly: 0, required_now: false, trigger: "first Gold or regulated customer; otherwise firewall + Cloudflare proxy is enough"}
+  - {item: Backup bucket 50 GB, owner: Sachin, purpose: nightly backups, provider: Cloudflare R2 / Backblaze B2, status: usage, monthly: 100, required_now: true, trigger: "day of first deploy"}
+  - {item: Database, owner: Sachin, purpose: control plane, provider: SQLite (in repo), status: free, monthly: 0, required_now: true, trigger: "Postgres + pgvector after ~10 tenants or a second API node (≈ ₹1,500/month managed)"}
+  - {item: Vector DB, owner: Sarfi, purpose: tenant RAG, provider: pgvector/Qdrant, status: on_trigger, monthly: 0, required_now: false, trigger: "first paid pilot needing tenant RAG"}
+  - {item: Company email ×3, owner: Sarfi, purpose: "admin@, support@, Meet", provider: Google Workspace / Zoho, status: monthly, monthly: 1950, required_now: true, trigger: now}
+  - {item: Password manager, owner: Sachin, purpose: secrets vault, provider: Bitwarden, status: free, monthly: 0, required_now: true, trigger: now}
+  - {item: GitHub org + repo, owner: Sachin, purpose: code, CI, deploy, provider: GitHub Free, status: free, monthly: 0, required_now: true, trigger: "Team plan when Actions minutes run out"}
+  - {item: GitHub Copilot, owner: Harsh, purpose: dev assistant, provider: GitHub, status: monthly, monthly: 840, required_now: true, trigger: "free if verified student"}
+  - {item: DevOps tooling, owner: Sachin, purpose: "Docker, Compose, Caddy, Actions", provider: open source, status: free, monthly: 0, required_now: true, trigger: now}
+  - {item: Monitoring/uptime, owner: Sachin, purpose: alerts, provider: UptimeRobot / Better Stack free, status: free, monthly: 0, required_now: true, trigger: "paid tier after first SLA customer"}
+  - {item: LLM API key(s), owner: Sarfi, purpose: "gateway, bot, narratives, live labs", provider: Anthropic / OpenAI, status: usage, monthly: 800, required_now: true, trigger: "console cap set before first key"}
+  - {item: Student token pool, owner: Sarfi, purpose: classroom gateway, provider: same key, status: usage, monthly: 20000, required_now: false, trigger: "per cohort; recovered from ticket price"}
+  - {item: Mentor AI subscriptions, owner: each, purpose: see team_tooling.yaml, provider: Anthropic/OpenAI/GitHub, status: monthly, monthly: 13890, required_now: true, trigger: now}
+  - {item: Razorpay, owner: Sarfi, purpose: checkout, provider: Razorpay, status: usage, monthly: 0, usage: "≈ 2% + GST per transaction", required_now: true, trigger: "KYC now; test mode until approved"}
+  - {item: Transactional email, owner: Sachin, purpose: "approvals, keys, receipts", provider: Resend / SES, status: free, monthly: 0, required_now: false, trigger: "before first cohort (GAPS #3)"}
+  - {item: Website hosting, owner: Harsh, purpose: uniaiverse.ai, provider: Vercel Hobby, status: free, monthly: 0, required_now: true, trigger: "Pro when a team seat or bandwidth is needed"}
+  - {item: CRM, owner: Sarfi, purpose: pipeline of 40 warm accounts, provider: "Google Sheet now; HubSpot Free later", status: free, monthly: 0, required_now: true, trigger: now}
+  - {item: Analytics, owner: Harsh, purpose: site + funnel, provider: Cloudflare Web Analytics / Plausible, status: free, monthly: 0, required_now: false, trigger: "before first cohort"}
+  - {item: Accounting/invoicing, owner: Sarfi, purpose: "GST invoices, filing", provider: "CA + Zoho Books/Tally", status: monthly, monthly: 3000, required_now: true, trigger: "first bank-transfer invoice"}
+  - {item: Legal review, owner: Sarfi, purpose: "Terms, Privacy, Refund, Student terms, SOW/DPA/SLA templates", provider: lawyer, status: one_time, one_time: 25000, monthly: 0, required_now: true, trigger: "before first payment"}
+  - {item: Cohort operations, owner: Sarfi, purpose: "Meet, Classroom, WhatsApp/Discord, certificates", provider: "Google Classroom (free), existing PDF engine", status: free, monthly: 0, required_now: false, trigger: "before first cohort"}
+  - {item: Kubernetes / GPU / redundant infra / managed enterprise monitoring, owner: Sachin, purpose: scale, provider: n/a, status: not_yet, monthly: 0, required_now: false, trigger: "Kubernetes: never at this size. GPU: a Gold customer hosting open-weight models (billed to them). Redundancy: first customer whose business depends on uptime. Enterprise monitoring: first contractual SLA"}

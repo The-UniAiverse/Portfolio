@@ -1,0 +1,29 @@
+# Training & Mentorship tracks. Owners and status only — the course registry stays in training-materials/curriculum.yaml.
+# DevOps and Development are NOT standalone public service offerings (decision 2026-09-24). Their curricula are drafts and may change.
+version: "1.0"
+last_reviewed: "2026-09-24"
+public_positioning:
+  primary: [AI services, AI consulting, AI readiness, AI assessments, AI workshops, AI solutions and demos, AI platform]
+  training_and_mentorship: [ai, devops, development]
+  standalone_public_offerings: [ai]
+tracks:
+  ai:
+    title: AI
+    owner: Sarfi
+    status: final
+    courses: from training-materials/curriculum.yaml
+  devops:
+    title: DevOps and deployment
+    owner: Sachin
+    status: draft
+    modules: [Linux and shell, Git and GitHub flow, Docker, CI with GitHub Actions, deploy to a VPS with Caddy, monitoring and backups, cloud free tiers]
+    labs_root: training-materials/tracks/devops/        # empty until Sachin fills it; same kit convention as the AI courses
+    public_offering: false
+  development:
+    title: Development / SDE
+    owner: Harsh
+    status: draft                                        # NOT FINAL. Language and sequence to be decided by Harsh with Sarfi.
+    candidates: [Python, TypeScript, Java]
+    modules: [programming fundamentals, SOLID and clean code, testing, APIs, data structures for interviews, a deployed project]
+    labs_root: training-materials/tracks/development/
+    public_offering: false

@@ -19,6 +19,7 @@ def plan_profile(plan: str) -> dict:
     P = content("plans")
     if plan == "free":
         f = P["free_sandbox"]; return {"id": "free", "title": f["title"], **f["per_user"], "capabilities": list(f["capabilities"]), "denied": list(f["denied"]), "platform_fee_inr": 0, "setup_fee_inr": 0, "infra_estimate_inr": 0}
+    if plan in P.get("classroom", {}): p = dict(P["classroom"][plan]); p["id"] = plan; p.setdefault("daily_queries", None); p.setdefault("denied", []); return p
     if plan not in P["plans"]: raise ValueError(f"unknown plan '{plan}' — one of free, {', '.join(P['plans'])}")
     p = dict(P["plans"][plan]); p["id"] = plan; p.setdefault("daily_queries", None); p.setdefault("denied", []); return p
 
@@ -225,6 +226,37 @@ def expire_due(actor: str = "scheduler") -> list[str]:
     return out
 
 # ── cost model ────────────────────────────────────────────────────────────────────────────────────────────────────────
+def create_cohort(name: str, track: str, contact_email: str, starts: str, ends: str, seats: int | None, created_by: str) -> dict:
+    """Admin-created classroom tenant: no self-registration, no payment, provisioned immediately, expires with the cohort."""
+    prof = plan_profile("cohort"); tid = "COH-" + uuid.uuid4().hex[:8].upper(); now = db.now()
+    lim = {"users": seats} if seats else {}
+    with db.conn() as c:
+        c.execute("INSERT INTO tenants (id, name, contact_email, contact_name, plan, state, requested_plan, purpose, limits, environment, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                  (tid, name, contact_email, created_by, "cohort", "APPROVED", "cohort", f"track={track}; {starts} → {ends}", json.dumps(lim), json.dumps({"track": track, "starts": starts, "ends": ends}), now, now))
+    audit(tid, created_by, "cohort_created", f"{name} ({track}) {starts} → {ends}, seats {seats or prof['users']}")
+    transition(tid, "PROVISIONING", created_by, "cohort"); jid = enqueue(tid); ran = run_jobs(); job = next((r for r in ran if r["job_id"] == jid), None)
+    with db.conn() as c: c.execute("UPDATE tenants SET expires_at=? WHERE id=?", (now + prof.get("expires_days", 45) * 86400, tid))
+    return {"cohort_id": tid, "state": load(tid)["state"], "api_key": job["api_key"] if job else None, "expires_days": prof.get("expires_days", 45), "note": "Give the key to learners for live labs only. It expires with the cohort. Set the provider console cap before use."}
+
+def add_learners(tenant_id: str, emails: list[str], by: str) -> dict:
+    t = load(tenant_id); lim = effective_limits(t); added = []
+    with db.conn() as c:
+        have = c.execute("SELECT COUNT(*) n FROM tenant_users WHERE tenant_id=? AND role='learner'", (tenant_id,)).fetchone()["n"]
+        for e in emails:
+            e = e.strip().lower()
+            if not e or c.execute("SELECT 1 FROM tenant_users WHERE tenant_id=? AND email=?", (tenant_id, e)).fetchone(): continue
+            if have + len(added) >= lim["users"]: break
+            c.execute("INSERT INTO tenant_users (tenant_id, email, role, created_at) VALUES (?,?,?,?)", (tenant_id, e, "learner", db.now())); added.append(e)
+    audit(tenant_id, by, "learners_added", ", ".join(added)); return {"added": added, "skipped": [e for e in emails if e.strip().lower() not in added], "seats": f"{have + len(added)} / {lim['users']}"}
+
+def llm_rollup(tenant_id: str, month: str | None = None) -> dict:
+    m = month or _month()
+    with db.conn() as c:
+        tot = c.execute("SELECT SUM(status='ok') n, COALESCE(SUM(tokens_in),0) ti, COALESCE(SUM(tokens_out),0) tout, COALESCE(SUM(cost_inr),0) cost, SUM(status!='ok') denied FROM llm_calls WHERE tenant_id=? AND month=?", (tenant_id, m)).fetchone()
+        users = [dict(r) for r in c.execute("SELECT user_email, SUM(status='ok') calls, COALESCE(SUM(cost_inr),0) cost_inr, SUM(status!='ok') denied, MAX(created_at) last FROM llm_calls WHERE tenant_id=? AND month=? GROUP BY user_email ORDER BY cost_inr DESC", (tenant_id, m)).fetchall()]
+    lim = effective_limits(load(tenant_id)); cap = lim.get("monthly_spend_limit_inr") or 0; pol = content("token_policy")["limits_and_stops"]
+    return {"tenant_id": tenant_id, "month": m, "calls": tot["n"], "tokens_in": tot["ti"], "tokens_out": tot["tout"], "cost_inr": round(tot["cost"], 2), "cap_inr": cap, "pct_of_cap": round(100 * tot["cost"] / cap, 1) if cap else None, "alert": bool(cap) and tot["cost"] >= cap * pol["alert_at_pct"] / 100, "denied": tot["denied"], "users": users}
+
 def cost_model(mix: dict | None = None) -> dict:
     """Per-plan unit economics and the platform P&L at a given tenant mix. All inputs are in content/cost_model.yaml and plans.yaml."""
     cm = content("cost_model"); P = content("plans"); fixed = sum(v["inr"] for v in cm["fixed"].values()); plans = {}

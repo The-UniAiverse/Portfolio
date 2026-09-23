@@ -31,6 +31,9 @@ Everything a consultant or trainer changes lives in YAML or Markdown, not code. 
 | Platform **plans, quotas, fees, capabilities per plan, state machine** | `app/services/platform/content/plans.yaml` | tests in `tests/test_platform.py` check quotas by number |
 | Platform **capabilities and which URLs they guard** | `…/content/capabilities.yaml` | — |
 | **Cost model** (rate card, markup, fees) | `…/content/cost_model.yaml` | `python scripts/cost_report.py` regenerates `docs/COST_ANALYSIS.md` (CI checks) |
+| **Registries** (approved tools, models and prices, providers, agents, tracks) | `app/services/platform/content/registries/*.yaml` | served by `GET /api/platform/registries`; bump `version`/`verified` |
+| **Classroom token policy, cohort caps** | `…/content/token_policy.yaml` and `plans.yaml → classroom.cohort` | keep the two consistent (tested) |
+| **Student prerequisites** · **corporate prerequisites** · **team tooling** · **procurement** | `…/content/student_prerequisites.yaml` · `corporate_prerequisites.yaml` · `team_tooling.yaml` · `procurement.yaml` | — |
 | Turn entitlement **enforcement** on | `.env` → `ENTITLEMENTS_MODE=enforce` | restart; website must send `X-Tenant-Key` |
 | Change **Course Finder** logic (which profile → which track) | `app/services/training/course_finder.py` → `KEYWORDS` and `_choose_track` | tests |
 | Add a **Quest quiz question** | `app/services/quest/question_bank.yaml` → under the topic: `q`, `options`, `answer` (index), `d` (1-3), `why`, `tags` | validate (checks duplicates and ranges) |

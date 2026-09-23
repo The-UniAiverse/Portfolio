@@ -30,6 +30,7 @@ def _catalog() -> dict:
     if "platform" in settings.enabled_services:
         plans = yaml.safe_load((settings.materials_dir.parent / "app/services/platform/content/plans.yaml").read_text())["plans"]
         for pid, p in plans.items():
+            if p.get("classroom"): continue
             items[f"platform.{pid}"] = {"title": f"{p['title']} — monthly platform fee", "amount_inr": p["platform_fee_inr"], "amount_usd": round(p["platform_fee_inr"] / 84), "kind": "subscription", "note": f"+ infrastructure ₹{p['infra_estimate_inr']:,}/month at cost + 15% (invoiced) · setup ₹{p['setup_fee_inr']:,} once"}
             items[f"platform.{pid}.setup"] = {"title": f"{p['title']} — one-time setup", "amount_inr": p["setup_fee_inr"], "amount_usd": round(p["setup_fee_inr"] / 84), "kind": "service"}
     return items

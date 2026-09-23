@@ -1,0 +1,33 @@
+# Classroom AI access — the v2.6.1 operating decision: HYBRID. BYO subscription for building; uniAIverse pool for shared labs; offline by default.
+version: "1.0"
+last_reviewed: "2026-09-24"
+decision:
+  default_lab_mode: offline                 # every lab runs with no key; live only where the facilitator guide says LIVE
+  building_and_projects: byo_subscription   # learner's own Claude/ChatGPT seat (≈ USD 20/month) or free tier + local model
+  shared_labs: classroom_pool               # through the uniAIverse gateway, one key per cohort
+  mentors: own_subscription                 # Sarfi Max-tier; Sachin/Harsh per team_tooling.yaml
+allocation:
+  pool_per_cohort_inr: 20000                # matches plans.yaml classroom.cohort.monthly_spend_limit_inr
+  per_learner_cohort_inr: 500
+  per_learner_daily_queries: 40
+  per_learner_cohort_queries: 400
+  default_model_class: cheap
+  max_output_tokens: 800
+  max_prompt_tokens: 6000
+limits_and_stops:
+  alert_at_pct: 70                          # nightly job + admin console warn
+  hard_stop_at_pct: 100                     # gateway answers 402, no exceptions without an override
+  provider_console_cap_inr: 30000           # set in the provider console BEFORE issuing the key: the second lock
+  global_platform_cap_inr: 60000            # platform_settings key llm_global_cap_inr; gateway refuses above it
+  rate_limit_per_user_per_minute: 6
+  rate_limit_per_cohort_per_minute: 60
+override:
+  who: Sarfi only
+  how: PATCH /api/platform/tenants/{cohort}/limits with a reason (audited); raises per_user or cohort limits for one cohort
+abuse_controls: [per-user caps, cohort cap, prompt and output size caps, rate limits, model class allow-list, key rotation per cohort, no customer data rule at enrolment, weekly review of top users]
+expiry:
+  key_expires_with_cohort_days: 45
+  rotate_after_each_cohort: true
+tracking:
+  table: llm_calls                          # tenant, user, model, tokens in/out, cost, latency, status
+  rollup: GET /api/platform/tenants/{id}/llm  (admin) · GET /api/platform/llm/usage (cohort key)
