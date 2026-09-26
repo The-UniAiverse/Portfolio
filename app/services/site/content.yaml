@@ -1,0 +1,112 @@
+# Public site content: services, use cases and success stories. Edit freely; prices come from pricing/tiers.yaml, never from here.
+version: "1.0"
+last_reviewed: "2026-09-27"
+services:
+  - id: readiness
+    title: AI Readiness Assessment
+    tagline: Know where you stand before you spend.
+    pricing_service: readiness_audit
+    page: /
+    for: [CXOs, transformation leads, IT heads]
+    what_you_get: [scored maturity across 10 domains, red flags and 30-day actions, a client-ready PDF, free snapshot in 10 minutes]
+    use_cases: [pre-investment check before an AI budget, board briefing input, vendor-proposal sanity check]
+    stories: [zenith-readiness]
+  - id: consulting
+    title: AI Strategy, Governance and Automation Consulting
+    tagline: Roadmaps, controls and ROI that survive a CFO.
+    pricing_service: strategy
+    page: /tools
+    for: [business unit heads, risk and compliance, operations]
+    what_you_get: [prioritised use-case backlog with budgets and payback, governance plan mapped to NIST AI RMF and ISO 42001, automation ROI cases, PDF reports]
+    use_cases: [12-month AI roadmap, governance gap assessment, automation business case]
+    stories: [kaveri-governance]
+  - id: delivery
+    title: AI Delivery Framework
+    tagline: From one intake to a Bronze, Silver or Gold delivery pack.
+    pricing_service: delivery
+    page: /delivery
+    for: [sponsors, PMOs, procurement]
+    what_you_get: [tier and phased plan with gates G0–G4, PERT estimate, LLM run cost and 3-year TCO, governance and security plans, up to 26 documents in PDF and Word]
+    use_cases: [scoping a pilot, comparing vendor proposals, funding a programme]
+    stories: [acme-shipment-assistant]
+  - id: workshops
+    title: AI Workshops
+    tagline: Working demos, not slides.
+    pricing_service: training
+    page: /demos
+    for: [corporate teams, business owners, universities, colleges]
+    what_you_get: [six audience editions, 115 runnable labs, facilitator-led one or two days, readiness snapshot as the close]
+    use_cases: [leadership offsite, engineering upskilling, campus programme]
+    stories: [college-workshop-2026]
+  - id: training
+    title: Training & Mentorship
+    tagline: Learn AI by shipping it — with DevOps and software engineering alongside.
+    pricing_service: training
+    page: /course-finder
+    for: [professionals, students, career changers]
+    what_you_get: [weekend cohorts with a deployed project, 25 AI courses, mentorship across AI (Sarfi), DevOps (Sachin) and Development (Harsh), certificate]
+    use_cases: [AI at work in 4 weekends, AI Engineer in 6 weekends]
+    stories: []
+    note: DevOps and Development are taught inside cohorts; they are not separate services.
+  - id: platform
+    title: AI Platform (Bronze to Platinum)
+    tagline: A controlled environment with quotas, budgets and audit.
+    pricing_service: platform
+    page: /register
+    for: [companies moving a pilot to production]
+    what_you_get: [approved access, allocated resources, LLM gateway with metering and caps, governance and monitoring, documents and packs]
+    use_cases: [private RAG on company documents, agent workflows with approval gates, multi-team programmes]
+    stories: []
+stories:
+  - id: acme-shipment-assistant
+    client: Acme Logistics (illustrative)
+    industry: Logistics
+    service: delivery
+    problem: 11 minutes per "where is my shipment" email, 900 a week.
+    what_we_did: Silver engagement; grounded assistant on tracking data and 14 policy documents; agents review every draft.
+    result: Median handling time 11 → 5.5 min in 90 days; 14/14 on the evaluation set; run cost under $60 a month.
+    metric: "-50% handling time"
+    status: illustrative                    # replace with a real case study before publishing (Master Playbook §31)
+  - id: kaveri-governance
+    client: Kaveri Pharma (illustrative)
+    industry: Pharma
+    service: consulting
+    problem: 15 AI systems, no inventory, a high-risk CV screener without sign-off.
+    what_we_did: Inventory and classification with the governance engine; review board designed; 30-day plan.
+    result: Inventory complete, 2 high-risk systems under sign-off control, board metrics quarterly.
+    metric: "15 systems classified"
+    status: illustrative
+  - id: zenith-readiness
+    client: Zenith Foods (illustrative)
+    industry: FMCG
+    service: readiness
+    problem: Board asked "are we ready?" before a ₹40 lakh pilot.
+    what_we_did: Free snapshot then Silver audit; data and governance flagged as the two weakest domains.
+    result: Pilot re-scoped to a Bronze delivery with a data sprint first; budget kept.
+    metric: "score 41 → 63 in 6 months"
+    status: illustrative
+  - id: college-workshop-2026
+    client: Engineering college, Pune (illustrative)
+    industry: Education
+    service: workshops
+    problem: Students knew the words, could not ship anything.
+    what_we_did: College edition of the Agentic AI workshop; every team deployed a RAG bot on college documents.
+    result: 42 of 48 students deployed; 9 joined the student cohort.
+    metric: "42 deployments in a day"
+    status: illustrative
+showcase:
+  - {id: ask-the-documents, title: Ask the documents — basic vs advanced RAG, outcome: "same question, two pipelines, side by side", demo: rag, page: /demos}
+  - {id: lead-agent, title: A sales agent with an approval gate, outcome: "read tools free, write tools gated by a human", demo: 02_lead_qualification_agent, course: ai-sales-agents}
+  - {id: red-team, title: Red-team an LLM app, outcome: "16 attack variants, two configurations, a findings report", demo: 03_red_team_exercise, course: ai-security-builders}
+  - {id: cost-a-feature, title: Cost a feature three ways, outcome: "basic, RAG and agentic designs with a sensitivity chart", demo: 03_cost_a_feature_sensitivity, course: llm-cost}
+  - {id: board-view, title: The board's one-page risk view, outcome: "inventory by risk tier with control coverage", demo: 03_risk_oversight_dashboard, course: ai-executive-briefing}
+  - {id: golden-set-gate, title: A CI gate on a golden set, outcome: "a regression blocked before merge", demo: 06_golden_set_ci_gate, course: genai-engineer}
+playground:
+  trial_questions_per_day: 5
+  upgrade_url: /register
+  note: Answers come from preloaded sample documents. Nothing you type is stored beyond the question log; no uploads in the trial.
+newsletter:
+  name: AI Engineering Daily by uniAIverse
+  from: support@uniaiverse.ai
+  top_n: 5
+  send_hour_ist: 7

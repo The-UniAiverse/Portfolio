@@ -1,6 +1,6 @@
 /* Shared navigation + admin-token memory for every uniAIverse page. Loaded by every ui/*.html. */
 (function(){
-  var pages=[["/console","Console"],["/","Audit"],["/discovery","Discovery"],["/delivery","Delivery"],["/tools","Tools"],["/demos","Demos"],["/course-finder","Course Finder"],["/quest","Quest"],["/register","Register"],["/pay","Pay"]];
+  var pages=[["/console","Console"],["/","Audit"],["/services","Services"],["/showcase","Showcase"],["/news","News"],["/discovery","Discovery"],["/delivery","Delivery"],["/tools","Tools"],["/demos","Demos"],["/course-finder","Course Finder"],["/quest","Quest"],["/register","Register"],["/pay","Pay"]];
   var admin=[["/platform","Control plane"],["/monitor","Monitor"],["/admin","Admin"],["/docs","API"]];
   var here=location.pathname.replace(/\/$/,"")||"/";
   var nav=document.createElement("nav");nav.className="uav-nav";

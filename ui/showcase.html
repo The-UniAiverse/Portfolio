@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Showcase & Playground — uniAIverse</title><link rel="stylesheet" href="/assets/uav.css"><script src="/assets/nav.js" defer></script><script src="/assets/widget.js" defer></script></head>
+<body><header><h1>Showcase and Playground</h1><p class="hint">What we have built, and a place to try it. The playground answers from sample documents; five questions a day, no sign-up. Your own documents and quotas need an approved plan.</p></header>
+<main><div class="card"><h2>Showcase</h2><div id="show" class="btngrid"></div></div>
+<div class="card"><h2>Playground</h2><p class="hint" id="pstat"></p><div style="display:flex;gap:10px"><input type="text" id="pq" placeholder="Ask about leave, refunds, claims, security policy… (sample documents)" maxlength="500"><button class="primary" id="pask">Ask</button></div><div id="pout"></div></div></main>
+<script>
+const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+let cid=localStorage.getItem('uav_play_id');if(!cid){cid='pg_'+Math.random().toString(36).slice(2,12);localStorage.setItem('uav_play_id',cid)}const PH={'X-Playground-Id':cid,'Content-Type':'application/json'};
+async function status(){const s=await (await fetch('/api/site/playground/status',{headers:PH})).json();$('pstat').innerHTML=`${s.remaining_today} of ${s.cap} trial questions left today. ${esc(s.note)} <a href="${s.upgrade_url}">Request access</a> for more.`}
+async function show(){const s=await (await fetch('/api/site/showcase')).json();$('show').innerHTML=s.items.map(i=>`<a href="${i.demo==='rag'?'/demos':'/demos#'+esc(i.course)}"><b>${esc(i.title)}</b><span>${esc(i.outcome)}</span><span style="display:block;margin-top:6px" class="hint">${i.course?esc(i.course)+' · '+esc(i.demo):'live RAG demo'}</span></a>`).join('')}
+$('pask').onclick=async()=>{const q=$('pq').value.trim();if(q.length<3)return;$('pout').innerHTML='<p class="hint">Thinking…</p>';const r=await fetch('/api/site/playground/ask',{method:'POST',headers:PH,body:JSON.stringify({question:q})});const j=await r.json();
+ if(!r.ok){$('pout').innerHTML=`<div class="warn">${esc(j.detail)}</div>`;status();return}$('pout').innerHTML=`<div class="okbox"><b>Answer</b><br>${esc(j.answer)}</div>${j.sources&&j.sources.length?'<p class="hint">Sources: '+j.sources.map(s=>esc(typeof s==='string'?s:(s.doc||s.title||s.id||''))).join(' · ')+'</p>':''}${j.upgrade_prompt?`<div class="warn">You are near today's trial limit. <a href="${j.upgrade_url}">Request access</a> to use your own documents with real quotas.</div>`:''}`;status()};
+show();status();
+</script></body></html>

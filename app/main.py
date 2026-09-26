@@ -10,7 +10,7 @@ from .core import registry
 
 app = FastAPI(
     title="uniAIverse AI Services API",
-    version="2.7.0",
+    version="2.8.0",
     description="Backend for AI Readiness Audit, Training, Strategy, Governance and Automation services.",
 )
 app.add_middleware(
@@ -94,3 +94,10 @@ def register_page(): return FileResponse(UI / "register.html")
 def monitor_page(): return FileResponse(UI / "monitor.html")
 @app.get("/console", include_in_schema=False)
 def console_page(): return FileResponse(UI / "console.html")
+
+@app.get("/services", include_in_schema=False)
+def services_page(): return FileResponse(UI / "services.html")
+@app.get("/showcase", include_in_schema=False)
+def showcase_page(): return FileResponse(UI / "showcase.html")
+@app.get("/news", include_in_schema=False)
+def news_page(): return FileResponse(UI / "news.html")

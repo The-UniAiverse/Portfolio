@@ -48,7 +48,7 @@ def overview() -> dict:
             if d["over_budget_risk"] or t["state"] == "QUOTA_EXCEEDED": risky.append({"id": t["id"], "name": t["name"], "plan": t["plan"], "state": t["state"], "projected": d["projected_spend_inr"], "budget": d["monthly_spend_limit_inr"]})
         except Exception: pass
     pol = engine.content("token_policy")["limits_and_stops"]; gcap_v = float(gcap["value"]) if gcap else float(pol["global_platform_cap_inr"])
-    return {"generated": db.now(), "month": m, "version": "2.7.0", "entitlements_mode": settings.entitlements_mode, "llm_provider": settings.llm_provider or "none (offline)",
+    return {"generated": db.now(), "month": m, "version": "2.8.0", "entitlements_mode": settings.entitlements_mode, "llm_provider": settings.llm_provider or "none (offline)",
             "services": [{"id": s.id, "title": s.title, "owner": s.owner, "status": s.status, "enabled": s.id in settings.enabled_services} for s in SERVICES],
             "tenants": {"by_state": states, "active_by_plan": plans, "at_risk": risky, "jobs": jobs, "failed_jobs": failed_jobs},
             "gateway": {"calls": llm["calls"] or 0, "denied": llm["denied"] or 0, "tokens_in": llm["ti"], "tokens_out": llm["tout"], "cost_inr": round(llm["cost"], 2), "today_calls": llm_today["calls"] or 0, "today_cost_inr": round(llm_today["cost"], 2), "global_cap_inr": gcap_v, "pct_of_cap": round(100 * llm["cost"] / gcap_v, 1) if gcap_v else None, "by_day": by_day, "by_tenant": by_tenant, "by_model": by_model},

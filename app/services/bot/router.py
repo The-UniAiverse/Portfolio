@@ -64,7 +64,16 @@ def chat(c: Chat):
                  "quick_replies": it.get("quick_replies", b["quick_replies"][:3])}
     else:
         reply = {"intent": None, "text": _fmt(b["fallback"], kb), "link": {"label": "Book a call", "url": b["calendly_url"]},
-                 "quick_replies": b["quick_replies"]}
+                 "quick_replies": b["quick_replies"], "fallback_llm": False}
+        if llm.available() and "platform" in settings.enabled_services:                     # v2.8: metered live fallback, capped by the free pool
+            from app.services.platform import engine as _pe, gateway as _gw
+            pool = _pe.check(None, "bot")
+            if pool["allowed"]:
+                ctx = "\n".join(f"- {_fmt(i['answer'], kb)}" for i in kb["intents"][:20])
+                r = llm.complete_with_usage(f"You are uniAI, the uniAIverse website assistant. Answer in 2 sentences from these facts only; if the facts do not cover it, say so and suggest booking a call.\nFACTS:\n{ctx}\nQUESTION: {c.message}", max_tokens=150)
+                if r:
+                    cost = _gw._price("cheap", r["tokens_in"], r["tokens_out"]); _gw._record("public", "widget", r["provider"], r["model"], "cheap", r["tokens_in"], r["tokens_out"], cost, 0, "ok", "", "bot-fallback")
+                    reply.update({"text": r["text"].strip(), "fallback_llm": True})
     with db.conn() as conn:
         conn.execute("INSERT INTO bot_log (session, question, intent, answered, created_at) VALUES (?,?,?,?,?)",
                      (session, c.message[:500], reply["intent"], int(answered), db.now()))

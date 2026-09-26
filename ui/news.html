@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI Engineering news — uniAIverse</title><link rel="stylesheet" href="/assets/uav.css"><script src="/assets/nav.js" defer></script><script src="/assets/widget.js" defer></script></head>
+<body><header><h1 id="nname">AI Engineering Daily</h1><p class="hint">The five things worth an engineer's morning, summarised. Approved by a person before it appears here.</p></header>
+<main><div class="card" id="items"><p class="hint">Loading…</p></div>
+<div class="card"><h2>Get it by email every morning</h2><div class="grid"><div><label>Email</label><input type="email" id="em"></div><div><label>Name (optional)</label><input type="text" id="nm"></div></div><p><button class="primary" id="sub">Subscribe</button> <span class="hint" id="sres"></span></p><p class="hint">Double opt-in; unsubscribe link in every email. The voice edition follows once audio is switched on.</p></div></main>
+<script>
+const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+fetch('/api/site/news').then(r=>r.json()).then(n=>{$('nname').textContent=n.name;$('items').innerHTML=`<h2>${n.day}</h2>`+(n.items.length?n.items.map((i,k)=>`<h3>${k+1}. <a href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.title)}</a> <span class="hint">${esc(i.source)}</span></h3><p>${esc(i.summary)}</p>`).join(''):'<p class="hint">No approved items yet today. Items appear after an admin approves them in /admin.</p>')});
+$('sub').onclick=async()=>{const r=await fetch('/api/site/newsletter/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:$('em').value.trim(),name:$('nm').value.trim()})});const j=await r.json();$('sres').textContent=r.ok?'Subscribed (pending confirmation).':(typeof j.detail==='string'?j.detail:'Check the email address.')};
+</script></body></html>

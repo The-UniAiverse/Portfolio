@@ -83,3 +83,9 @@ All framework, curriculum, pricing and blueprint changes are recorded here. Bump
 - **Platinum plan** (`plans.yaml`, cost model, price page, applications and approval, payment catalogue). Applicants choose Free to Platinum on `/register`; admin approves on `/platform`.
 - **uniAI Quest free tier**: 6 quizzes a day on 4 topics (was 3 on 2).
 - Work split: Harsh keeps Backend & Admin Portal; the rest ships from this repository. 90 tests.
+
+## 2026-09-27 — v2.8.0
+- **Site service** (`app/services/site/`, content in `content.yaml`): services with live prices and per-service pages (`/services`, `/api/site/services*`), success stories (illustrative placeholders until real ones), demo **showcase** and a **Playground** with a freemium gate (5 trial questions a day per browser on sample documents, upgrade prompt, counted against the free pool) at `/showcase`.
+- **AI Engineering news**: daily top-5 with summaries (`/news`, `/api/site/news`) from the approved feed; **newsletter** with double opt-in subscribe, confirm, unsubscribe, compose (HTML, text and voice script), send — dry-run until `RESEND_API_KEY` is set; voice edition returns the script until a TTS key exists.
+- **uniAI chat widget** on every page (`ui/assets/widget.js`); when a question is outside the knowledge base and a provider is configured, a metered live fallback answers from site facts, capped by the free pool and recorded in the gateway metering.
+- 94 tests. 14 services.

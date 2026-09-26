@@ -8,7 +8,7 @@ def test_monitor_needs_admin_and_returns_every_section():
     assert c.get("/api/platform/monitor").status_code == 401
     m = c.get("/api/platform/monitor", headers=H).json()
     for k in ("services", "tenants", "gateway", "usage", "free_pool", "bot", "hours", "audit", "cost_model", "entitlements_mode"): assert k in m
-    assert len(m["services"]) == 13 and all(s["id"] == "platform" and s["enabled"] for s in m["services"] if s["id"] == "platform")
+    assert len(m["services"]) == 14 and all(s["id"] == "platform" and s["enabled"] for s in m["services"] if s["id"] == "platform")
     assert m["gateway"]["global_cap_inr"] > 0 and "queries_used" in m["free_pool"]
 
 def test_hours_sheet_and_ceiling():

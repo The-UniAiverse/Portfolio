@@ -18,6 +18,9 @@ Working, deployable code for Sarfi's service portfolio (per *AI Services — Rol
 
 Everything works **without** an LLM key (rule-based, deterministic). Add a key and narratives are AI-written.
 
+## New in v2.8.0
+- **Public site content**: services and stories (`/services`), showcase and playground with a trial gate (`/showcase`), AI engineering news and newsletter (`/news`), and the uniAI chat widget on every page. 94 tests.
+
 ## New in v2.7.0
 - **Pro look on every page**, operator **console** (`/console`), integrated **monitoring** (`/monitor`) with gateway metering, tenant usage, audit, logs and the founder hour sheet; **Platinum** plan; larger Quest free tier. 90 tests.
 

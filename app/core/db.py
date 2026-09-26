@@ -32,6 +32,9 @@ CREATE TABLE IF NOT EXISTS tenant_usage (id INTEGER PRIMARY KEY AUTOINCREMENT, t
 CREATE TABLE IF NOT EXISTS provisioning_jobs (id TEXT PRIMARY KEY, tenant_id TEXT, status TEXT, steps TEXT, error TEXT, created_at REAL, finished_at REAL);
 CREATE TABLE IF NOT EXISTS platform_audit (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id TEXT, actor TEXT, action TEXT, detail TEXT, created_at REAL);
 CREATE TABLE IF NOT EXISTS founder_hours (id INTEGER PRIMARY KEY AUTOINCREMENT, person TEXT, day TEXT, activity TEXT, hours REAL, note TEXT, tenant_id TEXT, created_at REAL);
+CREATE TABLE IF NOT EXISTS newsletter_subscribers (email TEXT PRIMARY KEY, name TEXT, token TEXT, status TEXT, created_at REAL, confirmed_at REAL, unsubscribed_at REAL);
+CREATE TABLE IF NOT EXISTS newsletter_issues (id INTEGER PRIMARY KEY AUTOINCREMENT, day TEXT UNIQUE, subject TEXT, html TEXT, text TEXT, script TEXT, items INTEGER, sent_to INTEGER, status TEXT, created_at REAL, sent_at REAL);
+CREATE TABLE IF NOT EXISTS playground_usage (client_id TEXT, day TEXT, n INTEGER, PRIMARY KEY (client_id, day));
 CREATE TABLE IF NOT EXISTS platform_settings (key TEXT PRIMARY KEY, value TEXT);
 CREATE TABLE IF NOT EXISTS llm_calls (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id TEXT, user_email TEXT, month TEXT, day TEXT, provider TEXT, model TEXT, model_class TEXT, tokens_in INTEGER, tokens_out INTEGER, cost_inr REAL, latency_ms INTEGER, status TEXT, reason TEXT, purpose TEXT, created_at REAL);
 CREATE TABLE IF NOT EXISTS bot_log (id INTEGER PRIMARY KEY AUTOINCREMENT, session TEXT, question TEXT, intent TEXT, answered INTEGER, created_at REAL);
