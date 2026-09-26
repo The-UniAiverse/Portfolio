@@ -57,9 +57,11 @@ def playground_ask(a: PlayAsk, x_playground_id: str | None = Header(None)):
     pool = pe.check(None, "demo.rag_preloaded")
     if not pool["allowed"]: raise HTTPException(402, pool["reason"])
     from app.services.demos.router import rag_ask, Ask
-    r = rag_ask(Ask(question=a.question)); adv = r.get("advanced", r)
+    r = rag_ask(Ask(question=a.question)); adv = r["advanced"]; answer = adv["answer"]; passages = adv.get("passages", [])
+    if "could not find" in answer.lower() and passages:                                # offline stand-in generator is strict; show the best passage so the trial still teaches
+        answer = f"Closest passage ({passages[0]['source']}): {passages[0]['text'][:300]}"
     with db.conn() as c: c.execute("INSERT INTO playground_usage (client_id, day, n) VALUES (?,?,1) ON CONFLICT(client_id, day) DO UPDATE SET n=n+1", (cid, _today()))
-    return {"answer": adv.get("answer"), "sources": adv.get("sources", adv.get("hits", [])), "tokens": adv.get("tokens"), "used_today": n + 1, "remaining_today": cap - n - 1, "upgrade_url": C["upgrade_url"], "upgrade_prompt": (cap - n - 1) <= 1}
+    return {"answer": answer, "sources": [p["source"] for p in passages], "method": adv.get("method"), "tokens": {"in": adv.get("tokens_in"), "out": adv.get("tokens_out")}, "used_today": n + 1, "remaining_today": cap - n - 1, "upgrade_url": C["upgrade_url"], "upgrade_prompt": (cap - n - 1) <= 1, "note": r.get("note")}
 
 # ── news: daily top-5 with summaries ──────────────────────────────────────────────────────────────────────────────────
 def _summarise(title: str, summary: str) -> str:
