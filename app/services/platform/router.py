@@ -6,7 +6,7 @@ from app.core import db
 from app.core.config import settings
 from . import engine
 from .schemas import Register, Approve, Limits, Check
-from . import gateway
+from . import gateway, monitor
 from pydantic import BaseModel, Field
 class Completion(BaseModel):
     prompt: str = Field(..., min_length=1, max_length=40000); max_tokens: int | None = Field(None, ge=1, le=4000); model_class: str | None = None; purpose: str = ""
@@ -167,3 +167,22 @@ def global_cap(cap_inr: float, x_admin_token: str | None = Header(None)):
     _admin(x_admin_token)
     with db.conn() as c: c.execute("INSERT OR REPLACE INTO platform_settings (key, value) VALUES ('llm_global_cap_inr', ?)", (str(cap_inr),))
     engine.audit(None, "admin", "llm_global_cap", str(cap_inr)); return {"llm_global_cap_inr": cap_inr}
+
+# ── Monitoring (v2.7) ──────────────────────────────────────────────────────────────────────────────────────────────────
+class Hours(BaseModel):
+    person: str = Field(..., min_length=2); day: str; activity: str = Field(..., min_length=2); hours: float = Field(..., gt=0, le=24); note: str = ""; tenant_id: str | None = None
+@router.get("/monitor")
+def monitor_overview(x_admin_token: str | None = Header(None)):
+    """Everything on one screen: services, tenants, gateway metering, usage, free pool, bot, hours, audit."""
+    _admin(x_admin_token); return monitor.overview()
+@router.get("/monitor/logs")
+def monitor_logs(kind: str = "audit", limit: int = 200, x_admin_token: str | None = Header(None)):
+    _admin(x_admin_token)
+    try: return monitor.logs(kind, limit)
+    except KeyError: raise HTTPException(404, "kind must be one of audit, gateway, usage, provisioning, bot, hours")
+@router.post("/hours")
+def hours_log(h: Hours, x_admin_token: str | None = Header(None)):
+    _admin(x_admin_token); return monitor.log_hours(h.person, h.day, h.activity, h.hours, h.note, h.tenant_id)
+@router.get("/hours")
+def hours_month(month: str | None = None, x_admin_token: str | None = Header(None)):
+    _admin(x_admin_token); return monitor.hours(month)

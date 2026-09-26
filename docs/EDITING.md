@@ -34,6 +34,8 @@ Everything a consultant or trainer changes lives in YAML or Markdown, not code. 
 | **Registries** (approved tools, models and prices, providers, agents, tracks) | `app/services/platform/content/registries/*.yaml` | served by `GET /api/platform/registries`; bump `version`/`verified` |
 | **Classroom token policy, cohort caps** | `…/content/token_policy.yaml` and `plans.yaml → classroom.cohort` | keep the two consistent (tested) |
 | **Student prerequisites** · **corporate prerequisites** · **team tooling** · **procurement** | `…/content/student_prerequisites.yaml` · `corporate_prerequisites.yaml` · `team_tooling.yaml` · `procurement.yaml` | — |
+| **Look and navigation** of every page | `ui/assets/uav.css`, `ui/assets/nav.js` | reload |
+| **Hour ceilings and rates** per person | `app/services/platform/monitor.py` → `ceiling`, `rates` | pytest |
 | Turn entitlement **enforcement** on | `.env` → `ENTITLEMENTS_MODE=enforce` | restart; website must send `X-Tenant-Key` |
 | Change **Course Finder** logic (which profile → which track) | `app/services/training/course_finder.py` → `KEYWORDS` and `_choose_track` | tests |
 | Add a **Quest quiz question** | `app/services/quest/question_bank.yaml` → under the topic: `q`, `options`, `answer` (index), `d` (1-3), `why`, `tags` | validate (checks duplicates and ranges) |

@@ -89,6 +89,27 @@ plans:
     monthly_spend_limit_inr: 150000
     sla: contractual (99.9%, 1-hour response, named engineer)
     capabilities: [demo.run, demo.rag_preloaded, rag.basic, rag.advanced, agent.run, file.upload, kb.create, doc.generate, delivery.pack, tools.reports, audit.paid, evals, api.keys, integrations.custom, voice, workspace, sso]
+  platinum:
+    title: Platinum platform
+    for: Group-level programmes, regulated data, customer cloud or on-prem, named team
+    platform_fee_inr: 300000
+    setup_fee_inr: 500000
+    infra_estimate_inr: 150000         # dedicated + private networking; GPU and residency options billed at cost + 15%
+    infra_billing: dedicated capacity in uniAIverse-managed, customer cloud or on-prem environments, billed at cost + 15%
+    users: 500
+    concurrency: 50
+    monthly_queries: 100000
+    max_context_tokens: 64000
+    storage_gb: 2000
+    vector_gb: 500
+    knowledge_bases: 100
+    agent_max_tool_calls: 50
+    doc_generation_per_month: 10000
+    gpu: dedicated
+    isolation: {db: dedicated, vector: dedicated, storage: dedicated, network: private}
+    monthly_spend_limit_inr: 500000
+    sla: contractual (99.95%, 30-minute response, named team, quarterly review)
+    capabilities: [demo.run, demo.rag_preloaded, rag.basic, rag.advanced, agent.run, file.upload, kb.create, doc.generate, delivery.pack, tools.reports, audit.paid, evals, api.keys, integrations.custom, voice, workspace, sso]
 states: [PENDING, APPROVED, REJECTED, PAYMENT_PENDING, PROVISIONING, ACTIVE, SUSPENDED, QUOTA_EXCEEDED, EXPIRED, CANCELLED]
 # Classroom plan (v2.6.1): a cohort is a tenant. Learners are tenant_users. Caps are per learner AND per cohort. Not sold on the price page.
 classroom:

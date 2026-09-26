@@ -10,7 +10,7 @@ from .core import registry
 
 app = FastAPI(
     title="uniAIverse AI Services API",
-    version="2.6.1",
+    version="2.7.0",
     description="Backend for AI Readiness Audit, Training, Strategy, Governance and Automation services.",
 )
 app.add_middleware(
@@ -47,6 +47,7 @@ def health():
 # Demo UI (static, no build step). Your Next.js site can call the same /api routes.
 UI = ROOT / "ui"
 app.mount("/static", StaticFiles(directory=UI), name="static")
+app.mount("/assets", StaticFiles(directory=str(UI / "assets")), name="assets")
 
 @app.get("/", include_in_schema=False)
 def index():
@@ -88,3 +89,8 @@ def delivery_page():
 def platform_page(): return FileResponse(UI / "platform.html")
 @app.get("/register", include_in_schema=False)
 def register_page(): return FileResponse(UI / "register.html")
+
+@app.get("/monitor", include_in_schema=False)
+def monitor_page(): return FileResponse(UI / "monitor.html")
+@app.get("/console", include_in_schema=False)
+def console_page(): return FileResponse(UI / "console.html")

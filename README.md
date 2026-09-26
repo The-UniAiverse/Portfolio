@@ -18,6 +18,9 @@ Working, deployable code for Sarfi's service portfolio (per *AI Services — Rol
 
 Everything works **without** an LLM key (rule-based, deterministic). Add a key and narratives are AI-written.
 
+## New in v2.7.0
+- **Pro look on every page**, operator **console** (`/console`), integrated **monitoring** (`/monitor`) with gateway metering, tenant usage, audit, logs and the founder hour sheet; **Platinum** plan; larger Quest free tier. 90 tests.
+
 ## New in v2.6.1
 - **LLM gateway and cohorts**: metered, capped classroom access (`/api/platform/llm/*`, `/api/platform/cohorts`), registries for tools/models/providers/agents/tracks, student and corporate prerequisites, team tooling and procurement as data. **Start here: `docs/MASTER_PLAYBOOK.md`.**
 

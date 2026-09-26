@@ -24,22 +24,23 @@
 | Bronze | ₹15,000 | ₹6,900 | ₹21,900 | ₹5,490 | ₹517 | **₹15,893** | 72.6% | ₹3.66 | ₹14.6 |
 | Silver | ₹45,000 | ₹23,000 | ₹68,000 | ₹22,200 | ₹1,605 | **₹44,195** | 65.0% | ₹4.44 | ₹13.6 |
 | Gold | ₹120,000 | ₹69,000 | ₹189,000 | ₹90,000 | ₹4,460 | **₹94,540** | 50.0% | ₹3.6 | ₹7.56 |
+| Platinum | ₹300,000 | ₹172,500 | ₹472,500 | ₹230,000 | ₹11,151 | **₹231,349** | 49.0% | ₹2.3 | ₹4.72 |
 
 Cost lines per tenant (₹/month):
 
-| Line | Bronze | Silver | Gold |
-|---|---:|---:|---:|
-| compute | ₹1,200 | ₹4,500 | ₹14,000 |
-| database | ₹0 | ₹1,500 | ₹4,000 |
-| gpu | ₹0 | ₹0 | ₹0 |
-| llm | ₹1,950 | ₹8,500 | ₹45,000 |
-| storage | ₹40 | ₹200 | ₹2,000 |
-| support | ₹2,000 | ₹6,000 | ₹20,000 |
-| vector | ₹300 | ₹1,500 | ₹5,000 |
+| Line | Bronze | Silver | Gold | Platinum |
+|---|---:|---:|---:|---:|
+| compute | ₹1,200 | ₹4,500 | ₹14,000 | ₹35,000 |
+| database | ₹0 | ₹1,500 | ₹4,000 | ₹10,000 |
+| gpu | ₹0 | ₹0 | ₹0 | ₹0 |
+| llm | ₹1,950 | ₹8,500 | ₹45,000 | ₹120,000 |
+| storage | ₹40 | ₹200 | ₹2,000 | ₹8,000 |
+| support | ₹2,000 | ₹6,000 | ₹20,000 | ₹45,000 |
+| vector | ₹300 | ₹1,500 | ₹5,000 | ₹12,000 |
 
 Notes on the lines: **compute** dedicated 4 vCPU / 8 GB VM; **database** managed Postgres small; **vector** dedicated collection, 10 GB; **storage** 50 GB; **llm** 5,000 queries: 70% RAG ₹1.30, 20% advanced ₹4, 10% agent ₹12; **support** ~6 hours/month.
 
-Setup fees (one-time): Bronze ₹25,000, Silver ₹75,000, Gold ₹200,000.
+Setup fees (one-time): Bronze ₹25,000, Silver ₹75,000, Gold ₹200,000, Platinum ₹500,000.
 
 ## 3. Break-even
 
@@ -47,9 +48,10 @@ Tenants of ONE plan needed to cover the fixed cost from gross margin:
 
 | Plan | Tenants to break even |
 |---|---:|
-| Bronze | 0.3 |
-| Silver | 0.1 |
-| Gold | 0.1 |
+| Bronze | 0.31 |
+| Silver | 0.11 |
+| Gold | 0.05 |
+| Platinum | 0.02 |
 
 ## 4. P&L at a mix of 4 Bronze, 2 Silver, 0 Gold
 
@@ -69,11 +71,11 @@ Cap ₹2,000/month, 2,000 queries, at most 200 approved users. When the pool is 
 
 ## 6. Sensitivity
 
-| Scenario | Bronze | Silver | Gold |
-|---|---:|---:|---:|
-| Gross margin as modelled | ₹15,893 | ₹44,195 | ₹94,540 |
-| LLM prices double | ₹13,943 | ₹35,695 | ₹49,540 |
-| Tenant uses half its quota | ₹16,868 | ₹48,445 | ₹117,040 |
+| Scenario | Bronze | Silver | Gold | Platinum |
+|---|---:|---:|---:|---:|
+| Gross margin as modelled | ₹15,893 | ₹44,195 | ₹94,540 | ₹231,349 |
+| LLM prices double | ₹13,943 | ₹35,695 | ₹49,540 | ₹111,349 |
+| Tenant uses half its quota | ₹16,868 | ₹48,445 | ₹117,040 | ₹291,349 |
 | Gold with a ₹75,000 GPU line | — | — | ₹105,790 |
 
 Reading it: margins survive a doubling of LLM prices because infrastructure is passed through at cost + 15% and LLM spend is capped per tenant by `monthly_spend_limit_inr`. The biggest lever is support hours, which is the one line that scales with people, not servers.

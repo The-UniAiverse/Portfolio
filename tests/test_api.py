@@ -93,7 +93,7 @@ def test_quest_free_tier_flow():
 
 def test_quest_daily_limit_and_upgrade():
     import uuid; q2 = "q2_" + uuid.uuid4().hex[:6]
-    for _ in range(3):
+    for _ in range(6):                                   # free tier: 6 quizzes a day (v2.7)
         q = c.get(f"/api/quest/quiz?topic=genai&user_id={q2}").json()
         c.post("/api/quest/quiz/submit", json={"user_id": q2, "topic": "genai", "answers": {x["id"]: 1 for x in q["questions"]}})
     assert c.get(f"/api/quest/quiz?topic=genai&user_id={q2}").status_code == 402

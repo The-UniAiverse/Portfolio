@@ -74,3 +74,12 @@ All framework, curriculum, pricing and blueprint changes are recorded here. Bump
 - **Positioning and team**: Sarfi / Sachin (DevOps) / Harsh (intern, development); DevOps and Development are not standalone public offerings; `training-materials/tracks/` scaffold. Docs updated (WORK_SPLIT, website-patch, GAPS phases, EDITING).
 - **Master Founder Operating Playbook**: `docs/MASTER_PLAYBOOK.md`.
 - 84 tests. All v2.5 and v2.6 behaviour unchanged.
+
+## 2026-09-26 — v2.7.0 "Pro"
+- **Design system** `ui/assets/uav.css` + shared navigation `ui/assets/nav.js` on every page; admin token remembered per browser session; footer, badges, tiles, consistent typography.
+- **Operator console** `/console`: one click to every face and every admin function, live KPIs.
+- **Integrated monitoring** `/monitor` + `GET /api/platform/monitor`: services, tenants by state and plan, at-risk tenants, provisioning, gateway metering (by day, tenant, model class), entitlement usage, free pool, bot, audit, cost model. `GET /api/platform/monitor/logs?kind=audit|gateway|usage|provisioning|bot|hours`.
+- **Founder/mentor hour sheet**: `POST/GET /api/platform/hours`, ceilings per person, opportunity cost, by activity; on the Monitor page.
+- **Platinum plan** (`plans.yaml`, cost model, price page, applications and approval, payment catalogue). Applicants choose Free to Platinum on `/register`; admin approves on `/platform`.
+- **uniAI Quest free tier**: 6 quizzes a day on 4 topics (was 3 on 2).
+- Work split: Harsh keeps Backend & Admin Portal; the rest ships from this repository. 90 tests.

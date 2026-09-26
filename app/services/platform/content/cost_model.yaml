@@ -36,6 +36,14 @@ per_tenant:                                # what ONE tenant of each plan costs 
     llm:       {inr: 45000, note: "25,000 queries at the Silver mix"}
     gpu:       {inr: 0,     note: "0 by default; +₹25,000–1,50,000 when open-weight models are hosted (A10/L4 ~₹60–120/hour × hours)"}
     support:   {inr: 20000, note: "~20 hours/month incl. named engineer"}
+  platinum:
+    compute:   {inr: 35000, note: "dedicated 16 vCPU / 64 GB + private network, or customer cloud"}
+    database:  {inr: 10000, note: "managed Postgres HA"}
+    vector:    {inr: 12000, note: "dedicated vector DB, 500 GB"}
+    storage:   {inr: 8000,  note: "2 TB"}
+    llm:       {inr: 120000, note: "100,000 queries at the Silver mix with caching"}
+    gpu:       {inr: 0,     note: "billed to the customer when hosted models are required"}
+    support:   {inr: 45000, note: "~45 hours/month, named team"}
 variable:
   razorpay_pct: 2.36                        # 2% + 18% GST on the fee
   infra_markup_pct: 15                      # infrastructure is passed through at cost + 15%

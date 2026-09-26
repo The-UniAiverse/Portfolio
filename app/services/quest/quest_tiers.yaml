@@ -5,13 +5,13 @@ tiers:
     title: Free
     price_inr: 0
     price_usd: 0
-    quizzes_per_day: 3
-    topics: [ai-basics, genai]
+    quizzes_per_day: 6
+    topics: [ai-basics, genai, rag, prompt-engineering]
     max_difficulty: 1
     interview_challenges: false
     news: headlines_only
     mentor_hours_per_month: 0
-    features: ["3 quizzes a day on AI Basics and GenAI", "XP and level tracking", "Headlines from the curated AI news feed"]
+    features: ["6 quizzes a day on AI Basics, GenAI, RAG and Prompt Engineering", "XP and level tracking", "Headlines from the curated AI news feed"]
   bronze:
     title: Bronze
     price_inr: 499
