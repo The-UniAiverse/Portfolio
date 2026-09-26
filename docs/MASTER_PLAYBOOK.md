@@ -2,7 +2,7 @@
 
 *For Sarfi. Written 24 September 2026 against the v2.6.1 codebase on `features/sarfi`. This is the one document that answers "what do I do next?". Everything else in `docs/` is detail it points to. All rupee figures are estimates to verify at purchase unless marked "measured".*
 
-**Company facts:** GSTIN 27AADCU8825H1Z0 · GST ARN AA270926111040M · domain `uniaiverse.ai` owned until 2027 (never buy another) · repo `git@github.com:The-UniAiverse/ai-services.git` · API `https://api.uniaiverse.ai`.
+**Company facts:** mailboxes `support@uniaiverse.ai` (customers, grievance officer), `admin@uniaiverse.ai` (accounts, providers, GitHub), `ai@uniaiverse.ai` (company address, not final) · GSTIN 27AADCU8825H1Z0 · GST ARN AA270926111040M · domain `uniaiverse.ai` owned until 2027 (never buy another) · repo `git@github.com:The-UniAiverse/ai-services.git` · API `https://api.uniaiverse.ai`.
 
 ---
 
