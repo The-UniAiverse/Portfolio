@@ -1,0 +1,189 @@
+# uniAIverse — service tiers and indicative pricing.
+# USD list prices for a boutique consultancy (well below Big-4 rates, which run 3-8x these).
+# Edit here; the /api/pricing endpoints and website read this file.
+
+currency_note: >
+  USD, indicative, excluding taxes. INR ≈ USD × 84; EUR ≈ USD × 0.92.
+  Adjust with size_multiplier for scope; enterprise engagements are quoted after discovery.
+
+size_multiplier:
+  small: 1.0        # < 50 staff
+  medium: 1.4       # 50-250
+  large: 2.0        # 250-1000
+  enterprise: 3.0   # 1000+
+
+services:
+
+  readiness_audit:
+    title: AI Readiness Audit
+    tiers:
+      bronze:
+        price_usd: 1500
+        duration: 1 week
+        includes:
+          - Self-serve 30-question audit (this tool) completed with a facilitator
+          - Scored report across 6 dimensions with maturity level
+          - 2-hour debrief with prioritised 30/60/90-day actions
+      silver:
+        price_usd: 6000
+        duration: 2-3 weeks
+        includes:
+          - Everything in Bronze
+          - 6-8 stakeholder interviews (leadership, IT, ops, data)
+          - Data & systems inventory for the top 3 use cases
+          - Use-case backlog scored on value × feasibility × risk
+          - Written report + leadership presentation
+      gold:
+        price_usd: 18000
+        duration: 4-6 weeks
+        includes:
+          - Everything in Silver
+          - Hands-on data quality and access assessment (sample pipelines)
+          - Governance & risk classification of current AI usage
+          - 12-month roadmap with budget ranges and ROI model
+          - One proof-of-value prototype scoped and estimated
+      platinum:
+        price_usd: 45000
+        duration: 6-10 weeks
+        includes:
+          - Everything in Gold, across multiple business units / regions
+          - AI operating-model design (roles, RACI, funding model)
+          - Board-level deck and investment case
+          - Vendor / build-vs-buy evaluation
+          - 3-month advisory retainer after delivery (2 days/month)
+
+  training:
+    title: Training & Mentorship
+    tiers:
+      bronze:
+        price_usd: 2500
+        duration: 1 day (up to 20 people)
+        includes:
+          - One workshop from the catalogue (e.g. AI for All, AI for Sales)
+          - Printed handouts and glossary
+          - Recording and slides
+      silver:
+        price_usd: 7500
+        duration: 4 half-days (up to 15 people)
+        includes:
+          - One hands-on course (e.g. Build Your Own AI Bot / RAG for non-technical)
+          - Every participant leaves with a working artefact
+          - Test sheet, cost estimate and fault-finding cards
+          - 2 weeks of follow-up Q&A
+      gold:
+        price_usd: 20000
+        duration: 6-week cohort (up to 20 people, 2 tracks)
+        includes:
+          - Two learning paths in parallel (e.g. AI for Business + GenAI Engineer)
+          - Weekly live sessions + labs + graded capstone
+          - Mentorship office hours (2×/week)
+          - Certificate of completion
+      platinum:
+        price_usd: 60000
+        duration: 3-month AI Academy
+        includes:
+          - Custom curriculum across all 9 catalogue topics
+          - Train-the-trainer so the company can run it internally
+          - Executive briefings for leadership
+          - Skills assessment before and after
+          - Ongoing content updates for 12 months
+
+  strategy:
+    title: AI Transformation, Strategy & Roadmap
+    tiers:
+      bronze:
+        price_usd: 4000
+        duration: 2 weeks
+        includes:
+          - Opportunity discovery workshop
+          - Top-10 use-case backlog, ranked
+          - 90-day starter roadmap
+      silver:
+        price_usd: 15000
+        duration: 4-6 weeks
+        includes:
+          - Everything in Bronze
+          - Target operating model sketch
+          - 12-month roadmap with phases, owners, KPIs
+          - Budget and ROI model
+      gold:
+        price_usd: 40000
+        duration: 8-12 weeks
+        includes:
+          - Everything in Silver
+          - Change-management and adoption plan
+          - Architecture blueprint (data, GenAI, MLOps) with Harsh/Sahil
+          - Quarterly steering support for 6 months
+      platinum:
+        price_usd: 100000
+        duration: 3-6 months
+        includes:
+          - Enterprise transformation programme design
+          - Multi-BU portfolio management and PMO set-up
+          - Fractional Chief AI Officer (4 days/month, 6 months)
+
+  governance:
+    title: AI Governance, Safety & Compliance
+    tiers:
+      bronze:
+        price_usd: 3000
+        duration: 1-2 weeks
+        includes:
+          - Responsible-AI policy (one page) tailored to the company
+          - AI systems inventory
+          - Risk classification of current use cases
+      silver:
+        price_usd: 10000
+        duration: 3-4 weeks
+        includes:
+          - Everything in Bronze
+          - Pre-production review checklist and process
+          - Privacy / PII handling guidance for AI data flows
+          - Staff briefing session
+      gold:
+        price_usd: 25000
+        duration: 6-8 weeks
+        includes:
+          - Everything in Silver
+          - Framework alignment (NIST AI RMF / ISO 42001 / EU AI Act readiness)
+          - Bias, robustness and red-team testing of one production system
+          - Monitoring and incident-response playbook
+      platinum:
+        price_usd: 60000
+        duration: 3 months + retainer
+        includes:
+          - Full governance programme and internal audit
+          - Regulator / procurement-ready documentation pack
+          - Quarterly audits for 12 months
+
+  automation:
+    title: AI Automation & Workflow Optimisation
+    tiers:
+      bronze:
+        price_usd: 3500
+        duration: 2 weeks
+        includes:
+          - Workflow inventory of 5-10 processes with ROI model (this tool)
+          - Current-state / future-state map for the top 2
+          - Recommended approach per workflow (RPA / LLM / hybrid)
+      silver:
+        price_usd: 12000
+        duration: 4-6 weeks
+        includes:
+          - Everything in Bronze
+          - One automation built and deployed (with Harsh/Sahil)
+          - SOPs, training and handover
+      gold:
+        price_usd: 35000
+        duration: 8-12 weeks
+        includes:
+          - Three automations delivered end-to-end
+          - Monitoring dashboards and exception handling
+          - 3-month optimisation support
+      platinum:
+        price_usd: 90000
+        duration: 3-6 months
+        includes:
+          - Automation centre-of-excellence set-up
+          - Reusable automation platform and templates
+          - Ongoing pipeline of automations with quarterly reviews

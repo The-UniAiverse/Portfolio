@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Readiness Audit — uniAIverse</title>
+<style>
+  :root{--ink:#14213d;--paper:#fbfaf7;--line:#d9d6cf;--accent:#0f766e;--warn:#b45309;--muted:#5b6170}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;background:var(--paper);color:var(--ink);line-height:1.5}
+  header{padding:28px 20px 12px;max-width:820px;margin:0 auto}
+  h1{font-size:2rem;margin:0 0 4px;font-weight:600;letter-spacing:-.01em}
+  header p{margin:0;color:var(--muted)}
+  main{max-width:820px;margin:0 auto;padding:0 20px 80px}
+  fieldset{border:0;padding:0;margin:26px 0}
+  legend{font-size:1.15rem;font-weight:600;margin-bottom:6px;padding:0}
+  .q{padding:12px 0;border-top:1px solid var(--line)}
+  .q p{margin:0 0 8px}
+  .scale{display:flex;gap:6px;flex-wrap:wrap}
+  .scale label{flex:1 1 90px;border:1px solid var(--line);border-radius:6px;padding:8px;text-align:center;cursor:pointer;font-size:.85rem;background:#fff}
+  .scale input{display:none}
+  .scale input:checked+span{display:block;background:var(--ink);color:#fff;border-radius:4px;margin:-8px;padding:8px}
+  input[type=text],select{width:100%;padding:10px;border:1px solid var(--line);border-radius:6px;font:inherit;background:#fff}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:600px){.grid{grid-template-columns:1fr}}
+  button{font:inherit;font-size:1rem;background:var(--accent);color:#fff;border:0;border-radius:6px;padding:12px 20px;cursor:pointer}
+  button:disabled{opacity:.5}
+  .score{font-size:3.2rem;font-weight:600;line-height:1}
+  .dim{display:flex;align-items:center;gap:10px;padding:6px 0}
+  .dim .bar{flex:1;height:10px;background:#e9e6df;border-radius:5px;overflow:hidden}
+  .dim .bar i{display:block;height:100%;background:var(--accent)}
+  .dim .bar i.low{background:var(--warn)}
+  .rec{padding:10px 0;border-top:1px solid var(--line)}
+  .rec small{color:var(--muted)}
+  #result{display:none}
+  .links a{margin-right:14px;color:var(--accent)}
+  .hint{color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>AI Readiness Audit</h1>
+  <p>Thirty questions, six dimensions, a scored report with a 90-day plan. Answer honestly — the value is in the gaps.</p>
+</header>
+<main>
+  <form id="f">
+    <fieldset>
+      <legend>Your organisation</legend>
+      <div class="grid">
+        <input type="text" id="name" placeholder="Organisation name" required>
+        <input type="text" id="industry" placeholder="Industry">
+        <select id="size">
+          <option value="small">Under 50 people</option><option value="medium">50–250</option>
+          <option value="large">250–1,000</option><option value="enterprise">1,000+</option>
+        </select>
+        <input type="text" id="goal" placeholder="What does leadership want from AI? (one sentence)">
+      </div>
+    </fieldset>
+    <div id="questions"><p class="hint">Loading questions…</p></div>
+    <p><button type="submit" id="go">Score my readiness</button> <span class="hint" id="status"></span></p>
+    <p class="hint">Demo: <a href="#" id="fill">fill with sample answers</a></p>
+  </form>
+
+  <section id="result">
+    <h2>Result</h2>
+    <div class="score" id="overall"></div>
+    <p id="level"></p>
+    <div id="dims"></div>
+    <h3>Executive summary</h3>
+    <p id="narr"></p>
+    <h3>Prioritised actions</h3>
+    <div id="recs"></div>
+    <p class="links" id="links"></p>
+  </section>
+</main>
+<script>
+const API = location.origin + '/api/readiness_audit';
+let Q;
+async function load(){
+  Q = await (await fetch(API+'/questionnaire')).json();
+  const el = document.getElementById('questions'); el.innerHTML='';
+  for (const d of Q.dimensions){
+    const fs = document.createElement('fieldset');
+    fs.innerHTML = `<legend>${d.title}</legend>`;
+    for (const q of d.questions){
+      const div = document.createElement('div'); div.className='q';
+      div.innerHTML = `<p>${q.text}</p><div class="scale">` +
+        Object.entries(Q.scale).map(([v,l])=>`<label><input type="radio" name="${q.id}" value="${v}" required><span>${v} · ${l.split(' — ')[0].split(' / ')[0]}</span></label>`).join('') + '</div>';
+      fs.appendChild(div);
+    }
+    el.appendChild(fs);
+  }
+}
+document.getElementById('fill').onclick = async e=>{
+  e.preventDefault();
+  const s = await (await fetch(API+'/sample')).json();
+  document.getElementById('name').value = s.organisation.name;
+  document.getElementById('industry').value = s.organisation.industry;
+  document.getElementById('size').value = s.organisation.size;
+  document.getElementById('goal').value = s.organisation.top_goal||'';
+  for (const [k,v] of Object.entries(s.answers)) { const r=document.querySelector(`input[name=${k}][value="${v}"]`); if(r) r.checked=true; }
+};
+document.getElementById('f').onsubmit = async e=>{
+  e.preventDefault();
+  const answers={}; for (const d of Q.dimensions) for (const q of d.questions){ const r=document.querySelector(`input[name=${q.id}]:checked`); if(r) answers[q.id]=+r.value; }
+  const body={organisation:{name:name.value,industry:industry.value||'General',size:size.value,top_goal:goal.value||null},answers};
+  document.getElementById('go').disabled=true; document.getElementById('status').textContent='Scoring and writing your report…';
+  const r = await (await fetch(API+'/run',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})).json();
+  document.getElementById('go').disabled=false; document.getElementById('status').textContent='';
+  document.getElementById('overall').textContent = r.overall_score + ' / 100';
+  document.getElementById('level').innerHTML = `<b>${r.maturity_level}.</b> ${r.maturity_summary}`;
+  document.getElementById('dims').innerHTML = r.dimensions.map(d=>`<div class="dim"><span style="width:220px">${d.title}</span><div class="bar"><i class="${d.score<40?'low':''}" style="width:${d.score}%"></i></div><b>${d.score}</b></div>`).join('');
+  document.getElementById('narr').textContent = r.narrative;
+  document.getElementById('recs').innerHTML = r.recommendations.map(x=>`<div class="rec"><b>${x.priority}. ${x.action}</b><br><small>${x.horizon} · ${x.dimension} · ${x.owner_hint}</small><br>${x.why}</div>`).join('');
+  document.getElementById('links').innerHTML = `<a href="${r.report_pdf_url}">Download PDF report</a><a href="${r.report_markdown_url}">Markdown</a>`;
+  document.getElementById('result').style.display='block';
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+};
+load();
+</script>
+</body>
+</html>
