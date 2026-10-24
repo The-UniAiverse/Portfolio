@@ -1,0 +1,30 @@
+# ── Legacy standalone clones (kept locally during migration; safe to delete once verified)
+/UI/
+/Portfolio/
+
+# ── OS / editors
+.DS_Store
+*.swp
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# ── Secrets (never commit). Each app keeps its own .env.example template.
+.env
+.env.*
+!.env.example
+*.pem
+
+# ── Node (apps/web)
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+npm-debug.log*
+
+# ── Python (apps/api)
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+apps/api/outputs/
