@@ -103,7 +103,7 @@ document.getElementById('fill').onclick = async e=>{
 document.getElementById('f').onsubmit = async e=>{
   e.preventDefault();
   const answers={}; for (const d of Q.dimensions) for (const q of d.questions){ const r=document.querySelector(`input[name=${q.id}]:checked`); if(r) answers[q.id]=+r.value; }
-  const body={organisation:{name:name.value,industry:industry.value||'General',size:size.value,top_goal:goal.value||null},answers};
+  const body={organisation:{name:document.getElementById('name').value,industry:industry.value||'General',size:size.value,top_goal:goal.value||null},answers};
   document.getElementById('go').disabled=true; document.getElementById('status').textContent='Scoring and writing your report…';
   const r = await (await fetch(API+'/run',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})).json();
   document.getElementById('go').disabled=false; document.getElementById('status').textContent='';
