@@ -22,3 +22,4 @@ export async function requireAdmin(): Promise<NextResponse | null> {
   if (!(await getAdmin())) return NextResponse.json({ error: 'Not an admin' }, { status: 403 })
   return null
 }
+// trial commit 
