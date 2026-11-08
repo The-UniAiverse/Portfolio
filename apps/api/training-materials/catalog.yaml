@@ -1,0 +1,85 @@
+# uniAIverse training catalogue. Each course has a folder with COURSE.md (trainer plan) and optional files.
+# Add a course: add an entry + folder. Remove: delete the entry. The API and website read this file.
+
+courses:
+  - id: ai-for-all
+    title: AI for All
+    audience: Everyone — no technical background
+    hours: 4
+    format: half-day workshop
+    outcome: Explain how AI works, spot hallucinations, use AI tools safely and productively at work
+    folder: ai-for-all
+
+  - id: rag-nontechnical
+    title: Build Your Own AI Bot (RAG for non-technical people)
+    audience: Business users, analysts, project owners
+    hours: 22
+    format: 4 half-days + homework
+    outcome: A working bot answering from your own documents, a test sheet and a cost estimate
+    folder: rag
+    files: [rag_course_nontechnical.pdf, rag_cheatsheet.pdf]
+
+  - id: ai-engineer
+    title: AI Engineer
+    audience: Developers and data engineers moving into AI
+    hours: 32
+    format: 8 half-days
+    outcome: Ship an ML/AI feature end-to-end — data, model, API, monitoring
+    folder: ai-engineer
+
+  - id: genai-engineer
+    title: GenAI Engineer
+    audience: Developers building LLM apps
+    hours: 32
+    format: 8 half-days
+    outcome: Build a production RAG/agent system with evals, guardrails and cost controls
+    folder: genai-engineer
+    files: [../rag/rag_cheatsheet.pdf]
+
+  - id: ai-for-business
+    title: AI for Business Leaders
+    audience: Founders, CXOs, managers
+    hours: 8
+    format: 2 half-days
+    outcome: Prioritise use cases, read an AI proposal critically, own an AI initiative
+    folder: ai-for-business
+
+  - id: ai-for-sales
+    title: AI for Sales
+    audience: Sales teams and leaders
+    hours: 4
+    format: half-day workshop
+    outcome: Use AI for research, outreach, proposals and CRM hygiene without losing the human touch
+    folder: ai-for-sales
+
+  - id: ai-for-marketing
+    title: AI for Marketing
+    audience: Marketing teams
+    hours: 4
+    format: half-day workshop
+    outcome: An AI-assisted content and campaign workflow with brand and compliance guardrails
+    folder: ai-for-marketing
+
+  - id: llm-cost
+    title: Calculating LLM Cost & Estimation Strategies
+    audience: Product owners, engineers, finance partners
+    hours: 4
+    format: half-day workshop + calculator
+    outcome: Estimate and control the cost of any GenAI feature before and after launch
+    folder: llm-cost
+
+  - id: ai-lifecycle
+    title: AI Development & Deployment Lifecycle
+    audience: Engineers, PMs, delivery leads
+    hours: 8
+    format: 2 half-days
+    outcome: Run an AI project from discovery to monitored production with the right gates
+    folder: ai-lifecycle
+
+learning_paths:
+  business:      [ai-for-all, ai-for-business, llm-cost]
+  leadership:    [ai-for-business, llm-cost, ai-lifecycle]
+  sales:         [ai-for-all, ai-for-sales]
+  marketing:     [ai-for-all, ai-for-marketing]
+  engineer:      [ai-for-all, ai-engineer, ai-lifecycle, llm-cost]
+  genai_engineer: [ai-for-all, rag-nontechnical, genai-engineer, llm-cost, ai-lifecycle]
