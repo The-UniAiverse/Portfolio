@@ -26,6 +26,7 @@ SERVICES: list[ServiceSpec] = [
     ServiceSpec("governance",      "AI Governance, Safety & Compliance", "Sarfi", 3, "app.services.governance.router", "beta"),
     ServiceSpec("automation",      "AI Automation & Workflow Optimisation", "Sarfi", 4, "app.services.automation.router", "beta"),
     ServiceSpec("pricing",         "Service Tiers & Pricing", "Sarfi", 0, "app.services.pricing.router", "ready"),
+    ServiceSpec("jobs",            "AI Job Finder", "Harsh", 2, "app.services.jobs.router", "beta"),
 ]
 
 def load(enabled: list[str]):

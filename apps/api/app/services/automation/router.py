@@ -1,29 +1,30 @@
 """AI Automation & Workflow Optimisation — workflow inventory scoring + ROI calculator."""
 from __future__ import annotations
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
+from app.core.auth import require_user
 
 router = APIRouter()
 
 class Workflow(BaseModel):
-    name: str
-    volume_per_month: int = Field(..., ge=1)
-    minutes_per_item: float = Field(..., ge=0.1)
-    people_involved: int = Field(1, ge=1)
-    hourly_cost: float = Field(25.0, description="fully loaded cost per hour, in your currency")
+    name: str = Field(..., min_length=1, max_length=120)
+    volume_per_month: int = Field(..., ge=1, le=10_000_000)
+    minutes_per_item: float = Field(..., ge=0.1, le=10_000)
+    people_involved: int = Field(1, ge=1, le=100_000)
+    hourly_cost: float = Field(25.0, ge=0, le=100_000, description="fully loaded cost per hour, in your currency")
     error_rate_pct: float = Field(2.0, ge=0, le=100)
-    cost_per_error: float = Field(20.0, ge=0)
+    cost_per_error: float = Field(20.0, ge=0, le=10_000_000)
     automation_potential_pct: float = Field(60.0, ge=0, le=100, description="share of the work AI can absorb")
     rule_based: bool = Field(False, description="True if steps are deterministic (RPA/scripts fit)")
     needs_judgement: bool = Field(True, description="True if reading/writing/deciding is involved (LLM fit)")
 
 class ROIRequest(BaseModel):
-    currency: str = "USD"
-    build_cost: float = Field(15000, description="one-off implementation cost")
-    monthly_run_cost: float = Field(300, description="LLM/API + hosting per month")
-    workflows: list[Workflow]
+    currency: str = Field("USD", pattern=r"^[A-Z]{3}$")
+    build_cost: float = Field(15000, ge=0, le=1_000_000_000, description="one-off implementation cost")
+    monthly_run_cost: float = Field(300, ge=0, le=100_000_000, description="LLM/API + hosting per month")
+    workflows: list[Workflow] = Field(..., min_length=1, max_length=25)
 
-@router.post("/roi")
+@router.post("/roi", dependencies=[Depends(require_user)])
 def roi(req: ROIRequest):
     rows, total_saving = [], 0.0
     for w in req.workflows:

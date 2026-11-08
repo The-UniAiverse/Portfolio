@@ -32,7 +32,13 @@ def overall(dims: list[DimensionResult]) -> float:
     return round(sum(d.score * d.weight for d in answered) / w, 1)
 
 def band(q: dict, score: float) -> tuple[str, str]:
-    for b in q["maturity_bands"]:
-        if b["min"] <= score <= b["max"]:
-            return b["level"], b["summary"]
-    return "Unknown", ""
+    # Bands are authored with integer edges (0-20, 21-40, ...) while scores are floats
+    # (e.g. 20.5). A score belongs to the highest band whose `min` it has reached, so
+    # there are no gaps between bands. Integer scores map exactly as before.
+    chosen = None
+    for b in sorted(q["maturity_bands"], key=lambda b: b["min"]):
+        if score >= b["min"]:
+            chosen = b
+    if chosen is None or score > chosen["max"] + 1:
+        return "Unknown", ""
+    return chosen["level"], chosen["summary"]

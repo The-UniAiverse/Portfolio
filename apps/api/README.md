@@ -15,7 +15,9 @@ Everything works **without** an LLM key (rule-based, deterministic). Add a key a
 
 ## Run it
 ```bash
+# from apps/api/ (or use `make api-install` / `make api` from the repo root)
 cp .env.example .env            # optionally set LLM_PROVIDER + key
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload   # http://localhost:8000  (demo UI)  ·  /docs (Swagger)
 pytest -q                       # 9 tests
@@ -48,15 +50,14 @@ tests/            pytest end-to-end
 ```
 
 ## Website integration (Harsh)
-Deploy this API (Railway / Render / Fly / a VPS with `docker compose up`), set `CORS_ORIGINS` to the site URL, then in the Next.js site set `NEXT_PUBLIC_API_URL=https://api.uniaiverse.ai`. The service pages call:
+Deploy this API (Railway / Render / Fly / a VPS with `docker compose up`), set `CORS_ORIGINS` to the site URL, then in the Next.js site (`apps/web`) set `NEXT_PUBLIC_AI_SERVICES_API_URL=https://api.uniaiverse.ai`. The site calls:
 - `GET  /api/readiness_audit/questionnaire` → render form; `POST /api/readiness_audit/run` → show result + PDF link
 - `GET  /api/training/catalog` → training page; `GET /api/pricing/tiers` → pricing page
 - `POST /api/automation/roi`, `/api/strategy/roadmap`, `/api/governance/classify` → calculators
 
-## Push to GitHub (dev branch)
-```bash
-./scripts/push_to_github.sh git@github.com:<you>/uniaiverse-ai-services.git sarfi/dev
-```
+## Repository
+This backend now lives in the uniAIverse monorepo at `apps/api/` (the Next.js site is `apps/web/`).
+See the root `README.md` and `docs/`. `scripts/push_to_github.sh` is legacy and refuses to run inside the monorepo.
 
 ## Roadmap (next increments)
 - P1: lead capture (email → audit report), multi-language questionnaire, benchmark against industry averages

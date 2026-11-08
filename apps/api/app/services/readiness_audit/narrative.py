@@ -16,7 +16,10 @@ def _rules(r: AuditResult) -> str:
         "the slowest of strategy, data, technology, people, process and governance."
     )
 
-def build(r: AuditResult) -> tuple[str, str]:
+def build(r: AuditResult, use_ai: bool = True) -> tuple[str, str, str | None]:
+    """Return (text, source, notice). `use_ai` is resolved server-side by llm.use_ai(mode)."""
+    if not use_ai:
+        return _rules(r), "rules", None
     prompt = (
         "Write a 180-220 word executive summary of this AI readiness audit for the client's leadership. "
         "Structure: current state (1 para), what is holding them back (1 para), the 90-day plan (1 para). "
@@ -28,5 +31,5 @@ def build(r: AuditResult) -> tuple[str, str]:
     )
     text = llm.complete(prompt)
     if text:
-        return text.strip(), "llm"
-    return _rules(r), "rules"
+        return text.strip(), "llm", None
+    return _rules(r), "rules", llm.AI_FALLBACK_NOTICE

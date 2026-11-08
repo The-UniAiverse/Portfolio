@@ -1,13 +1,14 @@
 """AI Governance, Safety & Compliance — use-case risk classification + control checklist.
 Tiers mirror the EU AI Act structure (prohibited / high / limited / minimal). This is guidance, not legal advice."""
 from __future__ import annotations
-from fastapi import APIRouter
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends
+from pydantic import BaseModel, Field
+from app.core.auth import require_user
 
 router = APIRouter()
 
 class RiskInput(BaseModel):
-    use_case: str
+    use_case: str = Field(..., min_length=1, max_length=200)
     affects_individuals_rights: bool = False   # employment, credit, education, access to services
     uses_biometrics_or_surveillance: bool = False
     safety_critical: bool = False              # medical, transport, infrastructure
@@ -29,7 +30,7 @@ CONTROLS = {
                 "Periodic review (annual)"],
 }
 
-@router.post("/classify")
+@router.post("/classify", dependencies=[Depends(require_user)])
 def classify(x: RiskInput):
     if x.manipulative_or_social_scoring:
         tier = "prohibited"

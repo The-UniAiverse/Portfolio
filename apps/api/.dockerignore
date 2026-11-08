@@ -10,3 +10,7 @@ outputs/
 .git
 .github/
 tests/
+# Vendored project: the service needs its code, prompts and fonts, not its tests or media.
+vendor/ai-job-search/tests/
+vendor/ai-job-search/assets/
+vendor/ai-job-search/CHANGELOG.md
