@@ -68,7 +68,6 @@ Full list with comments is in `apps/web/.env.example`. The ones read by the code
 | Variable | Exposure | Purpose |
 |---|---|---|
 | `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` | server only | MySQL for admin/content route handlers (`lib/db`) |
-| `CALENDLY_API_KEY` | server only | Calendly route handlers |
 | `NEXT_PUBLIC_AI_SERVICES_API_URL` | **public** | Base URL of `apps/api`. Not a secret. |
 | `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GA_ID` | **public** | Site URL, analytics id |
 

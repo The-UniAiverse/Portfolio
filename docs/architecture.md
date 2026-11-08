@@ -5,7 +5,7 @@
 ```text
 Browser ──HTTPS──► apps/web (Next.js on Vercel)
    │                 ├─ pages / admin UI
-   │                 └─ route handlers /api/admin/*, /api/calendly/*, /api/contact-info  → MySQL, Calendly
+   │                 └─ route handlers /api/admin/*, /api/auth/*, /api/contact-info  → MySQL, MongoDB
    │
    └─────HTTPS──► apps/api (FastAPI, container host)
                      ├─ /api/readiness_audit, /api/training, /api/strategy,
@@ -85,7 +85,7 @@ The UI gate (`components/auth/SignInGate.tsx`) only improves the experience; enf
 
 | App | Target | Notes |
 |---|---|---|
-| web | Vercel | Set the project root directory to `apps/web`. Set the DB, Calendly and `NEXT_PUBLIC_AI_SERVICES_API_URL` env vars in Vercel. |
+| web | Vercel | Set the project root directory to `apps/web`. Set the DB, auth (MongoDB, Better Auth, Google) and `NEXT_PUBLIC_AI_SERVICES_API_URL` env vars in Vercel. Bookings use a Google Calendar appointment schedule link in `data/contact.data.ts` (no keys). |
 | api | Render / Railway / Fly.io / Cloud Run / VPS | Build from `apps/api/Dockerfile` with context `apps/api`. Set `CORS_ORIGINS` to the Vercel domain(s). Set `TRUST_PROXY_HEADERS=true` only behind the platform proxy. |
 
 Each app deploys on its own. Path-filtered CI means a web change does not rebuild the API and vice versa.

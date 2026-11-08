@@ -78,7 +78,9 @@ export const contactPageData = {
     { name: 'Instagram', icon: 'IG', href: '#' },
     { name: 'YouTube', icon: 'YT', href: '#' },
   ],
-  calendlyUrl: "https://calendly.com/tigerkiller007/30min",
-  calendlyEventTypeUri: "https://api.calendly.com/event_types/PLACEHOLDER",
+  // Google Calendar appointment schedule (Calendar → Create → Appointment schedule → Share).
+  // Use the "Website embed" link (calendar.google.com/calendar/appointments/schedules/...) to open it
+  // in a popup on the site; a calendar.app.google short link opens in a new tab. Empty hides the button.
+  bookingUrl: '',
 }
 

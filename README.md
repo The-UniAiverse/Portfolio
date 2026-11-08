@@ -12,7 +12,7 @@ The website talks to the API only over HTTP. AI provider keys, business logic an
 ```text
 uniaiverse/
 ├── apps/
-│   ├── web/        Next.js site, admin panel, Next route handlers (/api/admin, /api/calendly, …)
+│   ├── web/        Next.js site, admin panel, Next route handlers (/api/admin, /api/auth, …)
 │   └── api/        FastAPI services, training materials, pricing data, tests, Dockerfile
 ├── docs/
 │   ├── architecture.md
