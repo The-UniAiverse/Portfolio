@@ -8,6 +8,7 @@ from app.core import llm
 from app.services.jobs import cover_letter, matching, router as jobs_router, upstream
 
 c = TestClient(app)
+REAL_RUN_CLI = upstream._run_cli  # captured before the autouse fixture swaps in a fake
 
 JOB = {
     "id": "junior-python-developer-acme-ab12cd34", "title": "Junior Python Developer", "company": "Acme",
@@ -139,3 +140,28 @@ def test_edited_letter_renders_without_ai():
     r = c.post("/api/jobs/cover-letter/pdf", json={"profile": PROFILE, "letter": letter})
     assert r.status_code == 200 and r.json()["pages"] == 1
     assert c.get("/api/jobs/file/../../.env").status_code == 404
+
+
+def _fake_bun(tmp_path, monkeypatch, body: str):
+    """A stand-in for Bun that prints `body` and exits immediately, like the upstream CLI."""
+    out = tmp_path / "stdout.txt"
+    out.write_text(body)
+    bun = tmp_path / "bun"
+    bun.write_text(f"#!/bin/sh\ncat '{out}'\nexit 0\n")
+    bun.chmod(0o755)
+    monkeypatch.setenv("BUN_BIN", str(bun))
+
+
+def test_large_cli_output_is_read_in_full(tmp_path, monkeypatch):
+    # Regression: on Linux, piped stdout was cut at ~8 KB because the CLI exits right after writing.
+    big = {"meta": {"total": 1}, "results": [{"id": "x", "title": "t" * 200_000}]}
+    _fake_bun(tmp_path, monkeypatch, json.dumps(big))
+    assert REAL_RUN_CLI(["search"]) == big
+
+
+def test_invalid_cli_output_is_a_502_not_a_crash(tmp_path, monkeypatch):
+    from fastapi import HTTPException
+    _fake_bun(tmp_path, monkeypatch, '{"results": [{"title": "cut off')
+    with pytest.raises(HTTPException) as e:
+        REAL_RUN_CLI(["search"])
+    assert e.value.status_code == 502 and e.value.detail["code"] == "jobs_source_error"

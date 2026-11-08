@@ -32,4 +32,9 @@ jobs:
           for i in $(seq 1 30); do curl -sf localhost:8000/api/health && break; sleep 1; done
           curl -sf localhost:8000/api/health
           docker exec api bun --version
+          # Job search runs Bun inside the container (Linux). A crash here is a 500; if freehire.me itself is
+          # unreachable the API answers 502, which must not fail our build.
+          code=$(curl -s -o /tmp/jobs.json -w '%{http_code}' 'localhost:8000/api/jobs/search?q=python')
+          echo "job search: HTTP $code"; head -c 300 /tmp/jobs.json; echo
+          test "$code" != "500"
           docker logs api

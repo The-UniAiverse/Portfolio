@@ -14,6 +14,7 @@ import os
 import re
 import shutil
 import subprocess
+import tempfile
 import sys
 from pathlib import Path
 from fastapi import HTTPException
@@ -64,11 +65,17 @@ def _run_cli(args: list[str]) -> dict:
         raise HTTPException(503, {"code": "jobs_unavailable",
                                   "message": "Job search is not available on this server right now."})
     env = {k: v for k, v in os.environ.items() if k in {"PATH", "HOME", "FREEHIRE_API_URL", "TMPDIR", "LANG"}}
-    try:
-        proc = subprocess.run([bun, "run", str(FREEHIRE_CLI), *args], cwd=VENDOR, env=env,
-                              capture_output=True, text=True, timeout=CLI_TIMEOUT)
-    except subprocess.TimeoutExpired:
-        raise HTTPException(504, {"code": "jobs_timeout", "message": "The job source took too long to respond. Please try again."})
+    # stdout goes to a temp file, not a pipe: the CLI calls process.exit() right after writing, and on
+    # Linux Bun then drops whatever is still buffered for a pipe (output was cut at ~8 KB). File writes
+    # complete before exit.
+    with tempfile.TemporaryFile() as out:
+        try:
+            proc = subprocess.run([bun, "run", str(FREEHIRE_CLI), *args], cwd=VENDOR, env=env,
+                                  stdout=out, stderr=subprocess.PIPE, text=True, timeout=CLI_TIMEOUT)
+        except subprocess.TimeoutExpired:
+            raise HTTPException(504, {"code": "jobs_timeout", "message": "The job source took too long to respond. Please try again."})
+        out.seek(0)
+        stdout = out.read().decode("utf-8", errors="replace")
     if proc.returncode != 0:
         try:
             err = json.loads(proc.stderr.strip().splitlines()[-1])
@@ -78,7 +85,11 @@ def _run_cli(args: list[str]) -> dict:
             raise HTTPException(404, {"code": "job_not_found", "message": "This job is no longer available."})
         log.warning("freehire CLI failed (%s): %s", err.get("code", proc.returncode), (err.get("error") or "")[:200])
         raise HTTPException(502, {"code": "jobs_source_error", "message": "The job source is unavailable right now. Please try again shortly."})
-    return json.loads(proc.stdout)
+    try:
+        return json.loads(stdout)
+    except ValueError:
+        log.warning("freehire CLI returned invalid JSON (%d bytes)", len(stdout))
+        raise HTTPException(502, {"code": "jobs_source_error", "message": "The job source is unavailable right now. Please try again shortly."})
 
 
 def _arg(value: str) -> str:
