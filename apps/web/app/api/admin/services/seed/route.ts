@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server'
 import pool from '@/lib/db'
 import { serviceCategories } from '@/data/services.data'
+import { requireAdmin } from '@/lib/admin'
 
 export async function POST() {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     // Ensure table exists
     await pool.execute(`

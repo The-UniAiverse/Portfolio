@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import pool from '@/lib/db'
+import { requireAdmin } from '@/lib/admin'
 
 // PATCH - update contact status
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     const { id } = await params
     const body = await req.json()
@@ -22,6 +25,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
 // DELETE - delete a contact
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     const { id } = await params
     await pool.execute('DELETE FROM contacts WHERE id = ?', [id])

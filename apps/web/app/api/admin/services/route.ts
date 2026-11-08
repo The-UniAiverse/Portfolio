@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import pool from '@/lib/db'
 import { serviceCategories } from '@/data/services.data'
+import { requireAdmin } from '@/lib/admin'
 
 async function ensureTableAndSeed() {
   await pool.execute(`
@@ -65,6 +66,8 @@ async function ensureTableAndSeed() {
 
 // GET - fetch all services
 export async function GET(req: NextRequest) {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     await ensureTableAndSeed()
 
@@ -102,6 +105,8 @@ export async function GET(req: NextRequest) {
 
 // POST - create a new service
 export async function POST(req: NextRequest) {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     await ensureTableAndSeed()
 

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
+import { signOut } from '@/lib/auth-client'
 
 const navItems = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: (
@@ -36,8 +37,8 @@ export default function AdminSidebar() {
   const pathname = usePathname()
   const router = useRouter()
 
-  const handleLogout = () => {
-    localStorage.removeItem('admin_auth')
+  const handleLogout = async () => {
+    await signOut()
     router.push('/admin/login')
   }
 

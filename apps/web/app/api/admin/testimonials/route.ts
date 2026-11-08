@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import pool from '@/lib/db'
+import { requireAdmin } from '@/lib/admin'
 
 async function ensureTable() {
   await pool.execute(`
@@ -19,6 +20,8 @@ async function ensureTable() {
 
 // GET - fetch all testimonials
 export async function GET() {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     await ensureTable()
     const [rows] = await pool.execute('SELECT * FROM testimonials ORDER BY created_at DESC')
@@ -31,6 +34,8 @@ export async function GET() {
 
 // POST - create a testimonial
 export async function POST(req: NextRequest) {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     await ensureTable()
     const body = await req.json()

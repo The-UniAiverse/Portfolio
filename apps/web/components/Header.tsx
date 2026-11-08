@@ -4,6 +4,7 @@ import { useState, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { navLinks, serviceLinks } from '@/data/navigation.data'
+import AuthButton from '@/components/auth/AuthButton'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -127,6 +128,8 @@ const Header = () => {
 
 
 
+            <AuthButton />
+
             <Link
               href="/#contact"
               className="bg-primary hover:bg-primary-light text-secondary px-6 py-2 rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-primary-light/50"
@@ -235,6 +238,8 @@ const Header = () => {
                   </div>
                 )}
               </div>
+
+              <AuthButton mobile onNavigate={() => setIsMenuOpen(false)} />
 
               <Link
                 href="/#contact"

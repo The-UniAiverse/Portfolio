@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import ServiceHero from '@/components/ServiceHero'
 import Footer from '@/components/Footer'
 import Contact from '@/components/Contact'
+import TrainingCatalog from '@/components/tools/TrainingCatalog'
 
 // ─── Programme Data ──────────────────────────────────────────────────────────
 
@@ -715,6 +716,9 @@ export default function TrainingPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Course Catalogue (AI Services API) ───────────────────────── */}
+      <TrainingCatalog />
 
       {/* ── Why Our Training Works ───────────────────────────────────── */}
       <section style={{ background: 'linear-gradient(135deg, #78350f 0%, #b45309 45%, #d97706 100%)' }} className="py-20">

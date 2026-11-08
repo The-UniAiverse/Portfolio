@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import pool from '@/lib/db'
+import { requireAdmin } from '@/lib/admin'
 
 async function ensureTable() {
   await pool.execute(`
@@ -22,6 +23,8 @@ async function ensureTable() {
 
 // GET - fetch all blog posts
 export async function GET(req: NextRequest) {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     await ensureTable()
     const { searchParams } = new URL(req.url)
@@ -57,6 +60,8 @@ export async function GET(req: NextRequest) {
 
 // POST - create a new blog post
 export async function POST(req: NextRequest) {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     await ensureTable()
     const body = await req.json()

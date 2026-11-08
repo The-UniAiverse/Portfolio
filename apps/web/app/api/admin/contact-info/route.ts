@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import pool from '@/lib/db'
 import { contactInfo } from '@/data/contact.data'
+import { requireAdmin } from '@/lib/admin'
 
 async function ensureTableAndSeed() {
   await pool.execute(`
@@ -31,6 +32,8 @@ async function ensureTableAndSeed() {
 
 // GET all contact info
 export async function GET() {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     await ensureTableAndSeed()
     const [rows] = await pool.execute('SELECT * FROM contact_info ORDER BY sort_order ASC, id ASC')
@@ -43,6 +46,8 @@ export async function GET() {
 
 // POST - add a new contact info entry
 export async function POST(req: NextRequest) {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     await ensureTableAndSeed()
     const body = await req.json()

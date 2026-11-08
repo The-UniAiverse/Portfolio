@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import pool from '@/lib/db'
+import { requireAdmin } from '@/lib/admin'
 
 async function ensureTable() {
   await pool.execute(`
@@ -19,6 +20,8 @@ async function ensureTable() {
 
 // GET - fetch all contacts
 export async function GET(req: NextRequest) {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     await ensureTable()
     const { searchParams } = new URL(req.url)

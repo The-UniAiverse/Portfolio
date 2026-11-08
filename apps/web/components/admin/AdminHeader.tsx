@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSession } from '@/lib/auth-client'
 
 interface AdminHeaderProps {
   title: string
@@ -8,18 +9,11 @@ interface AdminHeaderProps {
 }
 
 export default function AdminHeader({ title, subtitle }: AdminHeaderProps) {
-  const [adminUser, setAdminUser] = useState('Admin')
+  const { data } = useSession()
+  const adminUser = data?.user?.name || 'Admin'
   const [time, setTime] = useState('')
 
   useEffect(() => {
-    const auth = localStorage.getItem('admin_auth')
-    if (auth) {
-      try {
-        const parsed = JSON.parse(auth)
-        setAdminUser(parsed.name || 'Admin')
-      } catch {}
-    }
-
     const updateTime = () => {
       setTime(new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }))
     }

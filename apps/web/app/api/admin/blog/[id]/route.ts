@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import pool from '@/lib/db'
+import { requireAdmin } from '@/lib/admin'
 
 // PUT - update a blog post
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     const { id } = await params
     const body = await req.json()
@@ -28,6 +31,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
 // PATCH - update only status
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     const { id } = await params
     const body = await req.json()
@@ -43,6 +48,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
 // DELETE - delete a blog post
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     const { id } = await params
     await pool.execute('DELETE FROM blog_posts WHERE id = ?', [id])
