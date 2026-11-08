@@ -1,0 +1,37 @@
+# Render Blueprint for the AI Services API (apps/api). Render dashboard → New → Blueprint → this repo.
+# Secrets are marked `sync: false`: Render asks for them on first deploy; they are never stored here.
+# The website (apps/web) deploys separately on Vercel.
+services:
+  - type: web
+    name: uniaiverse-api
+    runtime: docker
+    rootDir: apps/api
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: starter
+    healthCheckPath: /api/health
+    autoDeploy: true
+    buildFilter:
+      paths: ["apps/api/**"]
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: TRUST_PROXY_HEADERS
+        value: "true"            # Render's proxy sets X-Forwarded-For; needed for per-user rate limits
+      - key: LLM_PROVIDER
+        value: gemini
+      - key: LLM_FALLBACK_PROVIDER
+        value: deepseek
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      # The website's URL (Vercel). Set these once the website is deployed; until then AI tools return 401.
+      - key: CORS_ORIGINS
+        sync: false              # e.g. https://uniaiverse.vercel.app,https://uniaiverse.ai
+      - key: AUTH_JWKS_URL
+        sync: false              # https://<website>/api/auth/jwks
+      - key: AUTH_ISSUER
+        sync: false              # https://<website>  (same as the website's BETTER_AUTH_URL)
+      - key: AUTH_AUDIENCE
+        sync: false              # https://<website>

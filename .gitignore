@@ -1,6 +1,8 @@
 # ── Legacy standalone clones (kept locally during migration; safe to delete once verified)
 /UI/
 /Portfolio/
+# Upstream clone of ai-job-search; the platform uses the vendored copy in apps/api/vendor/.
+/JobSearchFeature/
 
 # ── OS / editors
 .DS_Store
