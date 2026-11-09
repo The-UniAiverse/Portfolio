@@ -78,9 +78,5 @@ export const contactPageData = {
     { name: 'Instagram', icon: 'IG', href: '#' },
     { name: 'YouTube', icon: 'YT', href: '#' },
   ],
-  // Google Calendar appointment schedule (Calendar → Create → Appointment schedule → Share).
-  // Use the "Website embed" link (calendar.google.com/calendar/appointments/schedules/...) to open it
-  // in a popup on the site; a calendar.app.google short link opens in a new tab. Empty hides the button.
-  bookingUrl: '',
 }
 

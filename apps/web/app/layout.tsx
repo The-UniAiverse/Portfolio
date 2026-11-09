@@ -25,7 +25,6 @@ export const metadata: Metadata = {
   },
 }
 
-import BookingButton from '@/components/BookingButton'
 import OrbiBot from '@/components/OrbiBot'
 
 export default function RootLayout({
@@ -37,7 +36,6 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
       <body>
         {children}
-        <BookingButton />
         <OrbiBot />
         {/* Tawk.to chat widget - Commented out as HubSpot chat is being used */}
         {/* <Script
