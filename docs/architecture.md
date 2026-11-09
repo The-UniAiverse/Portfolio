@@ -28,7 +28,8 @@ the app folders, and CI runs one workflow per app, filtered by path.
 - **apps/web** owns presentation, marketing content, the admin panel and its MySQL-backed route handlers.
   It calls apps/api from the browser over HTTP using `NEXT_PUBLIC_AI_SERVICES_API_URL` (client: `apps/web/lib/ai-services.ts`).
   Pages backed by the API: `/tools`, `/tools/readiness-audit`, `/tools/roadmap`, `/tools/governance`,
-  `/tools/automation-roi`, `/pricing`, and the course catalogue section of `/services/training`.
+  `/tools/automation-roi` and `/pricing`. The Training & Mentorship page is static content in `apps/web/data/training.data.ts`;
+  the API's `/api/training` catalogue is not used by the website.
 
 ## AI Job Finder (third-party code)
 

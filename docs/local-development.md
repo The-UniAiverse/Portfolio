@@ -11,7 +11,7 @@ Prerequisites: Node.js 22+ and npm, Python 3.12+, optionally Docker, and MySQL i
 
 The API allows browser calls from the origins in `CORS_ORIGINS` (default `http://localhost:3000`).
 The web app reads the API base URL from `NEXT_PUBLIC_AI_SERVICES_API_URL` (default `http://localhost:8000`).
-The AI tools (`/tools/*`), `/pricing` and the course catalogue on `/services/training` call it from the browser.
+The AI tools (`/tools/*`) and `/pricing` call it from the browser. `/services/training` is static (`apps/web/data/training.data.ts`).
 
 ## API (`apps/api`)
 

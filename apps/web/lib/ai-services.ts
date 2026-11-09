@@ -260,34 +260,6 @@ export const getQuote = (service: string, tier: string, companySize: CompanySize
     `/api/pricing/quote?${new URLSearchParams({ service, tier, company_size: companySize })}`
   )
 
-// ─── Training ────────────────────────────────────────────────────────────────
-
-export interface Course {
-  id: string
-  title: string
-  audience: string
-  hours: number
-  format: string
-  outcome: string
-  folder: string
-  files?: string[]
-}
-
-export interface Catalog {
-  courses: Course[]
-  learning_paths: Record<string, string[]>
-}
-
-export const getCatalog = () => get<Catalog>('/api/training/catalog')
-export const getCourse = (id: string) =>
-  get<Course & { outline_markdown: string | null }>(`/api/training/course/${encodeURIComponent(id)}`)
-export const recommendPath = (audience: string, goal: string) =>
-  post<{ audience: string; goal: string; path: string[] }>(
-    `/api/training/recommend?${new URLSearchParams({ audience, goal })}`
-  )
-export const courseFileUrl = (id: string, filename: string) =>
-  apiUrl(`/api/training/course/${encodeURIComponent(id)}/file/${encodeURIComponent(filename)}`)
-
 // ─── AI Job Finder (jobs via freehire.me, through apps/api) ──────────────────
 
 export type JobLevel = 'any' | 'entry' | 'intern' | 'junior' | 'mid' | 'senior' | 'lead' | 'executive'

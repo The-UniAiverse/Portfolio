@@ -24,14 +24,14 @@ export interface ServiceCategory {
 export const coreServices: Service[] = [
     {
     title: 'Training and Mentorship',
-    description: 'Turn AI from a buzzword into a clear plan. We assess your business processes, data, and opportunities to create a tailor-made, actionable AI roadmap.',
+    description: 'Mentor-led programs in AI Engineering, Generative AI, Agentic AI, ML & Deep Learning, Full Stack and DSA, plus AI for Everyone and tailored corporate AI training.',
     icon: '🥇',
     whatsIncluded: [
-        'AI readiness assessment',
-        'Opportunity discovery workshop',
-        'Tech & tools recommendation',
-        '90-day implementation roadmap',
-        'Cost & timeline estimate'
+        'Six engineering tracks + the flagship AI Mastery Program',
+        'AI for Everyone for business teams',
+        'Corporate AI training, tailored to your company',
+        '1:1 mentorship, code reviews and mock interviews',
+        'Project-based learning with a certificate'
     ],
     idealFor: 'Students, working professionals, founders, CXOs, and teams building AI capability.'
 },
