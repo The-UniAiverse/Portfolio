@@ -1,9 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { signOut } from '@/lib/auth-client'
+import BrandLogo from '@/components/BrandLogo'
 
 const navItems = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: (
@@ -46,12 +46,7 @@ export default function AdminSidebar() {
     <aside className="fixed left-0 top-0 h-full w-64 bg-[#0F172A] border-r border-blue-900/40 flex flex-col z-40">
       {/* Logo */}
       <div className="flex items-center space-x-3 px-6 py-5 border-b border-blue-900/40">
-        <Image src="/logo.png" alt="uniAiverse" width={36} height={36} className="object-contain" />
-        <div className="text-xl font-bold">
-          <span className="text-white">uni</span>
-          <span className="text-blue-400">Ai</span>
-          <span className="text-white">verse</span>
-        </div>
+        <BrandLogo size={38} textClassName="text-xl" />
       </div>
 
       {/* Admin Badge */}
