@@ -20,8 +20,8 @@ export const metadata: Metadata = {
   description: 'Expert AI consulting, solution design, development, and long-term support. From Generative AI and NLP to MLOps, Data Science, and Computer Vision.',
   keywords: 'AI consulting, Machine Learning, Generative AI, NLP, MLOps, Data Science, Computer Vision',
   icons: {
-    icon: '/logo.png',
-    apple: '/logo.png',
+    icon: '/icon.svg',
+    apple: '/apple-icon.png',
   },
 }
 

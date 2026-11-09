@@ -2,9 +2,9 @@
 
 import { useState, useRef } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { navLinks, serviceLinks } from '@/data/navigation.data'
 import AuthButton from '@/components/auth/AuthButton'
+import BrandLogo from '@/components/BrandLogo'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -29,19 +29,8 @@ const Header = () => {
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3">
-            <Image
-              src="/logo.png"
-              alt="uniAiverse Logo"
-              width={40}
-              height={40}
-              className="object-contain"
-            />
-            <div className="text-2xl font-bold">
-              <span className="text-secondary">uni</span>
-              <span className="text-primary-light">Ai</span>
-              <span className="text-secondary">verse</span>
-            </div>
+          <Link href="/" aria-label="uniAiverse home" className="flex items-center">
+            <BrandLogo size={48} />
           </Link>
 
           {/* Desktop Navigation */}

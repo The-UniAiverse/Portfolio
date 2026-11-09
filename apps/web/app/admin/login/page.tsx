@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import ProviderButtons from '@/components/auth/ProviderButtons'
 import { enabledProviders } from '@/lib/auth'
+import BrandLogo from '@/components/BrandLogo'
 
 export const metadata: Metadata = { title: 'Admin sign-in - uniAiverse' }
 
@@ -18,12 +18,7 @@ export default function AdminLogin() {
         <div className="bg-[#0F172A] border border-blue-900/40 rounded-3xl p-8 shadow-2xl shadow-blue-950/50">
           <div className="flex flex-col items-center mb-8">
             <div className="flex items-center space-x-3 mb-3">
-              <Image src="/logo.png" alt="uniAiverse" width={44} height={44} className="object-contain" />
-              <div className="text-2xl font-bold">
-                <span className="text-white">uni</span>
-                <span className="text-blue-400">Ai</span>
-                <span className="text-white">verse</span>
-              </div>
+              <BrandLogo size={52} />
             </div>
             <span className="text-xs font-semibold text-blue-500 uppercase tracking-widest bg-blue-900/30 px-3 py-1 rounded-full border border-blue-800/40">
               Admin Portal

@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { footerServices, footerCompany, footerSocialLinks, footerAddress } from '@/data/footer.data'
+import BrandLogo from '@/components/BrandLogo'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
@@ -12,18 +12,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3 mb-2">
-              <Image 
-                src="/logo.png" 
-                alt="uniAiverse Logo" 
-                width={40} 
-                height={40}
-                className="object-contain"
-              />
-              <div className="text-2xl font-bold">
-                <span className="text-secondary">uni</span>
-                <span className="text-primary-light">Ai</span>
-                <span className="text-secondary">verse</span>
-              </div>
+              <BrandLogo size={44} />
             </div>
             <p className="text-secondary/80 text-sm leading-relaxed">
               {footerAddress.line1}<br />
@@ -100,13 +89,7 @@ const Footer = () => {
         <div className="mt-12 pt-8 border-t border-primary-light/20">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="flex items-center space-x-2">
-              <Image 
-                src="/logo.png" 
-                alt="uniAiverse Logo" 
-                width={24} 
-                height={24}
-                className="object-contain"
-              />
+              <BrandLogo size={22} wordmark={false} animated={false} />
               <p className="text-secondary/70 text-sm">
                 © {currentYear} uniAiverse. All rights reserved.
               </p>
