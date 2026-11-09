@@ -36,6 +36,7 @@ const Contact = () => {
     service: '',
     message: '',
   })
+  const [website, setWebsite] = useState('') // honeypot: hidden from people, filled by most bots
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
@@ -56,18 +57,18 @@ const Contact = () => {
     setSubmitting(true)
     setError('')
     try {
-      const res = await fetch('/api/admin/contacts', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, website }),
       })
-      const data = await res.json()
-      if (data.success) {
+      const data = await res.json().catch(() => null)
+      if (data?.success) {
         setSubmitted(true)
         setFormData({ name: '', email: '', phone: '', company: '', service: '', message: '' })
         setTimeout(() => setSubmitted(false), 5000)
       } else {
-        setError('Something went wrong. Please try again.')
+        setError(data?.error || 'Something went wrong. Please try again.')
       }
     } catch {
       setError('Network error. Please try again.')
@@ -99,6 +100,12 @@ const Contact = () => {
               Send us a Message
             </h3>
             <form onSubmit={handleSubmit} className="space-y-6">
+              <div aria-hidden="true" style={{ position: 'absolute', left: '-10000px', width: 1, height: 1, overflow: 'hidden' }}>
+                <label>
+                  Website
+                  <input type="text" name="website" tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
+                </label>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label

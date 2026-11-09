@@ -6,10 +6,7 @@ import { betterAuth } from 'better-auth'
 import { mongodbAdapter } from 'better-auth/adapters/mongodb'
 import { nextCookies } from 'better-auth/next-js'
 import { jwt } from 'better-auth/plugins'
-import { MongoClient } from 'mongodb'
-
-// The client connects lazily on first use, so builds without MONGODB_URI still succeed.
-const client = new MongoClient(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017')
+import { mongoClient, mongoDb } from './mongo'
 
 const socialProviders = {
   ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
@@ -23,8 +20,8 @@ const socialProviders = {
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
   secret: process.env.BETTER_AUTH_SECRET,
-  database: mongodbAdapter(client.db(process.env.MONGODB_DB || 'uniaiverse'), {
-    client,
+  database: mongodbAdapter(mongoDb(), {
+    client: mongoClient,
     // Atlas supports transactions; a standalone local mongod does not (set MONGODB_TRANSACTIONS=false).
     transaction: process.env.MONGODB_TRANSACTIONS !== 'false',
   }),

@@ -49,6 +49,14 @@ The upstream connector sends no API key today; using a plan key needs a small up
 Candidate profiles are not stored; generated PDFs are kept in `outputs/jobs/` under random ids.
 Saved profiles and saved jobs per account are a next step (accounts already exist, see Sign-in).
 
+## Contact form
+
+The website contact form posts to `POST /api/contact` (public, `apps/web/app/api/contact/route.ts`), which
+validates the fields, drops honeypot-filled (bot) submissions, limits each sender to 5 messages per 10
+minutes and saves to MongoDB collection `contact_messages` (`apps/web/lib/contacts.ts`). Admins read and
+update them in `/admin/contacts` through `/api/admin/contacts` (admin session required). Older messages
+that were saved in the MySQL `contacts` table are not migrated.
+
 ## Sign-in for AI tools
 
 AI tools require a signed-in user; marketing pages, `/pricing`, the training catalogue, `/tools` and
@@ -85,7 +93,7 @@ The UI gate (`components/auth/SignInGate.tsx`) only improves the experience; enf
 
 | App | Target | Notes |
 |---|---|---|
-| web | Vercel | Set the project root directory to `apps/web`. Set the DB, auth (MongoDB, Better Auth, Google) and `NEXT_PUBLIC_AI_SERVICES_API_URL` env vars in Vercel. Bookings use a Google Calendar appointment schedule link in `data/contact.data.ts` (no keys). |
+| web | Vercel | Set the project root directory to `apps/web`. Set the DB, auth (MongoDB, Better Auth, Google) and `NEXT_PUBLIC_AI_SERVICES_API_URL` env vars in Vercel. |
 | api | Render / Railway / Fly.io / Cloud Run / VPS | Build from `apps/api/Dockerfile` with context `apps/api`. Set `CORS_ORIGINS` to the Vercel domain(s). Set `TRUST_PROXY_HEADERS=true` only behind the platform proxy. |
 
 Each app deploys on its own. Path-filtered CI means a web change does not rebuild the API and vice versa.
