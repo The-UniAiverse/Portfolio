@@ -8,9 +8,10 @@ import AuthGuard from '@/components/admin/AuthGuard'
 // ─── Inquiries ────────────────────────────────────────────────────────────────
 
 interface Inquiry {
-  id: number
+  id: string
   name: string
   email: string
+  phone?: string
   company: string
   service: string
   message: string
@@ -109,7 +110,7 @@ export default function ContactsAdmin() {
   }, [activeTab, fetchContactInfo])
 
   // ── Inquiry actions ──
-  const updateStatus = async (id: number, status: Inquiry['status']) => {
+  const updateStatus = async (id: string, status: Inquiry['status']) => {
     await fetch(`/api/admin/contacts/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -420,6 +421,7 @@ export default function ContactsAdmin() {
               <div>
                 <p className="text-white font-semibold">{viewItem.name}</p>
                 <p className="text-slate-400 text-sm">{viewItem.email}</p>
+                {viewItem.phone && <p className="text-slate-400 text-sm">{viewItem.phone}</p>}
                 <p className="text-slate-500 text-xs">{viewItem.company}</p>
               </div>
             </div>

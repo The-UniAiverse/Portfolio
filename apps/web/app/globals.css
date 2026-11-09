@@ -91,9 +91,3 @@ html {
     animation-delay: 4s;
   }
 }
-
-/* Move Calendly badge to the left side */
-.calendly-badge-widget {
-  right: auto !important;
-  left: 20px !important;
-}
