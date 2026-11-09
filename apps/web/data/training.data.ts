@@ -306,15 +306,83 @@ export const programs: Program[] = [
 
 export const programById = (id: string) => programs.find((p) => p.id === id)
 
-/** "Find your path": audience → recommended programs, in order. */
-export const paths: { id: string; label: string; icon: string; summary: string; programs: string[] }[] = [
-  { id: 'student', label: 'Student or fresher', icon: '🎓', summary: 'Build strong foundations, then specialise in AI.', programs: ['dsa', 'full-stack', 'ml-dl'] },
-  { id: 'developer', label: 'Software developer', icon: '👩‍💻', summary: 'Move from building apps to building AI systems.', programs: ['ai-engineering', 'generative-ai', 'agentic-ai'] },
-  { id: 'data', label: 'Data / ML practitioner', icon: '📊', summary: 'Go from models to production GenAI and agents.', programs: ['ml-dl', 'generative-ai', 'agentic-ai'] },
-  { id: 'switcher', label: 'Career switcher', icon: '🔁', summary: 'One structured path from zero to job-ready.', programs: ['ai-mastery'] },
-  { id: 'business', label: 'Founder or business team', icon: '💼', summary: 'Use AI to run and grow the business.', programs: ['ai-for-everyone'] },
-  { id: 'enterprise', label: 'Company or L&D team', icon: '🏢', summary: 'Upskill teams with a tailored program.', programs: ['corporate', 'ai-for-everyone'] },
+/* ── Course finder ───────────────────────────────────────────────────────────
+   Three questions; each answer adds points to programs. Highest score wins. */
+
+export interface FinderOption {
+  id: string
+  label: string
+  icon: string
+  scores: Partial<Record<string, number>>
+  reason?: string
+}
+
+export interface FinderQuestion {
+  id: string
+  question: string
+  options: FinderOption[]
+}
+
+export const finderQuestions: FinderQuestion[] = [
+  {
+    id: 'role',
+    question: 'What describes you best?',
+    options: [
+      { id: 'student', label: 'Student or fresher', icon: '🎓', scores: { dsa: 2, 'full-stack': 2, 'ml-dl': 2, 'ai-mastery': 3 } },
+      { id: 'developer', label: 'Software developer', icon: '👩‍💻', scores: { 'ai-engineering': 3, 'generative-ai': 3, 'agentic-ai': 2, dsa: 1 } },
+      { id: 'data', label: 'Data or ML practitioner', icon: '📊', scores: { 'ml-dl': 2, 'ai-engineering': 3, 'generative-ai': 3, 'agentic-ai': 2 } },
+      { id: 'switcher', label: 'Switching careers into tech', icon: '🔁', scores: { 'ai-mastery': 4, 'full-stack': 2, 'ai-for-everyone': 1 } },
+      { id: 'business', label: 'Founder, manager or business team', icon: '💼', scores: { 'ai-for-everyone': 5, corporate: 2 } },
+      { id: 'company', label: 'Company or L&D team', icon: '🏢', scores: { corporate: 6, 'ai-for-everyone': 2 } },
+    ],
+  },
+  {
+    id: 'goal',
+    question: 'What do you want to achieve?',
+    options: [
+      { id: 'job', label: 'Crack interviews and land a tech job', icon: '🎯', scores: { dsa: 3, 'full-stack': 2, 'ai-mastery': 3 }, reason: 'it builds the problem-solving and portfolio that interviews test' },
+      { id: 'web', label: 'Build and ship web products', icon: '💻', scores: { 'full-stack': 5 }, reason: 'it takes you from web fundamentals to deployed products' },
+      { id: 'ml', label: 'Build machine learning models', icon: '📈', scores: { 'ml-dl': 5, 'ai-engineering': 2 }, reason: 'it covers the maths, algorithms and deep learning you need' },
+      { id: 'genai', label: 'Build apps with LLMs and GenAI', icon: '✨', scores: { 'generative-ai': 5, 'ai-engineering': 2 }, reason: 'it goes deep on prompting, RAG, fine-tuning and evaluation' },
+      { id: 'agents', label: 'Build AI agents that do real work', icon: '🧠', scores: { 'agentic-ai': 5, 'generative-ai': 2 }, reason: 'it is built around tool use, planning, MCP and multi-agent systems' },
+      { id: 'everything', label: 'Become a complete AI engineer', icon: '🚀', scores: { 'ai-mastery': 6 }, reason: 'it combines every engineering track into one guided path' },
+      { id: 'business', label: 'Use AI in my business', icon: '🌍', scores: { 'ai-for-everyone': 5 }, reason: 'it shows how to apply AI across your operations without coding' },
+      { id: 'team', label: 'Train my team or company', icon: '🏢', scores: { corporate: 6 }, reason: 'it is tailored to your organisation, tools and goals' },
+    ],
+  },
+  {
+    id: 'coding',
+    question: 'How comfortable are you with coding?',
+    options: [
+      { id: 'none', label: 'I don’t code', icon: '🙂', scores: { 'ai-for-everyone': 3, corporate: 1, 'ai-mastery': 1, 'agentic-ai': -4, 'ai-engineering': -3, 'generative-ai': -2, dsa: -2 } },
+      { id: 'beginner', label: 'Just getting started', icon: '🌱', scores: { dsa: 1, 'full-stack': 2, 'ml-dl': 1, 'ai-mastery': 2, 'agentic-ai': -3, 'ai-engineering': -2 } },
+      { id: 'comfortable', label: 'Comfortable with one language', icon: '👍', scores: { 'generative-ai': 1, 'ai-engineering': 1, 'ml-dl': 1, dsa: 1 } },
+      { id: 'advanced', label: 'I build software professionally', icon: '⚡', scores: { 'agentic-ai': 2, 'ai-engineering': 2, 'generative-ai': 1, 'full-stack': -1 } },
+    ],
+  },
 ]
+
+export interface FinderResult {
+  best: Program
+  reason: string
+  alternatives: Program[]
+}
+
+export function recommend(answers: Record<string, string>): FinderResult {
+  const score: Record<string, number> = Object.fromEntries(programs.map((p) => [p.id, 0]))
+  for (const q of finderQuestions) {
+    const opt = q.options.find((o) => o.id === answers[q.id])
+    for (const [id, pts] of Object.entries(opt?.scores ?? {})) score[id] += pts ?? 0
+  }
+  // Ties keep catalogue order, so results are stable.
+  const ranked = [...programs].sort((a, b) => score[b.id] - score[a.id])
+  const best = ranked[0]
+  const goal = finderQuestions[1].options.find((o) => o.id === answers.goal)
+  // Use the goal's explanation only when the goal's main program won; otherwise describe the winner.
+  const goalTop = goal && Object.entries(goal.scores).sort((x, y) => (y[1] ?? 0) - (x[1] ?? 0))[0]?.[0]
+  const reason = goal?.reason && goalTop === best.id ? goal.reason : `it fits where you are today: ${best.tagline.charAt(0).toLowerCase()}${best.tagline.slice(1)}`
+  return { best, reason, alternatives: ranked.slice(1, 3) }
+}
 
 export const mentorship = [
   { icon: '🧑‍🏫', title: '1:1 mentorship', description: 'A dedicated mentor who works in industry reviews your progress, unblocks you and adapts the plan to your goals.' },
