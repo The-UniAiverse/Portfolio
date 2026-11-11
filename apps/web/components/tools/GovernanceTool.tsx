@@ -121,7 +121,7 @@ export default function GovernanceTool() {
           <p className="text-secondary/70 text-center mb-8">The sections every organisation&apos;s responsible-AI policy should cover.</p>
           <ol className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {policy.sections.map((s, i) => (
-              <li key={s} className="bg-secondary/10 rounded-xl p-5 text-secondary">
+              <li key={s} className="bg-white/10 rounded-xl p-5 text-secondary">
                 <span className="text-primary-lighter font-bold mr-2">{i + 1}.</span>{s}
               </li>
             ))}

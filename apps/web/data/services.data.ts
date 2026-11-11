@@ -24,16 +24,17 @@ export interface ServiceCategory {
 export const coreServices: Service[] = [
     {
     title: 'Training and Mentorship',
-    description: 'Mentor-led programs in AI Engineering, Generative AI, Agentic AI, ML & Deep Learning, Full Stack and DSA, plus AI for Everyone and tailored corporate AI training.',
+    description: 'Corporate AI training catalogue: 25 courses in 10 tracks, from AI for every employee to GenAI and agentic AI engineering, plus a 3-month career cohort for individuals.',
     icon: '🥇',
+    href: '/services/training',
     whatsIncluded: [
-        'Six engineering tracks + the flagship AI Mastery Program',
-        'AI for Everyone for business teams',
-        'Corporate AI training, tailored to your company',
-        '1:1 mentorship, code reviews and mock interviews',
-        'Project-based learning with a certificate'
+        'Tracks for every role: leaders, business, sales, marketing, engineers, data and risk teams',
+        'Levels L1 awareness to L4 advanced',
+        'Customised to your context before delivery',
+        'Onsite in Pune & travel, or virtual',
+        'Verified certificates'
     ],
-    idealFor: 'Students, working professionals, founders, CXOs, and teams building AI capability.'
+    idealFor: 'Organisations building AI capability across teams, and professionals moving into AI engineering.'
 },
 
     {
@@ -262,3 +263,125 @@ export const servicesPageData = {
     }
 }
 
+
+// Homepage carousel: services grouped under the four core pillars (data/pillars.data.ts), in pillar order.
+export interface ShowcaseService {
+    pillar: 'strategy' | 'engineering' | 'training' | 'academy'
+    title: string
+    icon: string
+    href: string
+    blurb: string
+    points: string[]
+    gradient: string
+}
+
+export const serviceShowcase: ShowcaseService[] = [
+    {
+        pillar: 'strategy',
+        title: 'AI Strategy & Roadmap',
+        icon: '🎯',
+        href: '/services/ai-strategy',
+        blurb: 'Turn AI from a buzzword into a clear, actionable plan for your business.',
+        points: ['AI maturity & high-value use cases', 'Feasibility and investment case', 'Adoption roadmap'],
+        gradient: 'from-slate-900 via-blue-900 to-blue-600',
+    },
+    {
+        pillar: 'strategy',
+        title: 'AI Readiness Audit',
+        icon: '🔬',
+        href: '/tools/readiness-audit',
+        blurb: 'Score your organisation across strategy, data, technology, people, process and governance.',
+        points: ['Free self-assessment', 'Prioritised 90-day roadmap', 'Downloadable report'],
+        gradient: 'from-indigo-950 via-blue-900 to-sky-600',
+    },
+    {
+        pillar: 'engineering',
+        title: 'AI Automation & Workflows',
+        icon: '⚙️',
+        href: '/services/ai-automation',
+        blurb: 'Automate repetitive work, improve speed and reduce cost without losing accuracy.',
+        points: ['Document processing', 'Email, CRM & ops automation', 'Support ticket routing'],
+        gradient: 'from-indigo-900 via-blue-800 to-cyan-600',
+    },
+    {
+        pillar: 'engineering',
+        title: 'AI Chatbots & Assistants',
+        icon: '💬',
+        href: '/services/ai-chatbots',
+        blurb: 'Assistants that understand your business: FAQs, support, lead qualification and internal knowledge.',
+        points: ['Website & WhatsApp bots', 'Internal knowledge assistants', 'Multilingual support'],
+        gradient: 'from-blue-900 via-blue-700 to-sky-500',
+    },
+    {
+        pillar: 'engineering',
+        title: 'Custom LLM Integrations',
+        icon: '🤖',
+        href: '/services/llm-integration',
+        blurb: 'Bring large language models into the tools and workflows your teams already use.',
+        points: ['AI-powered search', 'Sales & support co-pilots', 'Design → build → deploy → monitor'],
+        gradient: 'from-purple-900 via-indigo-800 to-blue-600',
+    },
+    {
+        pillar: 'engineering',
+        title: 'RAG Systems',
+        icon: '🔍',
+        href: '/services/rag-systems',
+        blurb: 'A private, secure assistant grounded in your own documents, SOPs and systems.',
+        points: ['Document ingestion pipeline', 'Vector database setup', 'Evaluation & accuracy testing'],
+        gradient: 'from-slate-900 via-indigo-900 to-violet-600',
+    },
+    {
+        pillar: 'engineering',
+        title: 'Agentic AI Systems',
+        icon: '🧠',
+        href: '/services/agentic-ai',
+        blurb: 'Agents that use tools, follow rules and complete multi-step work reliably.',
+        points: ['Tool use & integrations', 'Guardrails and evaluations', 'Production monitoring'],
+        gradient: 'from-indigo-950 via-purple-800 to-fuchsia-600',
+    },
+    {
+        pillar: 'engineering',
+        title: 'Data Engineering & Analytics',
+        icon: '📊',
+        href: '/services/data-analytics',
+        blurb: 'Clean, connected data and dashboards that reveal insights and predict outcomes.',
+        points: ['Sales forecasting', 'Churn prediction', 'KPI dashboards'],
+        gradient: 'from-blue-950 via-blue-800 to-teal-500',
+    },
+    {
+        pillar: 'engineering',
+        title: 'MLOps & Deployment',
+        icon: '🚀',
+        href: '/services/mlops',
+        blurb: 'Make models scalable, secure and production-ready with modern MLOps practice.',
+        points: ['CI/CD for AI models', 'Monitoring & logging', 'AWS, GCP or Azure'],
+        gradient: 'from-slate-900 via-slate-700 to-blue-600',
+    },
+    {
+        pillar: 'training',
+        title: 'Corporate AI Training',
+        icon: '🎓',
+        href: '/services/training',
+        blurb: 'Role-based learning: 25 courses across 10 tracks, from AI for every employee to agentic AI engineering.',
+        points: ['Levels L1 awareness to L4 advanced', 'Customised to your context', 'Verified certificates'],
+        gradient: 'from-blue-900 via-indigo-800 to-purple-600',
+    },
+    {
+        pillar: 'training',
+        title: 'Agentic AI & LLM Economics',
+        icon: '🧩',
+        href: '/services/training#workshop',
+        blurb: 'A working workshop: build a grounded assistant and an agent on your own material, and learn what it costs.',
+        points: ['1 or 2 days, onsite or virtual', 'Every lab: no-code + code path', 'Runnable demos'],
+        gradient: 'from-slate-950 via-amber-900 to-amber-600',
+    },
+    {
+        pillar: 'academy',
+        title: 'GenAI & Agentic AI Engineer Cohort',
+        icon: '🚀',
+        href: '/services/training#track-individual',
+        blurb: '12-week mentorship for professionals moving into AI engineering.',
+        points: ['Capstone projects', 'Deployment & evaluation', 'Interview preparation'],
+        gradient: 'from-indigo-950 via-violet-800 to-cyan-600',
+    },
+]

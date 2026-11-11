@@ -14,7 +14,7 @@ export default function PricingPage() {
       subtitle="Service Tiers & Pricing"
       title="Transparent Pricing"
       description="Four tiers for every service. Pick your company size to see an indicative quote."
-      gradient="bg-gradient-to-br from-blue-900 via-indigo-800 to-purple-600"
+      gradient="bg-deck"
     >
       <PricingTool />
     </ToolPage>

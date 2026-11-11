@@ -50,7 +50,7 @@ export default function ProviderButtons({ providers, next }: { providers: Provid
           {busy === p ? 'Redirecting…' : LABELS[p]}
         </button>
       ))}
-      {error && <p role="alert" className="text-sm text-red-700 text-center">{error}</p>}
+      {error && <p role="alert" className="text-sm text-red-300 text-center">{error}</p>}
     </div>
   )
 }

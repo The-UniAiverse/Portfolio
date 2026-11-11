@@ -17,7 +17,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   return (
     <main className="min-h-screen flex flex-col">
       <Header />
-      <section className="flex-1 bg-gradient-to-br from-blue-900 via-indigo-800 to-purple-600 flex items-center justify-center px-6 pt-32 pb-20">
+      <section className="flex-1 bg-deck flex items-center justify-center px-6 pt-32 pb-20">
         <div className="bg-secondary rounded-3xl shadow-2xl p-10 w-full max-w-md text-center">
           <div className="flex justify-center mb-4"><BrandLogo size={72} wordmark={false} /></div>
           <h1 className="text-3xl font-bold text-primary-dark mb-2">Sign in to uniAiverse</h1>

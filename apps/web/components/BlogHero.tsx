@@ -2,7 +2,7 @@ const BlogHero = () => {
   return (
     <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-dark via-primary to-primary-light">
+      <div className="absolute inset-0 bg-deck">
         {/* Animated mesh gradient overlay */}
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-0 -left-4 w-96 h-96 bg-primary-lighter rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
@@ -33,7 +33,7 @@ const BlogHero = () => {
         <div className="max-w-4xl mx-auto text-center space-y-8">
           {/* Badge */}
           <div className="inline-block animate-fade-in">
-            <span className="bg-secondary/20 text-secondary px-6 py-3 rounded-full text-sm font-semibold backdrop-blur-sm border border-secondary/30 shadow-lg hover:scale-105 transition-transform duration-300 inline-block">
+            <span className="bg-white/20 text-secondary px-6 py-3 rounded-full text-sm font-semibold backdrop-blur-sm border border-secondary/30 shadow-lg hover:scale-105 transition-transform duration-300 inline-block">
               📝 Insights & Innovation
             </span>
           </div>
@@ -54,15 +54,15 @@ const BlogHero = () => {
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-6 pt-8 max-w-2xl mx-auto">
-            <div className="bg-secondary/10 backdrop-blur-sm p-6 rounded-2xl border border-secondary/20 hover:scale-105 transition-transform duration-300">
+            <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-secondary/20 hover:scale-105 transition-transform duration-300">
               <p className="text-3xl md:text-4xl font-bold text-secondary">50+</p>
               <p className="text-sm text-secondary/80">Articles</p>
             </div>
-            <div className="bg-secondary/10 backdrop-blur-sm p-6 rounded-2xl border border-secondary/20 hover:scale-105 transition-transform duration-300">
+            <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-secondary/20 hover:scale-105 transition-transform duration-300">
               <p className="text-3xl md:text-4xl font-bold text-secondary">10K+</p>
               <p className="text-sm text-secondary/80">Readers</p>
             </div>
-            <div className="bg-secondary/10 backdrop-blur-sm p-6 rounded-2xl border border-secondary/20 hover:scale-105 transition-transform duration-300">
+            <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-secondary/20 hover:scale-105 transition-transform duration-300">
               <p className="text-3xl md:text-4xl font-bold text-secondary">Weekly</p>
               <p className="text-sm text-secondary/80">Updates</p>
             </div>

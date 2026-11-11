@@ -178,7 +178,7 @@ const BlogPage = async () => {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-20 bg-gradient-to-r from-primary-dark via-primary to-primary-light">
+      <section className="py-20 bg-deck border-y border-white/10">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-4xl md:text-5xl font-bold text-secondary">
@@ -191,9 +191,9 @@ const BlogPage = async () => {
               <input
                 type="email"
                 placeholder="Enter your email address"
-                className="flex-1 px-6 py-4 rounded-full text-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-lighter/50 shadow-lg"
+                className="flex-1 px-6 py-4 rounded-full text-primary-dark border border-white/15 focus:outline-none focus:ring-4 focus:ring-primary-lighter/50 shadow-lg"
               />
-              <button className="bg-secondary hover:bg-primary-lighter text-primary-dark px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:shadow-2xl hover:scale-105 whitespace-nowrap">
+              <button className="bg-amber-300 hover:bg-amber-200 text-slate-900 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:shadow-2xl hover:scale-105 whitespace-nowrap">
                 Subscribe Now
               </button>
             </div>

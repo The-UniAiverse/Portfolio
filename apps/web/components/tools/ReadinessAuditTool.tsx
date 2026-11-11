@@ -117,7 +117,7 @@ export default function ReadinessAuditTool() {
           <h3 className="text-xl font-bold mb-4">How to score each question</h3>
           <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
             {scale.map(([score, label]) => (
-              <div key={score} className="bg-secondary/10 rounded-xl p-3">
+              <div key={score} className="bg-white/10 rounded-xl p-3">
                 <div className="text-2xl font-bold">{score}</div>
                 <div className="text-sm text-secondary/80">{label}</div>
               </div>
@@ -178,13 +178,13 @@ export default function ReadinessAuditTool() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
               {result.report_pdf_url && (
                 <a href={apiUrl(result.report_pdf_url)} target="_blank" rel="noopener noreferrer"
-                  className="bg-secondary text-primary-dark px-8 py-4 rounded-full font-bold hover:bg-primary-lighter hover:text-secondary transition-all duration-300">
+                  className="bg-amber-300 text-slate-900 px-8 py-4 rounded-full font-bold hover:bg-amber-200 transition-all duration-300">
                   Download PDF report
                 </a>
               )}
               {result.report_markdown_url && (
                 <a href={apiUrl(result.report_markdown_url)} target="_blank" rel="noopener noreferrer"
-                  className="border-2 border-secondary text-secondary px-8 py-4 rounded-full font-bold hover:bg-secondary hover:text-primary-dark transition-all duration-300">
+                  className="border-2 border-secondary text-secondary px-8 py-4 rounded-full font-bold hover:bg-white/10 hover:border-white/60 transition-all duration-300">
                   Download Markdown
                 </a>
               )}
@@ -216,10 +216,10 @@ export default function ReadinessAuditTool() {
                   {(d.strengths.length > 0 || d.gaps.length > 0) && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 text-sm">
                       <ul className="space-y-1">
-                        {d.strengths.map((s) => <li key={s} className="text-green-700">+ {s}</li>)}
+                        {d.strengths.map((s) => <li key={s} className="text-green-300">+ {s}</li>)}
                       </ul>
                       <ul className="space-y-1">
-                        {d.gaps.map((g) => <li key={g} className="text-red-700">– {g}</li>)}
+                        {d.gaps.map((g) => <li key={g} className="text-red-300">– {g}</li>)}
                       </ul>
                     </div>
                   )}

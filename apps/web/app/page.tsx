@@ -1,10 +1,9 @@
 import Header from '@/components/Header'
 import Hero from '@/components/Hero'
-import About from '@/components/About'
 import Services from '@/components/Services'
+import WhyUs from '@/components/home/WhyUs'
 import AIJourney from '@/components/AIJourney'
-import TechStack from '@/components/TechStack'
-import Testimonials from '@/components/Testimonials'
+import Spotlight from '@/components/home/Spotlight'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 
@@ -13,14 +12,12 @@ export default function Home() {
     <main className="min-h-screen">
       <Header />
       <Hero />
-      <About />
       <Services />
+      <WhyUs />
       <AIJourney />
-      <TechStack />
-      <Testimonials />
+      <Spotlight />
       <Contact />
       <Footer />
     </main>
   )
 }
-

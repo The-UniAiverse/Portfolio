@@ -8,9 +8,10 @@ interface ServiceHeroProps {
   gradient: string
 }
 
-const ServiceHero = ({ title, subtitle, description, icon, gradient }: ServiceHeroProps) => {
+// `gradient` is kept for API compatibility; every hero now uses the deck backdrop.
+const ServiceHero = ({ title, subtitle, description, icon }: ServiceHeroProps) => {
   return (
-    <section className={`relative min-h-[70vh] flex items-center justify-center overflow-hidden ${gradient}`}>
+    <section className={`relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-deck`}>
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Large Animated Orbs */}
@@ -33,18 +34,10 @@ const ServiceHero = ({ title, subtitle, description, icon, gradient }: ServiceHe
       {/* Content */}
       <div className="container mx-auto px-6 py-24 relative z-10">
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          {/* Icon */}
-          <div className="inline-block">
-            <div className="text-8xl mb-6 animate-float">
-              {icon}
-            </div>
-          </div>
-
-          {/* Subtitle */}
-          <div className="inline-block">
-            <span className="bg-primary/80 text-secondary px-6 py-3 rounded-full text-sm font-semibold backdrop-blur-sm border border-primary-light/30 shadow-lg">
-              {subtitle}
-            </span>
+          {/* Icon + label */}
+          <div className="flex flex-col items-center gap-6">
+            <div className="text-7xl animate-float" aria-hidden="true">{icon}</div>
+            <span className="kicker">{subtitle}</span>
           </div>
 
           {/* Main Heading */}
@@ -61,7 +54,7 @@ const ServiceHero = ({ title, subtitle, description, icon, gradient }: ServiceHe
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
             <Link
               href="#details"
-              className="group bg-secondary text-primary-dark px-8 py-4 rounded-full font-bold text-lg hover:bg-primary-lighter hover:text-secondary transition-all duration-300 hover:shadow-2xl hover:shadow-primary-light/50 hover:scale-105"
+              className="group bg-amber-300 text-slate-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-amber-200 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-300/30 hover:scale-105"
             >
               Learn More
               <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform duration-300">
@@ -70,7 +63,7 @@ const ServiceHero = ({ title, subtitle, description, icon, gradient }: ServiceHe
             </Link>
             <Link
               href="#contact"
-              className="group bg-transparent border-2 border-secondary text-secondary px-8 py-4 rounded-full font-bold text-lg hover:bg-secondary hover:text-primary-dark transition-all duration-300 hover:shadow-2xl hover:shadow-secondary/50 hover:scale-105"
+              className="group bg-transparent border-2 border-secondary text-secondary px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 hover:border-white/60 transition-all duration-300 hover:shadow-2xl hover:shadow-secondary/50 hover:scale-105"
             >
               Get Started
               <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform duration-300">
