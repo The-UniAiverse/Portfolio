@@ -15,7 +15,7 @@ export default function ToolsPage() {
       subtitle="Free AI Tools"
       title="Plan Your AI Journey"
       description="Assess readiness, prioritise use cases, check risk and size the savings — the same tools our consultants use, free to try."
-      gradient="bg-gradient-to-br from-blue-900 via-indigo-800 to-purple-600"
+      gradient="bg-deck"
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {tools.map((t) => (

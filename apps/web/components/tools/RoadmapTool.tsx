@@ -9,10 +9,10 @@ const MAX_USE_CASES = 25
 const emptyUseCase = (): UseCase => ({ name: '', value: 3, feasibility: 3, risk: 2, effort_weeks: 4, function: 'General' })
 
 const QUADRANT_STYLE: Record<string, string> = {
-  'Quick win': 'bg-green-100 text-green-800',
-  'Strategic bet': 'bg-purple-100 text-purple-800',
+  'Quick win': 'bg-green-400/15 text-green-300',
+  'Strategic bet': 'bg-purple-400/15 text-purple-300',
   'Fill-in': 'bg-primary/10 text-primary',
-  Deprioritise: 'bg-gray-100 text-gray-600',
+  Deprioritise: 'bg-white/10 text-white/60',
 }
 
 function Rating({ label, value, onChange, hint }: { label: string; value: number; onChange: (v: number) => void; hint: string }) {
@@ -105,7 +105,7 @@ export default function RoadmapTool() {
                   </div>
                   <button type="button" disabled={useCases.length === 1}
                     onClick={() => setUseCases(useCases.filter((_, j) => j !== i))}
-                    className="text-red-600 hover:text-red-800 font-semibold px-2 py-3 disabled:opacity-30 disabled:cursor-not-allowed">
+                    className="text-red-300 hover:text-red-300 font-semibold px-2 py-3 disabled:opacity-30 disabled:cursor-not-allowed">
                     Remove
                   </button>
                 </div>
@@ -151,7 +151,7 @@ export default function RoadmapTool() {
                       <td className="py-3 pr-4 text-primary-dark/70">{b.function}</td>
                       <td className="py-3 pr-4 text-primary-dark/70">{b.score}</td>
                       <td className="py-3">
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${QUADRANT_STYLE[b.quadrant] ?? 'bg-gray-100'}`}>{b.quadrant}</span>
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${QUADRANT_STYLE[b.quadrant] ?? 'bg-white/10'}`}>{b.quadrant}</span>
                       </td>
                     </tr>
                   ))}

@@ -92,7 +92,7 @@ const AIJourney = () => {
           </p>
           <a
             href={aiJourneyPageData.cta.buttonHref}
-            className="inline-block bg-secondary text-primary-dark px-10 py-4 rounded-full font-bold text-lg hover:bg-primary-lighter hover:text-secondary transition-all duration-300 hover:shadow-2xl hover:shadow-secondary/50 hover:scale-105"
+            className="inline-block bg-amber-300 text-slate-900 px-10 py-4 rounded-full font-bold text-lg hover:bg-amber-200 transition-all duration-300 hover:shadow-2xl hover:shadow-secondary/50 hover:scale-105"
           >
             {aiJourneyPageData.cta.buttonText}
             <span className="inline-block ml-2">→</span>

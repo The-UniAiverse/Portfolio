@@ -190,7 +190,7 @@ export default function JobFinderTool() {
                     className="border-2 border-primary text-primary px-6 py-2 rounded-full font-semibold hover:bg-primary hover:text-secondary transition-all duration-300">View on freehire</a>
                 </div>
                 {flagged && (
-                  <p className="mt-4 text-sm bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-4 py-2">
+                  <p className="mt-4 text-sm bg-amber-400/15 border border-amber-400/30 text-amber-300 rounded-lg px-4 py-2">
                     This posting contains hidden or unusual text. It was removed before analysis, but treat the listing with care.
                   </p>
                 )}

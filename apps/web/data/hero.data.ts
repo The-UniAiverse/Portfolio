@@ -42,14 +42,5 @@ export const heroData = {
             label: 'Support',
         },
     ],
-    images: {
-        main: '/video/hero-2.jpg',
-        topRight: '/video/hero-3.jpg',
-        bottomRight: '/video/hero-4.jpg',
-    },
-    video: {
-        src: '/video/hero-bg.mp4',
-        type: 'video/mp4',
-    },
 }
 

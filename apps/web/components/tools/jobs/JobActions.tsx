@@ -16,7 +16,7 @@ const DIMENSIONS: { key: 'technical' | 'experience' | 'behavioral' | 'career'; l
   { key: 'career', label: 'Career fit' },
 ]
 
-const VERDICT_STYLE = { PASS: 'bg-green-100 text-green-800', FLAG: 'bg-amber-100 text-amber-800', FAIL: 'bg-red-100 text-red-800' }
+const VERDICT_STYLE = { PASS: 'bg-green-400/15 text-green-300', FLAG: 'bg-amber-400/15 text-amber-300', FAIL: 'bg-red-400/15 text-red-300' }
 
 const btn = 'bg-primary hover:bg-primary-light text-secondary px-6 py-3 rounded-full font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed'
 const btnOutline = 'border-2 border-primary text-primary px-6 py-3 rounded-full font-semibold hover:bg-primary hover:text-secondary transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed'
@@ -64,19 +64,19 @@ function FitResult({ m }: { m: JobMatch }) {
         </div>
       )}
       {m.experience_note && <p className="text-sm text-primary-dark/70">{m.experience_note}</p>}
-      {m.language_note && <p className="text-sm text-amber-700">{m.language_note}</p>}
+      {m.language_note && <p className="text-sm text-amber-300">{m.language_note}</p>}
 
       {(m.matched_skills.length > 0 || m.missing_skills.length > 0) && (
         <div className="flex flex-wrap gap-2">
-          {m.matched_skills.map((s) => <span key={`m-${s}`} className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">✓ {s}</span>)}
-          {m.missing_skills.map((s) => <span key={`x-${s}`} className="px-3 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200">{s}</span>)}
+          {m.matched_skills.map((s) => <span key={`m-${s}`} className="px-3 py-1 rounded-full text-xs font-semibold bg-green-400/15 text-green-300">✓ {s}</span>)}
+          {m.missing_skills.map((s) => <span key={`x-${s}`} className="px-3 py-1 rounded-full text-xs font-semibold bg-red-400/15 text-red-300 border border-red-400/30">{s}</span>)}
         </div>
       )}
 
       {(m.strengths.length > 0 || m.gaps.length > 0) && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-          <ul className="space-y-1">{m.strengths.map((s) => <li key={s} className="text-green-700">+ {s}</li>)}</ul>
-          <ul className="space-y-1">{m.gaps.map((g) => <li key={g} className="text-red-700">– {g}</li>)}</ul>
+          <ul className="space-y-1">{m.strengths.map((s) => <li key={s} className="text-green-300">+ {s}</li>)}</ul>
+          <ul className="space-y-1">{m.gaps.map((g) => <li key={g} className="text-red-300">– {g}</li>)}</ul>
         </div>
       )}
 
@@ -192,11 +192,11 @@ export default function JobActions({ jobId, profile }: { jobId: string; profile:
               <SourceBadge source="llm" />
               <span className="text-sm text-primary-dark/60">{letter.word_count} words · {letter.pages} page{letter.pages > 1 ? 's' : ''}</span>
             </div>
-            {letter.pages > 1 && <p className="text-sm text-amber-700">This letter runs past one page. Trim it before sending.</p>}
+            {letter.pages > 1 && <p className="text-sm text-amber-300">This letter runs past one page. Trim it before sending.</p>}
             {letter.review_notes.length > 0 && (
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
-                <p className="font-semibold text-amber-800 mb-2 text-sm">Reviewer notes: double-check these</p>
-                <ul className="list-disc pl-5 text-sm text-amber-800 space-y-1">{letter.review_notes.map((n) => <li key={n}>{n}</li>)}</ul>
+              <div className="bg-amber-400/15 border border-amber-400/30 rounded-xl p-4">
+                <p className="font-semibold text-amber-300 mb-2 text-sm">Reviewer notes: double-check these</p>
+                <ul className="list-disc pl-5 text-sm text-amber-300 space-y-1">{letter.review_notes.map((n) => <li key={n}>{n}</li>)}</ul>
               </div>
             )}
             <LetterEditor key={letter.pdf_url} letter={edited} onChange={setEdited} />

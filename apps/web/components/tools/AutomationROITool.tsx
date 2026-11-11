@@ -107,7 +107,7 @@ export default function AutomationROITool() {
                   </div>
                   <button type="button" disabled={workflows.length === 1}
                     onClick={() => setWorkflows(workflows.filter((_, j) => j !== i))}
-                    className="text-red-600 hover:text-red-800 font-semibold px-2 py-3 disabled:opacity-30 disabled:cursor-not-allowed">
+                    className="text-red-300 hover:text-red-300 font-semibold px-2 py-3 disabled:opacity-30 disabled:cursor-not-allowed">
                     Remove
                   </button>
                 </div>

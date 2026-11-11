@@ -37,8 +37,8 @@ export const contactInfo: ContactInfo[] = [
   {
     icon: '✉️',
     title: 'Email',
-    details: ['uniaiverse@outlook.in'],
-    link: 'mailto:uniaiverse@outlook.in',
+    details: ['support@uniaiverse.ai'],
+    link: 'mailto:support@uniaiverse.ai',
   },
   {
     icon: '🕐',

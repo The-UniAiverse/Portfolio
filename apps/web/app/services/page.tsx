@@ -151,7 +151,7 @@ export default async function ServicesPage() {
             <div className="pt-6">
               <a
                 href="#services"
-                className="inline-block bg-secondary text-primary-dark px-8 py-4 rounded-full font-bold text-lg hover:bg-primary-lighter hover:text-secondary transition-all duration-300 hover:shadow-2xl hover:shadow-secondary/50 hover:scale-105"
+                className="inline-block bg-amber-300 text-slate-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-amber-200 transition-all duration-300 hover:shadow-2xl hover:shadow-secondary/50 hover:scale-105"
               >
                 Explore Services
               </a>
@@ -354,7 +354,7 @@ export default async function ServicesPage() {
               </p>
               <a
                 href={servicesPageData.cta.buttonHref}
-                className="inline-block bg-secondary text-primary-dark px-8 py-4 rounded-full font-bold text-lg hover:bg-primary-lighter hover:text-secondary transition-all duration-300 hover:shadow-2xl hover:shadow-secondary/50 hover:scale-105"
+                className="inline-block bg-amber-300 text-slate-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-amber-200 transition-all duration-300 hover:shadow-2xl hover:shadow-secondary/50 hover:scale-105"
               >
                 {servicesPageData.cta.buttonText}
               </a>

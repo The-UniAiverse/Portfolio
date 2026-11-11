@@ -26,7 +26,7 @@ export function SectionTitle({ title, subtitle }: { title: string; subtitle?: st
 export function ErrorBanner({ error }: { error: string | null }) {
   if (!error) return null
   return (
-    <div role="alert" className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-xl">
+    <div role="alert" className="bg-red-400/15 border border-red-400/30 text-red-300 px-6 py-4 rounded-xl">
       {error}
     </div>
   )
@@ -102,12 +102,12 @@ export function SourceBadge({ source, notice }: { source: 'llm' | 'rules'; notic
     <div className="space-y-2">
       <span
         className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
-          source === 'llm' ? 'bg-purple-100 text-purple-800' : 'bg-primary/10 text-primary'
+          source === 'llm' ? 'bg-purple-400/15 text-purple-300' : 'bg-primary/10 text-primary'
         }`}
       >
         {source === 'llm' ? '✨ AI-written' : 'Standard write-up'}
       </span>
-      {notice && <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-2">{notice}</p>}
+      {notice && <p className="text-sm text-amber-300 bg-amber-400/15 border border-amber-400/30 rounded-lg px-4 py-2">{notice}</p>}
     </div>
   )
 }

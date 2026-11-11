@@ -144,7 +144,7 @@ export default function ProfileForm({ profile, onChange, remember, onRemember }:
                 onChange={(e) => setRole(i, { highlights: e.target.value })} placeholder="Led …, cut … by 30%, shipped …" />
             </div>
             <button type="button" onClick={() => set('work_history', profile.work_history.filter((_, j) => j !== i))}
-              className="text-red-600 hover:text-red-800 text-sm font-semibold">Remove role</button>
+              className="text-red-300 hover:text-red-300 text-sm font-semibold">Remove role</button>
           </div>
         ))}
         <button type="button" disabled={profile.work_history.length >= MAX_ROLES}
