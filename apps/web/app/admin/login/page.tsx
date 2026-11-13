@@ -6,7 +6,7 @@ import BrandLogo from '@/components/BrandLogo'
 export const metadata: Metadata = { title: 'Admin sign-in - uniAiverse' }
 
 // Admins sign in with Google (or GitHub) like everyone else; access is granted on the server to the
-// emails in ADMIN_EMAILS (see lib/admin.ts).
+// emails in ADMIN_EMAILS or at a domain in ADMIN_EMAIL_DOMAINS (see lib/admin.ts).
 export default function AdminLogin() {
   return (
     <div className="min-h-screen bg-[#0A0F1E] flex items-center justify-center p-4 relative overflow-hidden">
